@@ -1,0 +1,17 @@
+.header {
+  position: sticky;
+  width: 100%;
+  height: 74px;
+  padding-inline: 8%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (max-width: 860px) {
+  .header {
+    justify-content: center;
+  }
+}

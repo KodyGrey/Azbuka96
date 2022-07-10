@@ -1,0 +1,17 @@
+.primary,
+.secondary {
+  border-radius: 12px;
+  box-shadow: 0px 1px 16px rgba(0, 0, 0, 0.1);
+}
+
+.primary {
+  background: #49516f;
+  color: white;
+  border: none;
+}
+
+.secondary {
+  background: none;
+  border: solid;
+  color: #49516f;
+}

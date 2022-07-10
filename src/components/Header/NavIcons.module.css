@@ -1,0 +1,43 @@
+/* All navigation icons */
+
+.nav-icons {
+  height: 32px;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-basis: 106px;
+  justify-content: space-between;
+}
+
+@media (max-width: 860px) {
+  .nav-icons {
+    display: none;
+  }
+}
+
+/* Only cart button and its children */
+
+.cart-button {
+  display: flex;
+  flex-direction: row;
+}
+
+.cart-button p {
+  font-size: 11px;
+
+  color: white;
+}
+
+.cart-button div {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #d64550;
+  border-radius: 8px;
+}

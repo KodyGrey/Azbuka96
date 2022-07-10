@@ -1,0 +1,79 @@
+.catalogue-button {
+  padding: 0px;
+  width: 150px;
+  height: 32px;
+
+  font-size: 14px;
+  font-weight: 500;
+  white-space: pre-wrap;
+
+  cursor: pointer;
+}
+
+/* Settings for input and search button separately */
+
+.search-input {
+  position: relative;
+  top: -1px;
+  height: 29px;
+  min-width: 50x;
+  max-width: 500px;
+  width: 23vw;
+
+  padding: 0px;
+  margin: 0px 20px;
+  border: none;
+  font-size: 14px;
+  color: rgb(73, 81, 111);
+}
+.search-input::placeholder {
+  color: rgba(73, 81, 111, 0.5);
+}
+
+.search-input:focus {
+  outline: none;
+}
+
+.search-button {
+  position: relative;
+  top: -1.5px;
+  right: -1.5px;
+  width: 90px;
+  height: 32px;
+
+  padding: 0px;
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+/* Setting for search bar (input + button) */
+
+.search-bar {
+  width: fit-content;
+  height: 32px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  padding: 0px;
+  border: #49516f solid 1.5px;
+  border-radius: 12px;
+}
+
+/* Setting for whole component */
+
+.combined-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  flex-basis: calc(150px + 90px + 40px + 23vw + 20px);
+}
+
+@media (max-width: 860px) {
+  .combined-bar {
+    display: none;
+  }
+}

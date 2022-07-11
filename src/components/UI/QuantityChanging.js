@@ -17,7 +17,7 @@ const QuantityChanging = (props) => {
     if (value === "0") {
       return;
     }
-    if (!value || Number(value) % 1 !== 0) {
+    if (!value || Number(value) % 1 !== 0 || value < 0) {
       setValue(prevValue);
     } else {
       setPrevValue(value);

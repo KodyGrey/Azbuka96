@@ -4,6 +4,7 @@ import Header from "../components/Header/Header";
 import ProductCard from "../components/Products/ProductCard";
 import Button from "../components/UI/Button";
 import Card from "../components/UI/Card";
+import Footer from "../components/Footer/Footer";
 
 import productImage from "../public/product-image.jpg";
 
@@ -20,6 +21,7 @@ export default function Home() {
         type="inCart"
         amount="12"
       />
+      <Footer />
     </>
   );
 }

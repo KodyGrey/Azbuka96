@@ -26,7 +26,7 @@ const QuantityChanging = (props) => {
 
   return (
     <div
-      className={`${props.blockClass ?? ""} ${
+      className={`${props.className ?? ""} ${
         styles["quantity-changing-block"]
       }`}
     >

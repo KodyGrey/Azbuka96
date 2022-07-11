@@ -27,7 +27,12 @@ const ProductCard = (props) => {
         </div>
       );
     } else if (props.type === "inCart") {
-      return <QuantityChanging amount={props.amount} />;
+      return (
+        <QuantityChanging
+          className={styles["quantity-changing-item"]}
+          amount={props.amount}
+        />
+      );
     }
   };
 

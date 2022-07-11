@@ -206,4 +206,20 @@
     overflow: hidden;
     text-overflow: clip;
   }
+  .quantity-changing-item {
+    gap: 7px;
+  }
+
+  .quantity-changing-item button {
+    width: 28px;
+    height: 28px;
+    border-radius: 12.43px;
+    font-size: 25px;
+  }
+
+  .quantity-changing-item input {
+    width: 42px;
+    height: 28px;
+    font-size: 13.555px;
+  }
 }

@@ -2,6 +2,8 @@
 .secondary {
   border-radius: 12px;
   box-shadow: 0px 1px 16px rgba(0, 0, 0, 0.1);
+
+  cursor: pointer;
 }
 
 .primary {

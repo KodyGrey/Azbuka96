@@ -7,13 +7,13 @@ import NavIcons from "./NavIcons";
 
 const Header = (props) => {
   return (
-    <nav>
+    <header>
       <Card className={styles.header}>
         <Logo />
         <CatalogueSearchBar />
         <NavIcons />
       </Card>
-    </nav>
+    </header>
   );
 };
 

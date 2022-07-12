@@ -7,6 +7,7 @@ import Card from "../components/UI/Card";
 import Footer from "../components/Footer/Footer";
 
 import productImage from "../public/product-image.jpg";
+import ProductHorizontalCard from "../components/Products/ProductHorizontalCard";
 
 export default function Home() {
   return (
@@ -22,6 +23,16 @@ export default function Home() {
         amount="12"
       />
       <Footer />
+      <ProductHorizontalCard
+        id="32456"
+        author="Александрова Ольга Маратовна"
+        discountedPrice={1422}
+        image={productImage}
+        price={2022}
+        title="Русский родной язык. 3 класс. Учебник. ФГОС"
+        type="inOrder"
+        amount="12"
+      />
     </>
   );
 }

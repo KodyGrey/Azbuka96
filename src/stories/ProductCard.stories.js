@@ -13,6 +13,7 @@ const Template = (args) => <ProductCard {...args} />;
 
 export const InStock = Template.bind({});
 InStock.args = {
+  key: 32456,
   type: "inStock",
   price: 2022,
   discountedPrice: 1422,

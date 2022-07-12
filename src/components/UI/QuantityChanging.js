@@ -7,7 +7,7 @@ import styles from "./QuantityChanging.module.css";
 // somewhere else directly from product card
 
 const QuantityChanging = (props) => {
-  const [value, setValue] = useState(props.amount);
+  const [value, setValue] = useState(props.amount ?? "1");
   const [prevValue, setPrevValue] = useState(value);
 
   const onValueChangeHandler = (event) => {
@@ -31,9 +31,7 @@ const QuantityChanging = (props) => {
       }`}
     >
       {/* NB! there is unicode minus */}
-      <Button className={`${props.buttonClass ?? ""} ${styles["decrease"]}`}>
-        −
-      </Button>
+      <Button className={styles["decrease"]}>−</Button>
       <input
         className={styles["number"]}
         type="number"
@@ -42,9 +40,7 @@ const QuantityChanging = (props) => {
         onChange={onValueChangeHandler}
         onBlur={onBlurHandler}
       />
-      <Button className={`${props.buttonClass ?? ""} ${styles["increase"]}`}>
-        +
-      </Button>
+      <Button className={styles["increase"]}>+</Button>
     </div>
   );
 };

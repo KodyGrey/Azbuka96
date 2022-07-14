@@ -11,6 +11,12 @@
   color: white;
 }
 
+@media (max-width: 860px) {
+  .footer {
+    margin-bottom: 72px;
+  }
+}
+
 .information-section {
   display: flex;
   flex-direction: column;

@@ -6,26 +6,31 @@ import cartImage from "../../public/cart.svg";
 import profileImage from "../../public/profile.svg";
 import styles from "./NavIcons.module.css";
 
-const CartButton = () => {
-  const productsInCart = useSelector((state) => state.cart.amount);
+export const CartButton = (props) => {
+  // const productsInCart = useSelector((state) => state.cart.amount);
+  const productsInCart = 0;
 
   return (
     <Link href="/cart">
       <a className={styles["cart-button"]}>
-        <Image src={cartImage} alt="Корзина" height={32} width={32} />
-        <div>
-          <p>{productsInCart}</p>
+        <div className={styles["cart-image"]}>
+          <Image src={cartImage} alt="Корзина" height={32} width={32} />
+          <div className={styles["products-counter"]}>
+            <span>{productsInCart}</span>
+          </div>
         </div>
+        {props.children}
       </a>
     </Link>
   );
 };
 
-const ProfileButton = () => {
+export const ProfileButton = (props) => {
   return (
     <Link href="/profile">
       <a>
         <Image src={profileImage} alt="Профиль" height={32} width={32} />
+        {props.children}
       </a>
     </Link>
   );

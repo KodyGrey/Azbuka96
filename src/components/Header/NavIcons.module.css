@@ -18,23 +18,26 @@
 
 /* Only cart button and its children */
 
-.cart-button {
+.cart-image {
   position: relative;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  width: 32px;
+  height: 32px;
 }
 
-.cart-button p {
+.products-counter span {
   font-size: 11px;
+  line-height: 11px;
 
   color: white;
 }
 
-.cart-button div {
+.products-counter {
   position: absolute;
   width: 16px;
   height: 16px;
-  left: 16px;
+  right: 0px;
   display: flex;
   align-items: center;
   justify-content: center;

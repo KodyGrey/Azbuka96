@@ -8,6 +8,7 @@ import Footer from "../components/Footer/Footer";
 
 import productImage from "../public/product-image.jpg";
 import ProductHorizontalCard from "../components/Products/ProductHorizontalCard";
+import MenuBar from "../components/MenuBar/MenuBar";
 
 export default function Home() {
   return (
@@ -33,6 +34,7 @@ export default function Home() {
         type="inOrder"
         amount="12"
       />
+      <MenuBar />
     </>
   );
 }

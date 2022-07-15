@@ -7,6 +7,7 @@ import Card from "../components/UI/Card";
 import Footer from "../components/Footer/Footer";
 
 import productImage from "../public/product-image.jpg";
+import checkimage from "../public/check-mark_checked.svg";
 import ProductHorizontalCard from "../components/Products/ProductHorizontalCard";
 import MenuBar from "../components/MenuBar/MenuBar";
 
@@ -15,6 +16,7 @@ export default function Home() {
     <>
       <Header></Header>
       <ProductCard
+        key="32456"
         author="Александрова Ольга Маратовна"
         discountedPrice={1422}
         image={productImage}
@@ -25,7 +27,7 @@ export default function Home() {
       />
       <Footer />
       <ProductHorizontalCard
-        id="32456"
+        key="32456"
         author="Александрова Ольга Маратовна"
         discountedPrice={1422}
         image={productImage}
@@ -35,6 +37,7 @@ export default function Home() {
         amount="12"
       />
       <MenuBar />
+      <Image src={checkimage} />
     </>
   );
 }

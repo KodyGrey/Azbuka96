@@ -37,7 +37,7 @@ const ProductCard = (props) => {
   };
 
   return (
-    <Card key={props.id} className={styles["product-card"]}>
+    <Card className={styles["product-card"]}>
       {/* Product image */}
 
       <div className={styles["product-image"]}>

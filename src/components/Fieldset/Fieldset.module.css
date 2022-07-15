@@ -1,0 +1,71 @@
+.fieldset {
+  padding: 12px;
+  width: 200px;
+  border: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.legend {
+  font-size: 24px;
+  font-weight: 500;
+  padding-bottom: 4px;
+
+  color: #49516f;
+}
+
+.option {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.option label {
+  width: 150px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  padding-left: 24px;
+
+  cursor: pointer;
+
+  color: #49516f;
+}
+
+.option input {
+  position: absolute;
+  opacity: 0.01;
+  left: 0;
+}
+
+.option > input + label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  background-image: url("http://localhost:3000/_next/static/media/check-mark_unchecked.0ca3a2db.svg");
+}
+.option > input + label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  background-image: url("http://localhost:3000/_next/static/media/check-mark_checked.4723c808.svg");
+}
+
+.option > input:not(:checked) + label::after {
+  opacity: 0;
+}
+
+.option > input:checked + label::after {
+  opacity: 1;
+}

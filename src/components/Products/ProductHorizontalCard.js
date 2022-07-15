@@ -8,7 +8,7 @@ import deleteButtonImage from "../../public/delete.svg";
 const ProductHorizontalCard = (props) => {
   console.log(props);
   return (
-    <Card className={styles["card"]} key={props.id}>
+    <Card className={styles["card"]}>
       <div className={styles["first-block"]}>
         <div className={styles["product-id"]}>{`#${props.id}`}</div>
 

@@ -10,6 +10,7 @@ const Template = (args) => <ProductHorizontalCard {...args} />;
 
 export const InCart = Template.bind({});
 InCart.args = {
+  key: 32456,
   id: 32456,
   type: "inCart",
   price: 2022,

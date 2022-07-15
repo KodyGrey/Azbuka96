@@ -28,6 +28,7 @@ export default function Home() {
       <Footer />
       <ProductHorizontalCard
         key="32456"
+        id="32456"
         author="Александрова Ольга Маратовна"
         discountedPrice={1422}
         image={productImage}

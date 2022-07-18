@@ -19,7 +19,7 @@ const CatalogueButton = () => {
 
 // Search <input> and search <button>
 
-const SearchBar = () => {
+export const SearchBar = (props) => {
   const searchInputRef = useRef();
   const router = useRouter();
 
@@ -28,7 +28,7 @@ const SearchBar = () => {
   };
 
   return (
-    <div className={styles["search-bar"]}>
+    <div className={`${props.className} ${styles["search-bar"]}`}>
       <input
         className={styles["search-input"]}
         type="text"

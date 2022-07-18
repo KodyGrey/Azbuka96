@@ -1,0 +1,47 @@
+/* Search bar */
+
+.modal-element {
+  position: sticky;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: fit-content;
+  gap: 24px;
+  padding: 28px 32px;
+
+  background-color: white;
+  border-radius: 0 0 20px 20px;
+
+  z-index: 10;
+}
+
+.modal-element > a {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+
+  cursor: pointer;
+}
+
+.search-bar {
+  width: calc(100% - 32px - 24px);
+}
+
+.search-bar input {
+  width: calc(100% - 20px - 90px);
+  max-width: none;
+}
+
+/* Background */
+
+.modal-background {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  background-color: #000;
+  opacity: 0.25;
+  z-index: 5;
+}

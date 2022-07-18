@@ -1,0 +1,50 @@
+/* Whole section */
+.section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 860px) {
+  .section {
+    display: flex;
+    flex-direction: column;
+  }
+}
+/* Image */
+
+.image {
+  position: relative;
+  aspect-ratio: 1/1;
+  width: 80%;
+}
+
+@media (max-width: 860px) {
+  .image {
+    width: 100%;
+  }
+}
+
+/* Text */
+
+.text-mobile {
+  display: none;
+}
+
+.text-pc {
+  position: relative;
+  width: 100%;
+}
+
+@media (max-width: 860px) {
+  .text-mobile {
+    display: block;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 296/40;
+  }
+
+  .text-pc {
+    display: none;
+  }
+}

@@ -17,7 +17,7 @@
 
 .modal-element > a {
   position: relative;
-  width: 32px;
+  width: 36px;
   height: 32px;
   min-width: 32px;
 
@@ -25,7 +25,7 @@
 }
 
 .search-bar {
-  width: calc(100% - 32px - 24px);
+  width: calc(100% - 36px - 24px);
 }
 
 .search-bar input {

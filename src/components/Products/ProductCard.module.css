@@ -1,8 +1,6 @@
 /* Whole card */
 
 .product-card {
-  margin: 20px;
-
   width: 200px;
   height: 350px;
   display: flex;

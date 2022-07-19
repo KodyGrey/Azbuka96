@@ -1,44 +1,58 @@
-import Head from "next/head";
 import Image from "next/image";
+
+import styles from "../styles/index.module.css";
+
 import Header from "../components/Header/Header";
 import ProductCard from "../components/Products/ProductCard";
-import Button from "../components/UI/Button";
-import Card from "../components/UI/Card";
 import Footer from "../components/Footer/Footer";
-
-import productImage from "../public/product-image.jpg";
-import checkimage from "../public/check-mark_checked.svg";
-import ProductHorizontalCard from "../components/Products/ProductHorizontalCard";
 import MenuBar from "../components/MenuBar/MenuBar";
+import IndexImageSection from "../components/InfoElements/IndexImageSection";
 
 export default function Home() {
+  const testProductArgs = {
+    key: 32456,
+    type: "inStock",
+    price: 2022,
+    discountedPrice: 1422,
+    title: "Русский родной язык. 3 класс. Учебник. ФГОС",
+    author: "Александрова Ольга Маратовна",
+    amount: 0,
+    image:
+      "/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fproduct-image.f90bfa51.jpg&w=1920&q=75",
+  };
+
   return (
     <>
       <Header></Header>
-      <ProductCard
-        key="32456"
-        author="Александрова Ольга Маратовна"
-        discountedPrice={1422}
-        image={productImage}
-        price={2022}
-        title="Русский родной язык. 3 класс. Учебник. ФГОС"
-        type="inCart"
-        amount="12"
-      />
-      <Footer />
-      <ProductHorizontalCard
-        key="32456"
-        id="32456"
-        author="Александрова Ольга Маратовна"
-        discountedPrice={1422}
-        image={productImage}
-        price={2022}
-        title="Русский родной язык. 3 класс. Учебник. ФГОС"
-        type="inOrder"
-        amount="12"
-      />
+
+      <main className={styles["main-body"]}>
+        <IndexImageSection className={styles["image-section"]} />
+        <section className={styles["products-grid"]}>
+          <h2>Актуальное</h2>
+          <div>
+            <ProductCard {...testProductArgs} />
+            <ProductCard {...testProductArgs} />
+            <ProductCard {...testProductArgs} />
+            <ProductCard {...testProductArgs} />
+            <ProductCard {...testProductArgs} />
+            <ProductCard {...testProductArgs} />
+          </div>
+        </section>
+        <section className={styles["products-grid"]}>
+          <h2>Скидки</h2>
+          <div>
+            <ProductCard {...testProductArgs} />
+            <ProductCard {...testProductArgs} />
+            <ProductCard {...testProductArgs} />
+            <ProductCard {...testProductArgs} />
+            <ProductCard {...testProductArgs} />
+            <ProductCard {...testProductArgs} />
+          </div>
+        </section>
+      </main>
+
       <MenuBar />
-      <Image src={checkimage} />
+      <Footer />
     </>
   );
 }

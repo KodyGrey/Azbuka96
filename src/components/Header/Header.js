@@ -7,8 +7,8 @@ import NavIcons from "./NavIcons";
 
 const Header = (props) => {
   return (
-    <header>
-      <Card className={styles.header}>
+    <header className={styles.header}>
+      <Card>
         <Logo />
         <CatalogueSearchBar />
         <NavIcons />

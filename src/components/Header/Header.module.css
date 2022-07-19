@@ -1,5 +1,9 @@
 .header {
   position: sticky;
+  top: 0px;
+  z-index: 1;
+}
+.header > div {
   width: 100%;
   height: 74px;
   padding-inline: 8%;
@@ -11,7 +15,7 @@
 }
 
 @media (max-width: 860px) {
-  .header {
+  .header > div {
     justify-content: center;
   }
 }

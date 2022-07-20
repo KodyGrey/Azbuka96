@@ -81,4 +81,8 @@
   .show-list ul {
     display: block;
   }
+
+  .show-list img {
+    transform: rotate(180deg);
+  }
 }

@@ -23,24 +23,24 @@ export const SearchBar = (props) => {
   const searchInputRef = useRef();
   const router = useRouter();
 
-  const onSearchButtonClickHandler = () => {
+  const onSearchHandler = (event) => {
+    event.preventDefault();
     router.push(`/search/${searchInputRef.current.value}`);
   };
 
   return (
     <div className={`${props.className} ${styles["search-bar"]}`}>
-      <input
-        className={styles["search-input"]}
-        type="text"
-        placeholder="Введите запрос"
-        ref={searchInputRef}
-      />
-      <Button
-        onClick={onSearchButtonClickHandler}
-        className={styles["search-button"]}
-      >
-        Поиск
-      </Button>
+      <form onSubmit={onSearchHandler}>
+        <input
+          className={styles["search-input"]}
+          type="text"
+          placeholder="Введите запрос"
+          ref={searchInputRef}
+        />
+        <Button type="submit" className={styles["search-button"]}>
+          Поиск
+        </Button>
+      </form>
     </div>
   );
 };

@@ -25,6 +25,7 @@ export const SearchBar = (props) => {
 
   const onSearchHandler = (event) => {
     event.preventDefault();
+    if (searchInputRef.current.value === "") return;
     router.push(`/search/${searchInputRef.current.value}`);
   };
 

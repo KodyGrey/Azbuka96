@@ -1,11 +1,6 @@
-import Image from "next/image";
-
 import styles from "../styles/index.module.css";
 
-import Header from "../components/Header/Header";
 import ProductCard from "../components/Products/ProductCard";
-import Footer from "../components/Footer/Footer";
-import MenuBar from "../components/MenuBar/MenuBar";
 import IndexImageSection from "../components/InfoElements/IndexImageSection";
 
 export default function Home() {
@@ -23,36 +18,29 @@ export default function Home() {
 
   return (
     <>
-      <Header></Header>
-
-      <main className={styles["main-body"]}>
-        <IndexImageSection className={styles["image-section"]} />
-        <section className={styles["products-grid"]}>
-          <h2>Актуальное</h2>
-          <div>
-            <ProductCard {...testProductArgs} />
-            <ProductCard {...testProductArgs} />
-            <ProductCard {...testProductArgs} />
-            <ProductCard {...testProductArgs} />
-            <ProductCard {...testProductArgs} />
-            <ProductCard {...testProductArgs} />
-          </div>
-        </section>
-        <section className={styles["products-grid"]}>
-          <h2>Скидки</h2>
-          <div>
-            <ProductCard {...testProductArgs} />
-            <ProductCard {...testProductArgs} />
-            <ProductCard {...testProductArgs} />
-            <ProductCard {...testProductArgs} />
-            <ProductCard {...testProductArgs} />
-            <ProductCard {...testProductArgs} />
-          </div>
-        </section>
-      </main>
-
-      <MenuBar />
-      <Footer />
+      <IndexImageSection className={styles["image-section"]} />
+      <section className={styles["products-grid"]}>
+        <h2>Актуальное</h2>
+        <div>
+          <ProductCard {...testProductArgs} />
+          <ProductCard {...testProductArgs} />
+          <ProductCard {...testProductArgs} />
+          <ProductCard {...testProductArgs} />
+          <ProductCard {...testProductArgs} />
+          <ProductCard {...testProductArgs} />
+        </div>
+      </section>
+      <section className={styles["products-grid"]}>
+        <h2>Скидки</h2>
+        <div>
+          <ProductCard {...testProductArgs} />
+          <ProductCard {...testProductArgs} />
+          <ProductCard {...testProductArgs} />
+          <ProductCard {...testProductArgs} />
+          <ProductCard {...testProductArgs} />
+          <ProductCard {...testProductArgs} />
+        </div>
+      </section>
     </>
   );
 }

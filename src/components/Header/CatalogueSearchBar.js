@@ -30,19 +30,20 @@ export const SearchBar = (props) => {
   };
 
   return (
-    <div className={`${props.className} ${styles["search-bar"]}`}>
-      <form onSubmit={onSearchHandler}>
-        <input
-          className={styles["search-input"]}
-          type="text"
-          placeholder="Введите запрос"
-          ref={searchInputRef}
-        />
-        <Button type="submit" className={styles["search-button"]}>
-          Поиск
-        </Button>
-      </form>
-    </div>
+    <form
+      className={`${props.className} ${styles["search-bar"]}`}
+      onSubmit={onSearchHandler}
+    >
+      <input
+        className={styles["search-input"]}
+        type="text"
+        placeholder="Введите запрос"
+        ref={searchInputRef}
+      />
+      <Button type="submit" className={styles["search-button"]}>
+        Поиск
+      </Button>
+    </form>
   );
 };
 

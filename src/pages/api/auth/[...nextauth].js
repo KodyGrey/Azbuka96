@@ -3,7 +3,7 @@ import EmailProvider from "next-auth/providers/email";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "../../../lib/mongodbClient";
 
-export default NextAuth({
+export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
   providers: [
     EmailProvider({
@@ -18,4 +18,12 @@ export default NextAuth({
       from: process.env.EMAIL_FROM,
     }),
   ],
-});
+  callbacks: {
+    async session(session) {
+      session.session.user = { ...session.user, ...session.session.user };
+      return session.session;
+    },
+  },
+};
+
+export default NextAuth(authOptions);

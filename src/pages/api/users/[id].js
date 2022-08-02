@@ -20,14 +20,14 @@ export default async function handler(req, res) {
                 if (err || !result)
                   res.status(400).json({ error: err.toString() });
                 else res.status(200).json(result);
-                return resolve();
+                resolve();
               });
               break;
             case "PUT":
               if (!session) {
                 res.status(401).json({ error: "Unauthorized" });
 
-                return resolve();
+                resolve();
               }
               if (id === session.user.id || session.user.isAdmin) {
                 const updateParams = {};
@@ -43,7 +43,7 @@ export default async function handler(req, res) {
                   (err, result) => {
                     if (err) res.status(500).json({ error: err.toString() });
                     else res.status(200).json({ ok: true });
-                    return resolve();
+                    resolve();
                   }
                 );
               } else {
@@ -51,7 +51,7 @@ export default async function handler(req, res) {
                   error: "You have not enough permissions for that",
                 });
               }
-              return resolve();
+              resolve();
               break;
 
             case "DELETE":
@@ -59,17 +59,17 @@ export default async function handler(req, res) {
                 res
                   .status(403)
                   .json({ error: "You have not enough permissions for that" });
-                return resolve();
+                resolve();
               }
               collection.deleteOne({ _id: ObjectId(id) });
               res.status(200).json({ ok: true });
-              return resolve();
+              resolve();
           }
         })
         .catch((err) => {
           res.status(500).json({ error: err.toString() });
 
-          return resolve();
+          resolve();
         });
     });
   });

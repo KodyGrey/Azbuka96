@@ -9,12 +9,12 @@ export default async function handler(req, res) {
     unstable_getServerSession(req, res, authOptions).then((session) => {
       if (!session) {
         res.status(401).json({ error: "Unauthorized" });
-        return resolve();
+        resolve();
       } else if (!session.user.isAdmin) {
         res
           .status(403)
           .json({ error: "You have not enough permissions for that" });
-        return resolve();
+        resolve();
       }
 
       clientPromise
@@ -25,12 +25,12 @@ export default async function handler(req, res) {
             else {
               res.status(200).json(array);
             }
-            return resolve();
+            resolve();
           });
         })
         .catch((err) => {
           res.status(500).json({ error: err.toString() });
-          return resolve();
+          resolve();
         });
     });
   });

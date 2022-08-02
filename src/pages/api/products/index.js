@@ -11,7 +11,7 @@ export default async function handler(req, res) {
             const collection = client.db().collection("products");
             collection.find({}).toArray((error, array) => {
               if (error) res.status(500).json({ error: err.toString() });
-              else res.status(200).json({ ok: true });
+              else res.status(200).json(array);
               resolve();
             });
           })

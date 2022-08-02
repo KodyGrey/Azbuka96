@@ -29,13 +29,12 @@ export default async function handler(req, res) {
 
                 return resolve();
               }
-              if (id === session.user.id || session.user.is_admin) {
+              if (id === session.user.id || session.user.isAdmin) {
                 const updateParams = {};
                 if (req.body.name) updateParams.name = req.body.name;
                 if (req.body.city) updateParams.city = req.body.city;
-                if (session.user.is_admin) {
-                  if (req.body.is_admin)
-                    updateParams.is_admin = req.body.is_admin;
+                if (session.user.isAdmin) {
+                  if (req.body.isAdmin) updateParams.isAdmin = req.body.isAdmin;
                 }
 
                 collection.updateOne(
@@ -56,7 +55,7 @@ export default async function handler(req, res) {
               break;
 
             case "DELETE":
-              if (!session.user.is_admin) {
+              if (!session.user.isAdmin) {
                 res
                   .status(403)
                   .json({ error: "You have not enough permissions for that" });

@@ -10,7 +10,7 @@ export default async function handler(req, res) {
       if (!session) {
         res.status(401).json({ error: "Unauthorized" });
         return resolve();
-      } else if (!session.user.is_admin) {
+      } else if (!session.user.isAdmin) {
         res
           .status(403)
           .json({ error: "You have not enough permissions for that" });

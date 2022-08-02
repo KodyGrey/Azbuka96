@@ -70,14 +70,12 @@ export default async function handler(req, res) {
               clientPromise
                 .then((client) => {
                   const collection = client.db().collection("products");
-                  collection
-                    .deleteOne({ _id: ObjectId(id) }, (error, ok) => {
-                      if (error)
-                        res.status(400).json({ error: error.toString() });
-                      else res.status(200).json({ ok: true });
-                      resolve();
-                    })
-                    .catch();
+                  collection.deleteOne({ _id: ObjectId(id) }, (error, ok) => {
+                    if (error)
+                      res.status(500).json({ error: error.toString() });
+                    else res.status(200).json({ ok: true });
+                    resolve();
+                  });
                 })
                 .catch((error) => {
                   res.status(500).json({ error: error.toString() });

@@ -3,6 +3,8 @@ import styles from "../styles/index.module.css";
 import ProductCard from "../components/Products/ProductCard";
 import IndexImageSection from "../components/InfoElements/IndexImageSection";
 
+import productImage from "../public/product-image.jpg";
+
 export default function Home() {
   const testProductArgs = {
     key: 32456,
@@ -12,8 +14,7 @@ export default function Home() {
     title: "Русский родной язык. 3 класс. Учебник. ФГОС",
     author: "Александрова Ольга Маратовна",
     amount: 0,
-    image:
-      "/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fproduct-image.f90bfa51.jpg&w=1920&q=75",
+    image: productImage,
   };
 
   return (

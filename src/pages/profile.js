@@ -6,6 +6,7 @@ import Card from "../components/UI/Card";
 import Button from "../components/UI/Button";
 
 import imageArrow from "../public/arrow-down-black.svg";
+import OrderBar from "../components/Order/OrderBar";
 
 export default function Profile() {
   const [ProfileOpened, setProfileOpened] = useState(false);
@@ -85,7 +86,17 @@ export default function Profile() {
           style={{
             display: OrdersOpened ? "flex" : "none",
           }}
-        ></div>
+        >
+          <OrderBar
+            Number={123456}
+            Money={9600}
+            Date="12.03.2022"
+            Text="В пункте выдачи"
+            TextStyle={{
+              color: "#4C9F70",
+            }}
+          />
+        </div>
       </section>
     </section>
   );

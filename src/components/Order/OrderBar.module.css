@@ -11,6 +11,12 @@
   border-radius: 12px;
 }
 
+@media (max-width: 860px) {
+  .order-bar {
+    width: 100%;
+  }
+}
+
 .number,
 .text,
 .money,
@@ -39,4 +45,11 @@
   width: 90px;
   height: 20px;
   border-radius: 22px;
+}
+
+@media (max-width: 860px) {
+  .number,
+  .about-button {
+    display: none;
+  }
 }

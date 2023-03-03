@@ -9,9 +9,21 @@
   margin-block: 100px;
 }
 
+@media (max-width: 860px) {
+  .profile {
+    margin-block: 50px;
+  }
+}
+
 .profile section {
   align-self: center;
   width: 50%;
+}
+
+@media (max-width: 860px) {
+  .profile section {
+    width: 100%;
+  }
 }
 
 .head-card {
@@ -54,6 +66,12 @@
   padding-inline: 20px;
 
   border-radius: 12px;
+}
+
+@media (max-width: 860px) {
+  .element-card {
+    width: 100%;
+  }
 }
 
 .element-card h3 {

@@ -17,7 +17,10 @@ a {
 
 .main-body {
   padding: 0 8%;
+  padding-bottom: calc(8% + 185px);
 
   display: flex;
   flex-direction: column;
+
+  min-height: calc(100vh - 74px);
 }

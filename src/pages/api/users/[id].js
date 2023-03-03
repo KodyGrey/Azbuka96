@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import clientPromise from "../../../lib/mongodbClient";
-import { unstable_getServerSession } from "next-auth/next";
+import { getServerSession } from "next-auth/next";
 
 import { authOptions } from "../auth/[...nextauth]";
 
@@ -8,7 +8,7 @@ import { authOptions } from "../auth/[...nextauth]";
 // function ends gathering and sending information
 export default async function handler(req, res) {
   return new Promise((resolve) => {
-    unstable_getServerSession(req, res, authOptions).then((session) => {
+    getServerSession(req, res, authOptions).then((session) => {
       clientPromise
         .then((client) => {
           const { id } = req.query;

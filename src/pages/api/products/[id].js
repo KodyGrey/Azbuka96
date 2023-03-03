@@ -1,6 +1,6 @@
 import clientPromise from "../../../lib/mongodbClient";
 import { authOptions } from "../auth/[...nextauth]";
-import { unstable_getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import { ObjectId } from "mongodb";
 
 export default async function handler(req, res) {
@@ -23,7 +23,7 @@ export default async function handler(req, res) {
           });
         break;
       case "PUT":
-        unstable_getServerSession(req, res, authOptions).then((session) => {
+        getServerSession(req, res, authOptions).then((session) => {
           if (!session) {
             res.status(401).json({ error: "Unauthenticated" });
             resolve();
@@ -56,7 +56,7 @@ export default async function handler(req, res) {
         });
         break;
       case "DELETE":
-        unstable_getServerSession(req, res, authOptions)
+        getServerSession(req, res, authOptions)
           .then((session) => {
             if (!session) {
               res.status(401).json({ error: "Unauthenticated" });

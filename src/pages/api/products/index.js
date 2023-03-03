@@ -1,6 +1,6 @@
 import clientPromise from "../../../lib/mongodbClient";
 import { authOptions } from "../auth/[...nextauth]";
-import { unstable_getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 
 export default async function handler(req, res) {
   return new Promise((resolve) => {
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
           });
         break;
       case "POST":
-        unstable_getServerSession(req, res, authOptions).then((session) => {
+        getServerSession(req, res, authOptions).then((session) => {
           if (!session) {
             res.status(401).json({ error: "Unauthorized" });
             resolve();

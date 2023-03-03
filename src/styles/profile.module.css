@@ -1,0 +1,77 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+
+  gap: 20px;
+  width: 100%;
+
+  margin-block: 100px;
+}
+
+.profile section {
+  align-self: center;
+  width: 50%;
+}
+
+.head-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 48px;
+  padding-inline: 20px;
+
+  border-radius: 12px;
+}
+
+.head-card h2 {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #49516f;
+}
+
+.elements {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-block: 20px;
+  gap: 8px;
+}
+
+.element-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 48px;
+  width: 96%;
+  padding-inline: 20px;
+
+  border-radius: 12px;
+}
+
+.element-card h3 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #49516f;
+}
+
+.element-card p {
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #49516f;
+}
+
+.rotate-arrow {
+  rotate: 180;
+}

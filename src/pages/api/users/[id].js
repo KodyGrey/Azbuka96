@@ -30,6 +30,9 @@ export default async function handler(req, res) {
                 resolve();
               }
               if (id === session.user.id || session.user.isAdmin) {
+                if (typeof req.body === "string") {
+                  req.body = JSON.parse(req.body);
+                }
                 const updateParams = {};
                 if (req.body.name) updateParams.name = req.body.name;
                 if (req.body.city) updateParams.city = req.body.city;

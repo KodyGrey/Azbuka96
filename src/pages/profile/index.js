@@ -1,14 +1,17 @@
 import { useState } from "react";
 import Image from "next/image";
-import styles from "../styles/profile.module.css";
+import styles from "../../styles/profile/index.module.css";
 
-import Card from "../components/UI/Card";
-import Button from "../components/UI/Button";
+import Card from "../../components/UI/Card";
+import Button from "../../components/UI/Button";
 
-import imageArrow from "../public/arrow-down-black.svg";
-import OrderBar from "../components/Order/OrderBar";
+import imageArrow from "../../public/arrow-down-black.svg";
+import OrderBar from "../../components/Order/OrderBar";
 
-export default function Profile() {
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]";
+
+export default function Profile(props) {
   const [ProfileOpened, setProfileOpened] = useState(false);
   const [OrdersOpened, setOrdersOpened] = useState(false);
 
@@ -100,4 +103,21 @@ export default function Profile() {
       </section>
     </section>
   );
+}
+
+export async function getServerSideProps(ctx) {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/api/auth/signin",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 }

@@ -7,10 +7,12 @@ import { useState } from "react";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
+import { useRouter } from "next/router";
 
 function Update(props) {
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
+  const router = useRouter();
 
   function onUpdateFormSubmit(event) {
     fetch(`http://localhost:3000/api/users/${props.id}`, {
@@ -30,6 +32,7 @@ function Update(props) {
       });
 
     event.preventDefault();
+    router.push("/profile");
   }
 
   function onNameChanged(event) {
@@ -50,6 +53,7 @@ function Update(props) {
           placeholder="ФИО"
           value={name}
           onChange={onNameChanged}
+          required
         />
         <TextInput
           id="city"
@@ -57,6 +61,7 @@ function Update(props) {
           placeholder="Город"
           value={city}
           onChange={onCityChanged}
+          required
         />
         <Button type="submit" className={styles["submit-button"]}>
           Отправить

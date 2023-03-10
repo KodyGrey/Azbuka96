@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "../../styles/profile/index.module.css";
 
@@ -15,12 +15,29 @@ export default function Profile(props) {
   const [ProfileOpened, setProfileOpened] = useState(false);
   const [OrdersOpened, setOrdersOpened] = useState(false);
 
+  const [orders, setOrders] = useState([]);
+
   const onProfileClickHandler = () => {
     setProfileOpened(!ProfileOpened);
   };
   const onOrdersClickHandler = () => {
     setOrdersOpened(!OrdersOpened);
   };
+
+  useEffect(() => {
+    async function getOrders() {
+      const data = await (
+        await fetch("http://localhost:3000/api/orders", {
+          credentials: "same-origin",
+        })
+      ).json();
+      for (let i = 0; i < data.length; i++) {
+        data[i].date = new Date(data[i].date);
+      }
+      setOrders(data);
+    }
+    getOrders();
+  }, []);
 
   return (
     <section className={`${styles["profile"]}`}>
@@ -51,17 +68,17 @@ export default function Profile(props) {
         >
           <Card className={`${styles["element-card"]}`}>
             <h3>ФИО</h3>
-            <p>Иванов Иван Иванович</p>
+            <p>{props["user-name"]}</p>
           </Card>
 
           <Card className={`${styles["element-card"]}`}>
             <h3>Город</h3>
-            <p>Екатеринбург</p>
+            <p>{props["user-city"]}</p>
           </Card>
 
           <Card className={`${styles["element-card"]}`}>
             <h3>E-mail</h3>
-            <p>ivan@yandex.net</p>
+            <p>{props["email"]}</p>
           </Card>
         </div>
       </section>
@@ -90,15 +107,20 @@ export default function Profile(props) {
             display: OrdersOpened ? "flex" : "none",
           }}
         >
-          <OrderBar
-            Number={123456}
-            Money={9600}
-            Date="12.03.2022"
-            Text="В пункте выдачи"
-            TextStyle={{
-              color: "#4C9F70",
-            }}
-          />
+          {orders.map((order) => {
+            return (
+              <OrderBar
+                key={order.number}
+                Number={order.number}
+                Money={order.totalPrice}
+                Date={`${order.date.getDate()}.${order.date.getMonth()}.${order.date.getFullYear()}`}
+                Text={order.status}
+                TextStyle={{
+                  color: "#4C9F70",
+                }}
+              />
+            );
+          })}
         </div>
       </section>
     </section>
@@ -115,9 +137,21 @@ export async function getServerSideProps(ctx) {
         permanent: false,
       },
     };
+  } else if (!session.user.name || !session.user.city) {
+    return {
+      redirect: {
+        destination: "/profile/update",
+        permanent: false,
+      },
+    };
   }
 
   return {
-    props: {},
+    props: {
+      "user-id": session.user.id,
+      "user-name": session.user.name,
+      "user-city": session.user.city,
+      email: session.user.email,
+    },
   };
 }

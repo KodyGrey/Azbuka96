@@ -19,6 +19,7 @@ export default async function handler(req, res) {
                 const collection = client.db().collection("orders");
                 collection.findOne({ _id: ObjectId(id) }, (error, order) => {
                   if (error) res.status(500).json({ error: error.toString() });
+                  else if (!order) res.status(404).json({ error: "Not found" });
                   else if (
                     !session.user.isAdmin &&
                     session.user.id !== order.userId

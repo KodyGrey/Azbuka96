@@ -7,19 +7,35 @@ export default async function handler(req, res) {
   return new Promise((resolve) => {
     switch (req.method) {
       case "GET":
-        clientPromise
-          .then((client) => {
-            const collection = client.db().collection("orders");
-            collection.find({}).toArray((error, array) => {
-              if (error) res.status(500).json({ error: err.toString() });
-              else res.status(200).json(array);
-              resolve();
+        getServerSession(req, res, authOptions).then((session) => {
+          if (!session) {
+            res.status(401).json({ error: "Unauthorized" });
+          } else if (session.user.admin) {
+            clientPromise
+              .then((client) => {
+                const collection = client.db().collection("orders");
+                collection.find({}).toArray((error, array) => {
+                  if (error) res.status(500).json({ error: error.toString() });
+                  else res.status(200).json(array);
+                  resolve();
+                });
+              })
+              .catch((err) => {
+                res.status(500).json({ error: err.toString() });
+                resolve();
+              });
+          } else {
+            clientPromise.then((client) => {
+              const collection = client.db().collection("orders");
+              collection
+                .find({ userId: session.user.id })
+                .toArray((error, array) => {
+                  if (error) res.status(500).json({ error: error.toString() });
+                  else res.status(200).json(array);
+                });
             });
-          })
-          .catch((err) => {
-            res.status(500).json({ error: err.toString() });
-            resolve();
-          });
+          }
+        });
         break;
       case "POST":
         getServerSession(req, res, authOptions).then((session) => {
@@ -28,7 +44,7 @@ export default async function handler(req, res) {
             res.status(401).json({ error: "Unauthorized" });
             resolve();
           } else if (
-            !session.user.admin &&
+            !session.user.isAdmin &&
             !(session.user.id === order.userId)
           ) {
             res

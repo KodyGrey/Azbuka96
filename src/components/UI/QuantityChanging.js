@@ -31,16 +31,21 @@ const QuantityChanging = (props) => {
       }`}
     >
       {/* NB! there is unicode minus */}
-      <Button className={styles["decrease"]}>−</Button>
+      <Button className={styles["decrease"]} {...props.decrease}>
+        −
+      </Button>
       <input
         className={styles["number"]}
         type="number"
-        value={value}
+        value={props.amount}
         min="0"
-        onChange={onValueChangeHandler}
-        onBlur={onBlurHandler}
+        readOnly
+        // onChange={onValueChangeHandler}
+        // onBlur={onBlurHandler}
       />
-      <Button className={styles["increase"]}>+</Button>
+      <Button className={styles["increase"]} {...props.increase}>
+        +
+      </Button>
     </div>
   );
 };

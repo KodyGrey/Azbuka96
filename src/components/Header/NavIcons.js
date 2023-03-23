@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import cartImage from "../../public/cart.svg";
@@ -8,7 +9,12 @@ import styles from "./NavIcons.module.css";
 
 export const CartButton = (props) => {
   // const productsInCart = useSelector((state) => state.cart.amount);
-  const productsInCart = 0;
+  const amount = useSelector((state) => state.cart.amount);
+  const [productsInCart, setProductsInCart] = useState(0);
+
+  useEffect(() => {
+    setProductsInCart(amount);
+  }, [amount]);
 
   return (
     <Link href="/cart">

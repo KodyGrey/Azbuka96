@@ -5,9 +5,11 @@ const initialState = {
 };
 if (typeof window !== "undefined") {
   for (let i = 0; i < localStorage.length; i++) {
-    initialState[localStorage.key(i)] = localStorage.getItem(
-      localStorage.key(i)
-    );
+    const el = Number(localStorage.getItem(localStorage.key(i)));
+    if (typeof el === "number" && el) {
+      initialState[localStorage.key(i)] = el;
+      initialState.amount += 1;
+    }
   }
 }
 
@@ -17,23 +19,23 @@ export const cartSlice = createSlice({
   reducers: {
     addProduct(state, action) {
       const product = action.payload;
-      localStorage.setItem(product.id, product);
+      localStorage.setItem(product.id, product.quantity);
 
-      state.push(product);
-      state.amount += product.quantity;
+      state[product.id] = product.quantity;
+      state.amount += 1;
     },
     removeProduct(state, action) {
       const id = action.payload;
-      state.amount -= state.id.quantity;
+      state.amount -= 1;
 
       localStorage.removeItem(id);
-      delete state.id;
+      delete state[id];
     },
     changeItem(state, action) {
-      const item = action.payload;
-      state.amount += item.quantity - state[item.key].quantity;
+      const product = action.payload;
 
-      state[item.key] = item;
+      state[product.id] = product.quantity;
+      localStorage.setItem(product.id, product.quantity);
     },
   },
 });

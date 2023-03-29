@@ -7,22 +7,24 @@ import styles from "./QuantityChanging.module.css";
 // somewhere else directly from product card
 
 const QuantityChanging = (props) => {
-  const [value, setValue] = useState(props.amount ?? "1");
-  const [prevValue, setPrevValue] = useState(value);
-
-  const onValueChangeHandler = (event) => {
-    setValue(event.target.value);
-  };
-  const onBlurHandler = () => {
-    if (value === "0") {
-      return;
-    }
-    if (!value || Number(value) % 1 !== 0 || value < 0) {
-      setValue(prevValue);
-    } else {
-      setPrevValue(value);
-    }
-  };
+  // Unused code
+  //
+  // const [value, setValue] = useState(props.amount ?? "1");
+  // const [prevValue, setPrevValue] = useState(value);
+  //
+  // const onValueChangeHandler = (event) => {
+  //   setValue(event.target.value);
+  // };
+  // const onBlurHandler = () => {
+  //   if (value === "0") {
+  //     return;
+  //   }
+  //   if (!value || Number(value) % 1 !== 0 || value < 0) {
+  //     setValue(prevValue);
+  //   } else {
+  //     setPrevValue(value);
+  //   }
+  // };
 
   return (
     <div

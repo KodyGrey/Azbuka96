@@ -78,10 +78,14 @@ export default async function handler(req, res) {
                 );
               }
 
-              ordersCollection.insertOne(order, (err, ok) => {
+              ordersCollection.countDocuments({}, (err, count) => {
                 if (err) res.status(500).json({ error: err.toString() });
-                else res.status(200).json({ ok: true });
-                resolve();
+                order.number = count + 1;
+                ordersCollection.insertOne(order, (err, ok) => {
+                  if (err) res.status(500).json({ error: err.toString() });
+                  else res.status(200).json({ ok: true });
+                  resolve();
+                });
               });
             });
           }

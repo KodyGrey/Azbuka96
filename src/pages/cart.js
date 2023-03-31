@@ -58,6 +58,11 @@ export default function CartPage(props) {
       order.products[key] = cart[key];
     }
 
+    if (Object.keys(order.products).length === 0) {
+      setErrorMessage("Добавьте товары в корзину");
+      return;
+    }
+
     fetch("/api/orders", {
       method: "POST",
       credentials: "include",

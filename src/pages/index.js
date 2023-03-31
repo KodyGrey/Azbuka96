@@ -6,7 +6,6 @@ import ProductCard from "../components/Products/ProductCard";
 import IndexImageSection from "../components/InfoElements/IndexImageSection";
 
 export default function Home(props) {
-  const [productsList, setProductsList] = useState([]);
   const testProductArgs = {
     id: "62e921682c35002e881f2a18",
     key: 32456,
@@ -19,15 +18,7 @@ export default function Home(props) {
       "/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fproduct-image.f90bfa51.jpg&w=1920&q=75",
   };
 
-  useEffect(() => {
-    async function getProductsList() {
-      const data = await (
-        await fetch("http://localhost:3000/api/products")
-      ).json();
-      setProductsList(data);
-    }
-    getProductsList();
-  }, []);
+  const productsList = props.productsList;
 
   return (
     <>

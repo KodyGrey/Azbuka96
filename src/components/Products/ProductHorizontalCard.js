@@ -5,16 +5,50 @@ import Card from "../UI/Card";
 import QuantityChanging from "../UI/QuantityChanging";
 import deleteButtonImage from "../../public/delete.svg";
 
+import { useSelector, useDispatch } from "react-redux";
+import { cartActions } from "../../store/cartSlice";
+import { useRouter } from "next/router";
+
+import { useState } from "react";
+
 const ProductHorizontalCard = (props) => {
-  console.log(props);
+  const id = props.id;
+  const productInCart = useSelector((state) => state.cart[id]);
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const [quantityInCart, setQuantityInCart] = useState(productInCart || 0);
+
+  function onRedirectElementClicked() {
+    router.push(`/product/${id}`);
+  }
+
+  function onDecreaseQuantityButtonPressed() {
+    if (productInCart > 1) {
+      dispatch(cartActions.changeItem({ id, quantity: productInCart - 1 }));
+      setQuantityInCart(productInCart - 1);
+    } else {
+      dispatch(cartActions.removeProduct(id));
+    }
+  }
+
+  function onIncreaseQuantityButtonPressed() {
+    dispatch(cartActions.changeItem({ id, quantity: productInCart + 1 }));
+    setQuantityInCart(productInCart + 1);
+  }
+
+  function onDeleteButtonClicked() {
+    dispatch(cartActions.removeProduct(id));
+  }
+
   return (
     <Card className={styles["card"]}>
-      <div className={styles["first-block"]}>
-        <div className={styles["product-id"]}>{`#${props.id}`}</div>
+      <div className={styles["first-block"]} onClick={onRedirectElementClicked}>
+        <div className={styles["product-id"]}>{`#${props.bookID}`}</div>
 
         <div className={styles["product-image"]}>
           <Image
-            src={props.image}
+            src={`${props.url}/${props.image}`}
             alt={props.title}
             objectFit="scale-down"
             objectPosition={"50% 50%"}
@@ -29,16 +63,18 @@ const ProductHorizontalCard = (props) => {
       </div>
 
       <div className={styles["second-block"]}>
-        {props.type === "inCart" && (
+        {productInCart && props.type !== "inOrder" && (
           <QuantityChanging
             className={styles["q-changing-block"]}
-            amount={props.amount}
+            amount={quantityInCart}
+            decrease={{ onClick: onDecreaseQuantityButtonPressed }}
+            increase={{ onClick: onIncreaseQuantityButtonPressed }}
           />
         )}
 
         <div className={styles["prices-block"]}>
           <div className={styles["total-price"]}>{`${
-            (props.discountedPrice ?? props.price) * props.amount
+            (props.discountedPrice ?? props.price) * productInCart
           } ₽`}</div>
           <div className={styles["price"]}>{`${
             props.discountedPrice ?? props.price
@@ -49,8 +85,14 @@ const ProductHorizontalCard = (props) => {
           <div className={styles["amount"]}>{`${props.amount} шт.`}</div>
         )}
 
-        {props.type === "inCart" && (
-          <Image src={deleteButtonImage} alt="Удалить" width={27} height={27} />
+        {productInCart && props.type !== "inOrder" && (
+          <Image
+            src={deleteButtonImage}
+            alt="Удалить"
+            width={27}
+            height={27}
+            onClick={onDeleteButtonClicked}
+          />
         )}
       </div>
     </Card>

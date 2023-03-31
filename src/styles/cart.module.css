@@ -1,0 +1,49 @@
+.cart-page {
+  width: 845px;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+@media (max-width: 860px) {
+  .cart-page {
+    width: 297px;
+  }
+}
+
+.cart-page h2 {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 29px;
+
+  margin: 100px 0 0 0;
+
+  color: #49516f;
+}
+
+.products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.total-price-block {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.total-price {
+  font-weight: 500;
+}
+
+.total-price-block div {
+  font-size: 26px;
+  line-height: 31px;
+  color: #49516f;
+  font-weight: 400;
+}

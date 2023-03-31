@@ -26,7 +26,7 @@ const SearchButton = (props) => {
 
 const CatalogueButton = (props) => {
   return (
-    <Link href="/catalogue">
+    <Link href="/catalogue" legacyBehavior>
       <a>
         <Image src={catalogueButtonIcon} width={32} height={32} alt="Каталог" />
         {props.children}
@@ -37,7 +37,7 @@ const CatalogueButton = (props) => {
 
 const MainPageButton = (props) => {
   return (
-    <Link href="/">
+    <Link href="/" legacyBehavior>
       <a>
         <Image src={mainPageButtonIcon} width={32} height={32} alt="Главная" />
         {props.children}

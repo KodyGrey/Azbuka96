@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getServerSession, authOptions } from "next-auth/next";
+// import { getServerSession, authOptions } from "next-auth/next";
 import styles from "../styles/index.module.css";
 
 import ProductCard from "../components/Products/ProductCard";
@@ -60,12 +60,12 @@ export default function Home(props) {
 }
 
 export async function getServerSideProps(ctx) {
-  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+  // const session = await getServerSession(ctx.req, ctx.res, authOptions);
 
   return {
     props: {
       url: process.env.RESOURCE_URL,
-      isAdmin: session && session.user.isAdmin,
+      // isAdmin: session && session.user.isAdmin,
     },
   };
 }

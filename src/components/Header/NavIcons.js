@@ -17,7 +17,7 @@ export const CartButton = (props) => {
   }, [amount]);
 
   return (
-    <Link href="/cart">
+    <Link href="/cart" legacyBehavior>
       <a className={styles["cart-button"]}>
         <div className={styles["cart-image"]}>
           <Image src={cartImage} alt="Корзина" height={32} width={32} />
@@ -33,7 +33,7 @@ export const CartButton = (props) => {
 
 export const ProfileButton = (props) => {
   return (
-    <Link href="/profile">
+    <Link href="/profile" legacyBehavior>
       <a>
         <Image src={profileImage} alt="Профиль" height={32} width={32} />
         {props.children}

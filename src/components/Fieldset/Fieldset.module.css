@@ -50,7 +50,7 @@
   top: 0;
   width: 18px;
   height: 18px;
-  background-image: url("https::/localhost:3000/_next/static/media/check-mark_unchecked.0ca3a2db.svg");
+  background-image: url("/_next/static/media/check-mark_unchecked.0ca3a2db.svg");
 }
 .option > input + label::after {
   content: "";
@@ -59,7 +59,7 @@
   top: 0;
   width: 18px;
   height: 18px;
-  background-image: url("https::/localhost:3000/_next/static/media/check-mark_checked.4723c808.svg");
+  background-image: url("/_next/static/media/check-mark_checked.4723c808.svg");
 }
 
 .option > input:not(:checked) + label::after {

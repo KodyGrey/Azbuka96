@@ -7,7 +7,7 @@ import Button from "../UI/Button";
 
 const CatalogueButton = () => {
   return (
-    <Link href="/catalogue">
+    <Link href="/catalogue" legacyBehavior>
       <a>
         <Button type="button" className={styles["catalogue-button"]}>
           {"🕮  Каталог"}

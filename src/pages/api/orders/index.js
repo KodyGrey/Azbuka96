@@ -39,7 +39,17 @@ export default async function handler(req, res) {
         break;
       case "POST":
         getServerSession(req, res, authOptions).then((session) => {
-          const order = req.body;
+          const order = {};
+          const body = JSON.parse(req.body);
+
+          order.userId = body.userId;
+          order.status = "В обработке";
+          order.date = new Date();
+          order.deliveryType = body.deliveryType;
+          order.deliveryAddress = body.deliveryAddress;
+          order.comment = body.comment;
+          order.products = body.products;
+
           if (!session) {
             res.status(401).json({ error: "Unauthorized" });
             resolve();

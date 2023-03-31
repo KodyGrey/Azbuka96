@@ -3,10 +3,16 @@ import Card from "./Card";
 import styles from "./TextInput.module.css";
 
 function TextInput(props) {
+  const properties = {};
+  for (let key in props) {
+    if (key === "innerRef") continue;
+    properties[key] = props[key];
+  }
   return (
     <input
-      {...props}
+      {...properties}
       className={`${styles["text-input"]} ${props["className"]}`}
+      ref={props.innerRef}
     />
   );
 }

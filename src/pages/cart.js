@@ -2,20 +2,29 @@ import ProductHorizontalCard from "../components/Products/ProductHorizontalCard"
 import Button from "../components/UI/Button";
 import TextInput from "../components/UI/TextInput";
 import Fieldset from "../components/Fieldset/Fieldset";
+import Card from "../components/UI/Card";
 
 import styles from "../styles/cart.module.css";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 
-import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { cartActions } from "../store/cartSlice";
+import { useState, useRef } from "react";
 import { useRouter } from "next/router";
 
 export default function CartPage(props) {
   const productsList = props.productsList;
   const cart = useSelector((state) => state.cart);
-  const [makeOrderClicks, setMakeOrderClicks] = useState(0);
+  const dispatch = useDispatch();
+
+  const [makeOrderClicked, setMakeOrderClicked] = useState(false);
+  const fieldsetRef = useRef();
+  const deliveryAddressRef = useRef();
+  const commentRef = useRef();
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   const router = useRouter();
 
@@ -24,15 +33,65 @@ export default function CartPage(props) {
   function onMakeOrderButtonClicked(event) {
     if (!props.isLoggedIn) {
       router.push("/api/auth/signin");
-    } else if (makeOrderClicks === 0) {
-      setMakeOrderClicks(1);
+    } else if (!makeOrderClicked) {
+      setMakeOrderClicked(true);
     }
     event.preventDefault();
+  }
+
+  async function onOrderSubmitting(event) {
+    const order = {};
+    event.preventDefault();
+    if (!fieldsetRef.current.querySelector("input:checked")) {
+      setErrorMessage("Выберете тип доставки");
+      return;
+    }
+
+    order.userId = props["user-id"];
+    order.deliveryType =
+      fieldsetRef.current.querySelector("input:checked").value;
+    order.deliveryAddress = deliveryAddressRef.current.value;
+    order.comment = commentRef.current.value;
+    order.products = {};
+    for (let key in cart) {
+      if (key === "amount") continue;
+      order.products[key] = cart[key];
+    }
+
+    fetch("/api/orders", {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify(order),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Сетевой запрос не удался");
+        }
+
+        return res.json();
+      })
+      .then((data) => {
+        setSuccessMessage("Заказ успешно создан");
+        setErrorMessage(null);
+        for (let el in cart) {
+          if (el === "amount") continue;
+          dispatch(cartActions.removeProduct(el));
+        }
+      })
+      .catch((error) => {
+        setErrorMessage(String(error));
+      });
   }
 
   return (
     <div className={styles["cart-page"]}>
       <h2>Корзина</h2>
+      {errorMessage && (
+        <Card className={styles["error-message"]}>{errorMessage}</Card>
+      )}
+      {successMessage && (
+        <Card className={styles["success-message"]}>{successMessage}</Card>
+      )}
       <div className={styles["products-list"]}>
         {productsList.map((el) => {
           if (cart[el["_id"]]) {
@@ -50,7 +109,7 @@ export default function CartPage(props) {
         })}
       </div>
       <div className={styles["total-price-block"]}>
-        <div>Итого:</div>
+        <div className={styles["total-price-text"]}>Итого:</div>
         <div className={styles["total-price"]}>{total} ₽</div>
       </div>
       <p className={styles["text-info"]}>
@@ -58,8 +117,9 @@ export default function CartPage(props) {
         предоставленной скидке, накладная, а также информация о способах оплаты
         придет на электронную почту, указанную в вашем профиле
       </p>
-      {makeOrderClicks > 0 && (
-        <form className={styles["delivery-form"]}>
+
+      {makeOrderClicked && (
+        <form className={styles["delivery-form"]} onSubmit={onOrderSubmitting}>
           <Fieldset
             key="delivery"
             legend="Тип доставки"
@@ -70,17 +130,27 @@ export default function CartPage(props) {
               "Доставка по Екатеринбургу",
               "Доставка по России",
             ]}
+            fieldset_options={{ ref: fieldsetRef, required: true }}
           />
-          <TextInput placeholder="Адрес доставки" />
-          <TextInput placeholder="Комментарий к заказу" />
+          <TextInput
+            placeholder="Адрес доставки"
+            innerRef={deliveryAddressRef}
+          />
+          <TextInput placeholder="Комментарий к заказу" innerRef={commentRef} />
+          <Button type="submit" className={styles["make-order-button"]}>
+            Оформить заказ
+          </Button>
         </form>
       )}
-      <Button
-        className={styles["make-order-button"]}
-        onClick={onMakeOrderButtonClicked}
-      >
-        Оформить заказ
-      </Button>
+
+      {!makeOrderClicked && (
+        <Button
+          className={styles["make-order-button"]}
+          onClick={onMakeOrderButtonClicked}
+        >
+          Оформить заказ
+        </Button>
+      )}
     </div>
   );
 }

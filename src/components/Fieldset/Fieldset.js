@@ -21,7 +21,9 @@ const Fieldset = (props) => {
                 name={props.legend}
                 value={label}
                 checked={props.choice === label}
-                readOnly={props.fieldset_options.readOnly}
+                readOnly={
+                  props.fieldset_options && props.fieldset_options.readOnly
+                }
               />
               <label htmlFor={label}>{label}</label>
             </div>

@@ -72,7 +72,7 @@ export default async function handler(req, res) {
                   { _id: ObjectId(productId) },
                   (error, product) => {
                     order.totalPrice +=
-                      order.products[productId] *
+                      order.products[productId]["amount"] *
                       (product.discountedPrice ?? product.price);
                   }
                 );

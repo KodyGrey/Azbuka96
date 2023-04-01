@@ -55,7 +55,10 @@ export default function CartPage(props) {
     order.products = {};
     for (let key in cart) {
       if (key === "amount") continue;
-      order.products[key] = cart[key];
+      order.products[key] = {
+        amount: cart[key],
+        ...productsList.find((item) => item["_id"]),
+      };
     }
 
     if (Object.keys(order.products).length === 0) {
@@ -107,6 +110,7 @@ export default function CartPage(props) {
                 url={props.url}
                 key={el["_id"]}
                 id={el["_id"]}
+                amount={cart[el["_id"]]}
               />
             );
           }

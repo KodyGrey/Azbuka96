@@ -74,7 +74,7 @@ const ProductHorizontalCard = (props) => {
 
         <div className={styles["prices-block"]}>
           <div className={styles["total-price"]}>{`${
-            (props.discountedPrice ?? props.price) * productInCart
+            (props.discountedPrice ?? props.price) * props.amount
           } ₽`}</div>
           <div className={styles["price"]}>{`${
             props.discountedPrice ?? props.price

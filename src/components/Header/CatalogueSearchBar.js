@@ -27,6 +27,7 @@ export const SearchBar = (props) => {
     event.preventDefault();
     if (searchInputRef.current.value === "") return;
     router.push(`/search/${searchInputRef.current.value}`);
+    if (props.onClose) props.onClose();
   };
 
   return (

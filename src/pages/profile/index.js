@@ -110,6 +110,7 @@ export default function Profile(props) {
           {orders.map((order) => {
             return (
               <OrderBar
+                id={order["_id"]}
                 key={order.number}
                 Number={order.number}
                 Money={order.totalPrice}

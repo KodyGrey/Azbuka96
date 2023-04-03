@@ -1,7 +1,7 @@
 /* Search bar */
 
-.modal-element {
-  position: sticky;
+/* .modal-element {
+  position: fixed;
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -31,11 +31,11 @@
 .search-bar input {
   width: calc(100% - 20px - 90px);
   max-width: none;
-}
+} */
 
 /* Background */
 
-.modal-background {
+/* .modal-background {
   position: absolute;
   left: 0;
   top: 0;
@@ -44,4 +44,61 @@
   background-color: #000;
   opacity: 0.25;
   z-index: 5;
+} */
+
+/* SearchModal */
+.modal-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+
+  z-index: 9999;
+}
+
+.modal-background {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #000;
+  opacity: 0.25;
+}
+
+.modal-element {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 640px;
+  height: fit-content;
+  gap: 24px;
+  padding: 28px 32px;
+
+  align-items: center;
+
+  background-color: white;
+  border-radius: 0 0 20px 20px;
+
+  z-index: 10000;
+}
+
+.close-button {
+  position: relative;
+
+  width: 36px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.search-bar {
+  width: calc(100% - 36px - 24px);
+}
+
+.search-bar input {
+  width: calc(100% - 20px - 90px);
+  max-width: none;
 }

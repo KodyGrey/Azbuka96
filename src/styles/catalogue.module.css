@@ -30,7 +30,7 @@
   height: fit-content;
 }
 
-.filter-field > a {
+.filter-field > div {
   display: none;
 }
 
@@ -56,7 +56,7 @@
     z-index: 10;
   }
 
-  .filter-modal > a {
+  .filter-modal > div {
     display: block;
     position: relative;
     width: 36px;
@@ -69,15 +69,40 @@
 
 /* Field with title and products */
 
-.products-grid > h2 {
+.headers {
   margin-top: 0px;
   margin-bottom: 28px;
+}
 
+.headers > h2 {
+  margin: 0 0 0 0;
   font-weight: 600;
   font-size: 20px;
   line-height: 24px;
 
   color: #49516f;
+}
+
+.headers > p {
+  display: none;
+  margin: 0 0 0 0;
+  text-decoration: underline;
+  font-size: 16px;
+  font-weight: 300;
+
+  color: #49516f;
+}
+
+@media (max-width: 860px) {
+  .headers {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .headers > p {
+    display: block;
+  }
 }
 
 .products-grid > div {

@@ -4,6 +4,12 @@ import checked from "../../public/check-mark_checked.svg";
 import unchecked from "../../public/check-mark_unchecked.svg";
 
 const Fieldset = (props) => {
+  const handleChoiceSelect = (event) => {
+    if (props.onChoiceSelect) {
+      props.onChoiceSelect(event.target.value);
+    }
+  };
+
   return (
     <>
       <fieldset
@@ -13,6 +19,16 @@ const Fieldset = (props) => {
       >
         <legend className={styles["legend"]}>{props.legend}</legend>
         {props.categories.map((label) => {
+          const checked = {};
+          if (
+            props.fieldset_options &&
+            props.fieldset_options.readOnly &&
+            props.choice === label
+          )
+            checked["checked"] = true;
+          else if (props.fieldset_options && props.fieldset_options.readOnly) {
+            checked["checked"] = false;
+          }
           return (
             <div className={styles["option"]} key={label}>
               <input
@@ -20,10 +36,11 @@ const Fieldset = (props) => {
                 id={label}
                 name={props.legend}
                 value={label}
-                checked={props.choice === label}
                 readOnly={
                   props.fieldset_options && props.fieldset_options.readOnly
                 }
+                onChange={handleChoiceSelect}
+                {...checked}
               />
               <label htmlFor={label}>{label}</label>
             </div>

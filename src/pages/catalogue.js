@@ -7,45 +7,108 @@ import ProductCard from "../components/Products/ProductCard";
 import Card from "../components/UI/Card";
 import arrowImage from "../public/arrow-left-icon.svg";
 
-export default function Catalogue() {
+export default function Catalogue(props) {
+  const searchQuery = props.searchQuery;
+
   const [isFieldsetModalHidden, setIsFieldsetModalHidden] = useState(true);
+  let productsList = props.productsList.filter((el) => el.inStock);
+  productsList.sort((a, b) => b.boughtScore - a.boughtScore);
 
-  const testArgsProductCard = {
-    key: 32456,
-    type: "inStock",
-    price: 2022,
-    discountedPrice: 1422,
-    title: "Русский родной язык. 3 класс. Учебник. ФГОС",
-    author: "Александрова Ольга Маратовна",
-    amount: 0,
-    image:
-      "/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fproduct-image.f90bfa51.jpg&w=1920&q=75",
+  const [gradeChosenList, setGradeChosenList] = useState([]);
+  const handleGradeChoiceSelection = (choice) => {
+    setGradeChosenList((prevSelectedChoices) =>
+      prevSelectedChoices.includes(choice)
+        ? prevSelectedChoices.filter((c) => c !== choice)
+        : [...prevSelectedChoices, choice]
+    );
   };
-
-  const testArgsFieldset = {
+  const gradeArgsFieldset = {
     key: "grade",
     legend: "Класс",
     type: "checkbox",
     height: "fit-content",
-    categories: [
-      "1 класс",
-      "2 класс",
-      "3 класс",
-      "4 класс",
-      "5 класс",
-      "6 класс",
-      "7 класс",
-      "8 класс",
-      "9 класс",
-      "10 класс",
-      "11 класс",
-      "Ясельная группа",
-      "Младшая группа",
-      "Средняя группа",
-      "Старшая группа",
-      "Подготовительная группа",
-    ],
+    categories: [...new Set(productsList.map((el) => el.categories.grade))],
   };
+  gradeArgsFieldset.categories.sort();
+
+  const [subjectChosenList, setSubjectChosenList] = useState([]);
+  const handleSubjectChoiceSelection = (choice) => {
+    setSubjectChosenList((prevSelectedChoices) =>
+      prevSelectedChoices.includes(choice)
+        ? prevSelectedChoices.filter((c) => c !== choice)
+        : [...prevSelectedChoices, choice]
+    );
+  };
+  const subjectArgsFieldset = {
+    key: "subject",
+    legend: "Предмет",
+    type: "checkbox",
+    height: "fit-content",
+    categories: [...new Set(productsList.map((el) => el.categories.subject))],
+  };
+  subjectArgsFieldset.categories.sort();
+
+  const [publisherChosenList, setPublisherChosenList] = useState([]);
+  const handlePublisherChoiceSelection = (choice) => {
+    setPublisherChosenList((prevSelectedChoices) =>
+      prevSelectedChoices.includes(choice)
+        ? prevSelectedChoices.filter((c) => c !== choice)
+        : [...prevSelectedChoices, choice]
+    );
+  };
+  const publisherArgsFieldset = {
+    key: "publisher",
+    legend: "Издательство",
+    type: "checkbox",
+    height: "fit-content",
+    categories: [...new Set(productsList.map((el) => el.categories.publisher))],
+  };
+  publisherArgsFieldset.categories.sort();
+
+  function onChangeFieldsetModalHidden(event) {
+    event.preventDefault();
+    setIsFieldsetModalHidden(!isFieldsetModalHidden);
+  }
+
+  productsList = productsList.filter((el) => {
+    if (
+      gradeChosenList.length !== 0 &&
+      !gradeChosenList.includes(el.categories.grade)
+    )
+      return false;
+    if (
+      subjectChosenList.length !== 0 &&
+      !subjectChosenList.includes(el.categories.subject)
+    )
+      return false;
+    if (
+      publisherChosenList.length !== 0 &&
+      !publisherChosenList.includes(el.categories.publisher)
+    )
+      return false;
+    else return true;
+  });
+
+  function getCountOfMatchingWords(element) {
+    let count = 0;
+    const properties = [element.title, element.author, element.description];
+    properties.forEach((property) => {
+      const words = property.toLowerCase().split(" ");
+      words.forEach((word) => {
+        if (searchQuery.toLowerCase().includes(word)) {
+          count++;
+        }
+      });
+    });
+    return count;
+  }
+
+  if (searchQuery)
+    productsList.sort((a, b) => {
+      const countA = getCountOfMatchingWords(a);
+      const countB = getCountOfMatchingWords(b);
+      return countB - countA;
+    });
 
   return (
     <section
@@ -58,35 +121,48 @@ export default function Catalogue() {
           styles["filter-field"]
         }`}
       >
-        <a>
+        <div onClick={onChangeFieldsetModalHidden}>
           <Image src={arrowImage} alt="Назад" layout="fill" />
-        </a>
-        <Fieldset {...testArgsFieldset} />
-        <Fieldset {...testArgsFieldset} />
+        </div>
+        <Fieldset
+          {...gradeArgsFieldset}
+          onChoiceSelect={handleGradeChoiceSelection}
+        />
+        <Fieldset
+          {...subjectArgsFieldset}
+          onChoiceSelect={handleSubjectChoiceSelection}
+        />
+        <Fieldset
+          {...publisherArgsFieldset}
+          onChoiceSelect={handlePublisherChoiceSelection}
+        />
       </Card>
       <div className={styles["products-grid"]}>
-        <h2>Каталог</h2>
+        <div className={styles["headers"]}>
+          <h2>{searchQuery ? "Результаты поиска" : "Каталог"}</h2>
+          <p onClick={onChangeFieldsetModalHidden}>Фильтры</p>
+        </div>
         <div>
-          <ProductCard {...testArgsProductCard} />
-          <ProductCard {...testArgsProductCard} />
-          <ProductCard {...testArgsProductCard} />
-          <ProductCard {...testArgsProductCard} />
-          <ProductCard {...testArgsProductCard} />
-          <ProductCard {...testArgsProductCard} />
-          <ProductCard {...testArgsProductCard} />
-          <ProductCard {...testArgsProductCard} />
-          <ProductCard {...testArgsProductCard} />
-          <ProductCard {...testArgsProductCard} />
-          <ProductCard {...testArgsProductCard} />
-          <ProductCard {...testArgsProductCard} />
-          <ProductCard {...testArgsProductCard} />
-          <ProductCard {...testArgsProductCard} />
-          <ProductCard {...testArgsProductCard} />
-          <ProductCard {...testArgsProductCard} />
-          <ProductCard {...testArgsProductCard} />
-          <ProductCard {...testArgsProductCard} />
+          {productsList.map((el) => {
+            return (
+              <ProductCard
+                {...el}
+                url={props.url}
+                key={el["_id"]}
+                id={el["_id"]}
+              />
+            );
+          })}
         </div>
       </div>
     </section>
   );
+}
+
+export async function getServerSideProps(ctx) {
+  return {
+    props: {
+      url: process.env.RESOURCE_URL,
+    },
+  };
 }

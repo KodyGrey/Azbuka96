@@ -11,16 +11,24 @@ import { useState, useRef } from "react";
 
 export default function NewProduct(props) {
   const [image, setImage] = useState("");
-  const [title, setTitle] = useState("");
-  const [publisher, setPublisher] = useState("");
-  const [author, setAuthor] = useState("");
-  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState(props.title ?? "");
+  const [publisher, setPublisher] = useState(
+    props.categories ? props.categories.publisher ?? "" : ""
+  );
+  const [author, setAuthor] = useState(props.author ?? "");
+  const [description, setDescription] = useState(props.description ?? "");
   const inStockFieldsetRef = useRef();
-  const [grade, setGrade] = useState("");
-  const [subject, setSubject] = useState("");
-  const [price, setPrice] = useState("");
-  const [discountedPrice, setDiscountedPrice] = useState("");
-  const [bookID, setBookID] = useState("");
+  const [grade, setGrade] = useState(
+    props.categories ? props.categories.grade ?? "" : ""
+  );
+  const [subject, setSubject] = useState(
+    props.categories ? props.categories.subject ?? "" : ""
+  );
+  const [price, setPrice] = useState(props.price ?? "");
+  const [discountedPrice, setDiscountedPrice] = useState(
+    props.discountedPrice ?? ""
+  );
+  const [bookID, setBookID] = useState(props.bookID ?? "");
 
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
@@ -32,20 +40,23 @@ export default function NewProduct(props) {
       inStockFieldsetRef.current.querySelector("input:checked");
     if (
       !(
-        image &&
         title &&
         publisher &&
         author &&
         grade &&
         subject &&
-        inStockElement
+        inStockElement &&
+        price &&
+        bookID
       )
     ) {
       setErrorMessage("Не заполнены необходимые поля");
       return;
     }
 
-    formData.append("image", image);
+    if (image) formData.append("image", image);
+    if (props.id ?? props._id) formData.append("id", props.id ?? props._id);
+    if (props.id ?? props._id) formData.append("prevImage", props.image);
     formData.append("title", title);
     formData.append("publisher", publisher);
     formData.append("author", author);
@@ -56,6 +67,7 @@ export default function NewProduct(props) {
     formData.append("discountedPrice", discountedPrice);
     formData.append("bookID", bookID);
     formData.append("description", description);
+    formData.append("boughtScore", props.boughtScore ?? 0);
 
     fetch("/api/products", {
       method: "POST",
@@ -66,8 +78,10 @@ export default function NewProduct(props) {
         console.log(response);
         if (response.ok) {
           setSuccessMessage("Товар успешно добавлен!");
+          setErrorMessage("");
         } else {
           setErrorMessage("Ошибка при отправке");
+          setSuccessMessage("");
         }
       })
       .catch((error) => {
@@ -76,13 +90,7 @@ export default function NewProduct(props) {
   };
   return (
     <div className={styles["new-product-page"]}>
-      <h2>Добавление товара</h2>
-      {errorMessage && (
-        <Card className={styles["error-message"]}>{errorMessage}</Card>
-      )}
-      {successMessage && (
-        <Card className={styles["success-message"]}>{successMessage}</Card>
-      )}
+      <h2>{props.id ? "Редактирование товара" : "Добавление товара"}</h2>
       <form
         onSubmit={onNewProductFormSubmit}
         className={styles["product-form"]}
@@ -101,6 +109,7 @@ export default function NewProduct(props) {
           <TextInput
             placeholder="Русский родной язык. 3 класс. Учебник. ФГОС"
             required={true}
+            value={title}
             onChange={(event) => setTitle(event.target.value)}
           />
         </label>
@@ -109,6 +118,7 @@ export default function NewProduct(props) {
           <TextInput
             placeholder="Александрова Ольга Маратовна"
             required={true}
+            value={author}
             onChange={(event) => setAuthor(event.target.value)}
           />
         </label>
@@ -117,6 +127,7 @@ export default function NewProduct(props) {
           <TextInput
             placeholder="Описание"
             required={false}
+            value={description}
             onChange={(event) => setDescription(event.target.value)}
           />
         </label>
@@ -127,7 +138,8 @@ export default function NewProduct(props) {
             required={true}
             type="number"
             min="0"
-            step="0.01"
+            step="1"
+            value={price}
             onChange={(event) => setPrice(event.target.value)}
           />
         </label>
@@ -138,7 +150,8 @@ export default function NewProduct(props) {
             required={false}
             type="number"
             min="0"
-            step="0.01"
+            step="1"
+            value={discountedPrice}
             onChange={(event) => setDiscountedPrice(event.target.value)}
           />
         </label>
@@ -147,6 +160,7 @@ export default function NewProduct(props) {
           <TextInput
             placeholder="12345"
             required={true}
+            value={bookID}
             onChange={(event) => setBookID(event.target.value)}
           />
         </label>
@@ -162,6 +176,7 @@ export default function NewProduct(props) {
           <TextInput
             placeholder="3 класс"
             required={true}
+            value={grade}
             onChange={(event) => setGrade(event.target.value)}
           />
         </label>
@@ -170,6 +185,7 @@ export default function NewProduct(props) {
           <TextInput
             placeholder="Русский родной язык"
             required={true}
+            value={subject}
             onChange={(event) => setSubject(event.target.value)}
           />
         </label>
@@ -178,9 +194,16 @@ export default function NewProduct(props) {
           <TextInput
             placeholder="Просвещение"
             required={true}
+            value={publisher}
             onChange={(event) => setPublisher(event.target.value)}
           />
         </label>
+        {errorMessage && (
+          <Card className={styles["error-message"]}>{errorMessage}</Card>
+        )}
+        {successMessage && (
+          <Card className={styles["success-message"]}>{successMessage}</Card>
+        )}
         <Button type="submit" className={styles["add-product-button"]}>
           Добавить
         </Button>

@@ -94,12 +94,6 @@ export default function CartPage(props) {
   return (
     <div className={styles["cart-page"]}>
       <h2>Корзина</h2>
-      {errorMessage && (
-        <Card className={styles["error-message"]}>{errorMessage}</Card>
-      )}
-      {successMessage && (
-        <Card className={styles["success-message"]}>{successMessage}</Card>
-      )}
       <div className={styles["products-list"]}>
         {productsList.map((el) => {
           if (cart[el["_id"]]) {
@@ -146,6 +140,12 @@ export default function CartPage(props) {
             innerRef={deliveryAddressRef}
           />
           <TextInput placeholder="Комментарий к заказу" innerRef={commentRef} />
+          {errorMessage && (
+            <Card className={styles["error-message"]}>{errorMessage}</Card>
+          )}
+          {successMessage && (
+            <Card className={styles["success-message"]}>{successMessage}</Card>
+          )}
           <Button type="submit" className={styles["make-order-button"]}>
             Оформить заказ
           </Button>

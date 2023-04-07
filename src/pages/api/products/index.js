@@ -5,6 +5,8 @@ import formidable from "formidable";
 import { createReadStream, createWriteStream } from "fs";
 import { join } from "path";
 
+import { ObjectId } from "mongodb";
+
 export default async function handler(req, res) {
   return new Promise((resolve) => {
     switch (req.method) {
@@ -52,17 +54,76 @@ export default async function handler(req, res) {
                 product.price = Number(fields.price);
                 product.discountedPrice = Number(fields.discountedPrice);
                 product.bookID = fields.bookID;
-                product.boughtScore = 0;
+                product.boughtScore = Number(fields.boughtScore);
                 product.description = fields.description;
 
-                clientPromise.then((client) => {
-                  const collection = client.db().collection("products");
-                  collection.insertOne(product, (err, ok) => {
-                    if (err) {
-                      res.status(500).json({ error: err.toString() });
-                      resolve();
-                    } else {
-                      const productId = ok.insertedId;
+                if (!fields.id) {
+                  clientPromise.then((client) => {
+                    const collection = client.db().collection("products");
+                    collection.insertOne(product, (err, ok) => {
+                      if (err) {
+                        res.status(500).json({ error: err.toString() });
+                        resolve();
+                      } else if (file.image) {
+                        const productId = ok.insertedId;
+                        const image = file.image;
+                        const filename = image.originalFilename;
+                        const fileType = filename.match(
+                          /\.(jpg|jpeg|png|gif)$/i
+                        )[1];
+                        // ПОМЕНЯТЬ ЗДЕСЬ
+                        const imagePath = join(
+                          process.cwd(),
+                          "product-images",
+                          `${productId}.${fileType}`
+                        );
+
+                        const writeStream = createWriteStream(imagePath);
+                        const readStream = createReadStream(image.filepath);
+                        readStream.pipe(writeStream);
+                        writeStream.on("close", () => {
+                          collection.updateOne(
+                            { _id: productId },
+                            {
+                              $set: {
+                                image: `product-images/${productId}.${fileType}`,
+                              },
+                            },
+                            (err, ok) => {
+                              if (err) {
+                                console.log(err);
+                                res
+                                  .status(500)
+                                  .send("Не получилось добавить товар");
+                              } else
+                                res.status(200).json({
+                                  message: "Продукт успешно добавлен",
+                                });
+                              resolve();
+                            }
+                          );
+                        });
+                        readStream.on("error", (err) => {
+                          console.error(err);
+                          res
+                            .status(500)
+                            .send("Не получилось сохранить изображение");
+                          resolve();
+                        });
+                      } else {
+                        res.status(200).json({
+                          message: "Продукт успешно добавлен",
+                        });
+                      }
+                    });
+                  });
+                } else {
+                  product.id = fields.id;
+                  clientPromise.then((client) => {
+                    const collection = client.db().collection("products");
+
+                    if (file.image) {
+                      const productId = fields.id;
                       const image = file.image;
                       const filename = image.originalFilename;
                       const fileType = filename.match(
@@ -76,15 +137,24 @@ export default async function handler(req, res) {
                       );
 
                       const writeStream = createWriteStream(imagePath);
-
                       const readStream = createReadStream(image.filepath);
                       readStream.pipe(writeStream);
                       writeStream.on("close", () => {
                         collection.updateOne(
-                          { _id: productId },
+                          { _id: ObjectId(productId) },
                           {
                             $set: {
                               image: `product-images/${productId}.${fileType}`,
+                              inStock: product.inStock,
+                              title: product.title,
+                              author: product.author,
+                              description: product.description,
+                              categories: product.categories,
+                              price: product.price,
+                              discountedPrice: product.discountedPrice,
+                              bookID: product.bookID,
+                              boughtScore: product.boughtScore,
+                              description: product.description,
                             },
                           },
                           (err, ok) => {
@@ -92,10 +162,10 @@ export default async function handler(req, res) {
                               console.log(err);
                               res
                                 .status(500)
-                                .send("Не получилось сохранить изображение");
+                                .send("Не получилось добавить товар");
                             } else
                               res.status(200).json({
-                                message: "Image uploaded successfully",
+                                message: "Продукт успешно добавлен",
                               });
                             resolve();
                           }
@@ -108,9 +178,41 @@ export default async function handler(req, res) {
                           .send("Не получилось сохранить изображение");
                         resolve();
                       });
+                    } else {
+                      console.log(fields.prevImage);
+                      collection.updateOne(
+                        { _id: ObjectId(fields.id) },
+                        {
+                          $set: {
+                            image: fields.prevImage,
+                            inStock: product.inStock,
+                            title: product.title,
+                            author: product.author,
+                            description: product.description,
+                            categories: product.categories,
+                            price: product.price,
+                            discountedPrice: product.discountedPrice,
+                            bookID: product.bookID,
+                            boughtScore: product.boughtScore,
+                            description: product.description,
+                          },
+                        },
+                        (err, ok) => {
+                          if (err) {
+                            console.log(err);
+                            res
+                              .status(500)
+                              .send("Не получилось добавить товар");
+                          } else
+                            res.status(200).json({
+                              message: "Продукт успешно добавлен",
+                            });
+                          resolve();
+                        }
+                      );
                     }
                   });
-                });
+                }
               }
             });
           }

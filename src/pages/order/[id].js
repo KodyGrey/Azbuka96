@@ -15,10 +15,12 @@ export default function OrderPage(props) {
   const fieldsetRef = useRef();
   const deliveryAddressRef = useRef();
   const commentRef = useRef();
+  const statusRef = useRef();
   const router = useRouter();
 
   const id = router.query.id;
   const [orderInfo, setOrderInfo] = useState({});
+  const [statusChangingMessage, setStatusChangingMessage] = useState("");
   const productsList = props.productsList;
 
   useEffect(() => {
@@ -44,6 +46,23 @@ export default function OrderPage(props) {
 
     getOrderInfo();
   }, [id, router]);
+
+  async function onStatusChangingSubmit(event) {
+    event.preventDefault();
+    if (!statusRef.current.querySelector("input:checked")) {
+      setStatusChangingMessage("Выберете тип доставки");
+      return;
+    }
+    const data = await fetch(`/api/orders/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        status: statusRef.current.querySelector("input:checked").value,
+      }),
+    }).then((res) => res.json());
+    setStatusChangingMessage(
+      data.ok ? "Успешно изменено" : "Ошибка при изменении"
+    );
+  }
 
   return (
     <div className={styles["cart-page"]}>
@@ -109,7 +128,10 @@ export default function OrderPage(props) {
               >
                 Скачать накладную
               </Button>
-              <form className={styles["delivery-form"]}>
+              <form
+                className={styles["delivery-form"]}
+                onSubmit={onStatusChangingSubmit}
+              >
                 <Fieldset
                   key="status"
                   legend="Статус"
@@ -123,10 +145,15 @@ export default function OrderPage(props) {
                     "Отменен",
                     "Завершен",
                   ]}
+                  fieldset_options={{ ref: statusRef, required: true }}
                 />
-                <Button style={{ width: "297px", height: "48px" }}>
+                <Button
+                  type="submit"
+                  style={{ width: "297px", height: "48px" }}
+                >
                   Изменить Статус заказа
                 </Button>
+                {statusChangingMessage && <p>{statusChangingMessage}</p>}
               </form>
             </>
           )}

@@ -1,0 +1,85 @@
+.admin-page {
+  width: 845px;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.admin-page h2 {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 29px;
+
+  margin: 64px 0 0 0;
+
+  color: #49516f;
+}
+
+@media (max-width: 860px) {
+  .admin-page {
+    width: 297px;
+  }
+  .admin-page h2 {
+    margin: 32px 0 0 0;
+  }
+}
+
+.csv-block {
+  cursor: pointer;
+  border: 1px solid #49516f;
+  border-radius: 10px;
+  width: 297px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+}
+
+.csv-block input {
+  display: none;
+}
+
+.csv-block p {
+  font-size: 14px;
+}
+
+.csv-block {
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+  font-weight: 500;
+  color: #49516f;
+}
+
+.statuses-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 840px;
+  border-radius: 15px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.selected-status,
+.unselected-status {
+  line-height: 48px;
+  height: 48px;
+  width: 140px;
+  text-align: center;
+}
+
+.selected-status {
+  background-color: #49516f;
+  color: white;
+}
+
+.unselected-status {
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

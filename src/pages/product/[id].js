@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { getServerSession, authOptions } from "next-auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]";
 
 import styles from "../../styles/product/[id].module.css";
 
@@ -150,19 +151,24 @@ export default function ProductPage(props) {
           <></>
         )}
       </div>
-      {
-        /*props.isAdmin */ true ? (
-          <Button className={styles["edit-button"]}>Редактировать</Button>
-        ) : (
-          <></>
-        )
-      }
+      {props.isAdmin && (
+        <Button
+          className={styles["edit-button"]}
+          onClick={(event) => {
+            event.preventDefault();
+            router.push(`/product/edit/${id}`);
+          }}
+        >
+          Редактировать
+        </Button>
+      )}
     </>
   );
 }
 
 export async function getServerSideProps(ctx) {
   const session = await getServerSession(ctx.req, ctx.res, authOptions);
+  // console.log(session.user.isAdmin);
 
   return {
     props: {

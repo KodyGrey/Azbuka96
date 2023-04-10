@@ -205,7 +205,7 @@ export default function NewProduct(props) {
           <Card className={styles["success-message"]}>{successMessage}</Card>
         )}
         <Button type="submit" className={styles["add-product-button"]}>
-          Добавить
+          {props.id ? "Сохранить" : "Добавить"}
         </Button>
       </form>
     </div>

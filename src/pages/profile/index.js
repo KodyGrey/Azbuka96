@@ -11,6 +11,8 @@ import OrderBar from "../../components/Order/OrderBar";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
 
+import Link from "next/link";
+
 export default function Profile(props) {
   const [ProfileOpened, setProfileOpened] = useState(false);
   const [OrdersOpened, setOrdersOpened] = useState(false);
@@ -124,6 +126,11 @@ export default function Profile(props) {
           })}
         </div>
       </section>
+      {props.isAdmin && (
+        <Link className={styles["admin-link"]} href="/admin">
+          Зайти в админ панель
+        </Link>
+      )}
     </section>
   );
 }
@@ -153,6 +160,7 @@ export async function getServerSideProps(ctx) {
       "user-name": session.user.name,
       "user-city": session.user.city,
       email: session.user.email,
+      isAdmin: session.user.isAdmin,
     },
   };
 }

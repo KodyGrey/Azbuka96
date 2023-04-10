@@ -100,7 +100,36 @@ export default function OrderPage(props) {
               value={orderInfo.comment}
               readOnly
             />
-          </form>{" "}
+          </form>
+          {props.isAdmin && (
+            <>
+              <Button
+                isSecondary={true}
+                style={{ width: "297px", height: "48px" }}
+              >
+                Скачать накладную
+              </Button>
+              <form className={styles["delivery-form"]}>
+                <Fieldset
+                  key="status"
+                  legend="Статус"
+                  type="radio"
+                  height="230px"
+                  categories={[
+                    "В обработке",
+                    "В сборке",
+                    "В пункте выдачи",
+                    "В доставке",
+                    "Отменен",
+                    "Завершен",
+                  ]}
+                />
+                <Button style={{ width: "297px", height: "48px" }}>
+                  Изменить Статус заказа
+                </Button>
+              </form>
+            </>
+          )}
         </>
       )}
     </div>
@@ -134,6 +163,7 @@ export async function getServerSideProps(ctx) {
       "user-city": session.user.city,
       email: session.user.email,
       url: process.env.RESOURCE_URL,
+      isAdmin: session.user.isAdmin,
     },
   };
 }

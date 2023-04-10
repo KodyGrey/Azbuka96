@@ -93,3 +93,16 @@
 .rotate-arrow {
   rotate: 180;
 }
+
+.admin-link {
+  align-self: center;
+  text-align: center;
+  width: 297px;
+  height: 48px;
+  line-height: 48px;
+  font-weight: 500;
+  color: #49516f;
+  border: 1px #49516f solid;
+  border-radius: 16px;
+  margin-top: 16px;
+}

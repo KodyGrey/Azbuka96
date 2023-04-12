@@ -78,6 +78,16 @@
 .unselected-status {
 }
 
+@media (max-width: 860px) {
+  .statuses-bar {
+    flex-direction: column;
+    width: 297px;
+  }
+  .selected-status,
+  .unselected-status {
+    width: 297px;
+  }
+}
 .orders-list {
   display: flex;
   flex-direction: column;

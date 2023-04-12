@@ -75,7 +75,6 @@ export default function NewProduct(props) {
       credentials: "include",
     })
       .then((response) => {
-        console.log(response);
         if (response.ok) {
           setSuccessMessage("Товар успешно добавлен!");
           setErrorMessage("");

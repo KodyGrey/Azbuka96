@@ -40,12 +40,26 @@ export default function AdminPage(props) {
       }).then((res) => res.json());
 
       setUsersList(data);
-      console.log(data);
     }
 
     getUsers();
     getOrders();
   }, []);
+
+  async function onRemnantsFileSelection(event) {
+    const formData = new FormData();
+    formData.append("remnants", event.target.files[0]);
+
+    fetch("/api/products/remnants", {
+      method: "POST",
+      body: formData,
+      credentials: "include",
+    }).then((res) => {
+      if (res.ok) setFileMessage("Остатки обновлены");
+      else setFileMessage("Ошибка во время отправки");
+    });
+    console.log(event.target.files);
+  }
 
   return (
     <div className={styles["admin-page"]}>
@@ -53,11 +67,7 @@ export default function AdminPage(props) {
       <div>
         <label className={styles["csv-block"]}>
           Загрузить файл с товарами
-          <input
-            type="file"
-            accept=".csv"
-            onChange={(event) => setFileMessage(event.target.files[0])}
-          />
+          <input type="file" accept=".csv" onChange={onRemnantsFileSelection} />
         </label>
         <p>{fileMessage}</p>
       </div>

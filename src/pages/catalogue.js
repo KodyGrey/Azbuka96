@@ -4,11 +4,14 @@ import styles from "../styles/catalogue.module.css";
 
 import Fieldset from "../components/Fieldset/Fieldset";
 import ProductCard from "../components/Products/ProductCard";
+import Button from "../components/UI/Button";
 import Card from "../components/UI/Card";
 import arrowImage from "../public/arrow-left-icon.svg";
 
 export default function Catalogue(props) {
   const searchQuery = props.searchQuery;
+
+  const [amountOfShownCards, setAmountOfShownCards] = useState(24);
 
   const [isFieldsetModalHidden, setIsFieldsetModalHidden] = useState(true);
   let productsList = props.productsList.filter((el) => el.inStock);
@@ -27,7 +30,11 @@ export default function Catalogue(props) {
     legend: "Класс",
     type: "checkbox",
     height: "fit-content",
-    categories: [...new Set(productsList.map((el) => el.categories.grade))],
+    categories: [
+      ...new Set(
+        productsList.map((el) => el.categories.grade && el.categories.grade)
+      ),
+    ].filter((el) => el),
   };
   gradeArgsFieldset.categories.sort();
 
@@ -44,7 +51,9 @@ export default function Catalogue(props) {
     legend: "Предмет",
     type: "checkbox",
     height: "fit-content",
-    categories: [...new Set(productsList.map((el) => el.categories.subject))],
+    categories: [
+      ...new Set(productsList.map((el) => el.categories.subject)),
+    ].filter((el) => el),
   };
   subjectArgsFieldset.categories.sort();
 
@@ -61,7 +70,9 @@ export default function Catalogue(props) {
     legend: "Издательство",
     type: "checkbox",
     height: "fit-content",
-    categories: [...new Set(productsList.map((el) => el.categories.publisher))],
+    categories: [
+      ...new Set(productsList.map((el) => el.categories.publisher)),
+    ].filter((el) => el),
   };
   publisherArgsFieldset.categories.sort();
 
@@ -137,23 +148,35 @@ export default function Catalogue(props) {
           onChoiceSelect={handlePublisherChoiceSelection}
         />
       </Card>
-      <div className={styles["products-grid"]}>
-        <div className={styles["headers"]}>
-          <h2>{searchQuery ? "Результаты поиска" : "Каталог"}</h2>
-          <p onClick={onChangeFieldsetModalHidden}>Фильтры</p>
+      <div className={styles["products-placement"]}>
+        <div className={styles["products-grid"]}>
+          <div className={styles["headers"]}>
+            <h2>{searchQuery ? "Результаты поиска" : "Каталог"}</h2>
+            <p onClick={onChangeFieldsetModalHidden}>Фильтры</p>
+          </div>
+          <div>
+            {productsList.slice(0, amountOfShownCards).map((el) => {
+              return (
+                <ProductCard
+                  {...el}
+                  url={props.url}
+                  key={el["_id"]}
+                  id={el["_id"]}
+                />
+              );
+            })}
+          </div>
         </div>
-        <div>
-          {productsList.map((el) => {
-            return (
-              <ProductCard
-                {...el}
-                url={props.url}
-                key={el["_id"]}
-                id={el["_id"]}
-              />
+        <Button
+          onClick={(event) => {
+            setAmountOfShownCards(
+              Math.min(amountOfShownCards + 24, productsList.length)
             );
-          })}
-        </div>
+          }}
+          className={styles["show-more-button"]}
+        >
+          Показать ещё
+        </Button>
       </div>
     </section>
   );

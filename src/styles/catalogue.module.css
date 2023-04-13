@@ -158,3 +158,16 @@
     width: calc(144px * 2 + 12px);
   }
 }
+
+.products-placement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.show-more-button {
+  width: 128px;
+  height: 48px;
+  font-weight: 500;
+}

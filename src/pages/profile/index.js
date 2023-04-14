@@ -149,7 +149,11 @@ export async function getServerSideProps(ctx) {
         permanent: false,
       },
     };
-  } else if (!session.user.name || !session.user.city) {
+  } else if (
+    !session.user.name ||
+    !session.user.city ||
+    !session.user.phoneNumber
+  ) {
     return {
       redirect: {
         destination: "/profile/update",

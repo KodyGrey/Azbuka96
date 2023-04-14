@@ -174,7 +174,11 @@ export async function getServerSideProps(ctx) {
         url: process.env.RESOURCE_URL,
       },
     };
-  } else if (!session.user.name || !session.user.city) {
+  } else if (
+    !session.user.name ||
+    !session.user.city ||
+    !session.user.phoneNumber
+  ) {
     return {
       redirect: {
         destination: "/profile/update",

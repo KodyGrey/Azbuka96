@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 function Update(props) {
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const router = useRouter();
 
   function onUpdateFormSubmit(event) {
@@ -20,6 +21,7 @@ function Update(props) {
       body: JSON.stringify({
         name,
         city,
+        phoneNumber,
       }),
       credentials: "same-origin",
     })
@@ -43,6 +45,25 @@ function Update(props) {
     setCity(event.target.value);
   }
 
+  function onPhoneNumberChanged(event) {
+    let phone = event.target.value;
+    if (phone.length < phoneNumber.length) {
+      if (phoneNumber[phoneNumber.length - 1].match(/[^\d]/))
+        phone = phone.slice(0, phone.length - 1);
+      if (phoneNumber.match(/^\+7\($/)) phone = "";
+      setPhoneNumber(phone);
+      return;
+    }
+
+    phone = phone.replace(/^8(\d)/, "+7($1");
+    phone = phone.replace(/^\+7(\d)/, "+7($1");
+    phone = phone.replace(/^\+7\((\d{3})$/, "+7($1)");
+    phone = phone.replace(/^\+7\((\d{3})\)(\d{3})$/, "+7($1)$2-");
+    phone = phone.replace(/^\+7\((\d{3})\)(\d{3})-(\d{2})$/, "+7($1)$2-$3-");
+
+    setPhoneNumber(phone.slice(0, 16));
+  }
+
   return (
     <div className={styles["update-block"]}>
       <h2>Введите пользовательские данные</h2>
@@ -63,6 +84,17 @@ function Update(props) {
           onChange={onCityChanged}
           required
         />
+        <TextInput
+          id="phoneNumber"
+          type="tel"
+          pattern="+7([0-9]{3})[0-9]{3}-[0-9]{2}-[0-9]{2}"
+          className={styles["text-input"]}
+          placeholder="+7(912)345-67-89"
+          value={phoneNumber}
+          onChange={onPhoneNumberChanged}
+          required
+        />
+
         <Button type="submit" className={styles["submit-button"]}>
           Отправить
         </Button>

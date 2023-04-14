@@ -36,6 +36,8 @@ export default async function handler(req, res) {
                 const updateParams = {};
                 if (req.body.name) updateParams.name = req.body.name;
                 if (req.body.city) updateParams.city = req.body.city;
+                if (req.body.phoneNumber)
+                  updateParams.phoneNumber = req.body.phoneNumber;
                 if (session.user.isAdmin) {
                   if (req.body.isAdmin) updateParams.isAdmin = req.body.isAdmin;
                 }

@@ -82,6 +82,10 @@ export default function Profile(props) {
             <h3>E-mail</h3>
             <p>{props["email"]}</p>
           </Card>
+          <Card className={`${styles["element-card"]}`}>
+            <h3>Номер Телефона</h3>
+            <p>{props["user-phone-number"]}</p>
+          </Card>
         </div>
       </section>
 
@@ -159,6 +163,7 @@ export async function getServerSideProps(ctx) {
       "user-id": session.user.id,
       "user-name": session.user.name,
       "user-city": session.user.city,
+      "user-phone-number": session.user.phoneNumber,
       email: session.user.email,
       isAdmin: session.user.isAdmin,
     },

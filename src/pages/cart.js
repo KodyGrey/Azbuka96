@@ -57,7 +57,7 @@ export default function CartPage(props) {
       if (key === "amount") continue;
       order.products[key] = {
         amount: cart[key],
-        ...productsList.find((item) => item["_id"]),
+        ...productsList.find((item) => item["_id"] === key),
       };
     }
 

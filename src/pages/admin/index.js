@@ -92,6 +92,7 @@ export default function AdminPage(props) {
         {ordersList
           .filter((order) => order.status === selectedStatus)
           .map((order) => {
+            let customer = usersList.find((user) => user._id === order.userId);
             return (
               <OrderBar
                 id={order["_id"]}
@@ -99,7 +100,7 @@ export default function AdminPage(props) {
                 Number={order.number}
                 Money={order.totalPrice}
                 Date={`${order.date.getDate()}.${order.date.getMonth()}.${order.date.getFullYear()}`}
-                Text={usersList.find((user) => user._id === order.userId).name}
+                Text={customer && customer.name}
               />
             );
           })}

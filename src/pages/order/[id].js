@@ -125,6 +125,17 @@ export default function OrderPage(props) {
               <Button
                 isSecondary={true}
                 style={{ width: "297px", height: "48px" }}
+                onClick={() => {
+                  fetch(`/api/orders/reciept/${id}`)
+                    .then((response) => response.blob())
+                    .then((blob) => {
+                      const url = URL.createObjectURL(blob);
+                      const link = document.createElement("a");
+                      link.href = url;
+                      link.download = `Счёт № ${orderInfo.number} Азбука96.xlsx`;
+                      link.click();
+                    });
+                }}
               >
                 Скачать накладную
               </Button>

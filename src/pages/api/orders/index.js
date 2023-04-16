@@ -73,7 +73,7 @@ export default async function handler(req, res) {
                   (error, product) => {
                     order.totalPrice +=
                       order.products[productId]["amount"] *
-                      (product.discountedPrice ?? product.price);
+                      (product.discountedPrice || product.price);
                   }
                 );
               }

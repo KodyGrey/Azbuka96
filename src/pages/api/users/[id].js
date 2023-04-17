@@ -12,7 +12,7 @@ export default async function handler(req, res) {
       clientPromise
         .then((client) => {
           const { id } = req.query;
-          const collection = client.db("azbukadb").collection("users");
+          const collection = client.db().collection("users");
 
           switch (req.method) {
             case "GET":

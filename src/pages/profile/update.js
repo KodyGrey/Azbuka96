@@ -87,7 +87,7 @@ function Update(props) {
         <TextInput
           id="phoneNumber"
           type="tel"
-          pattern="+7([0-9]{3})[0-9]{3}-[0-9]{2}-[0-9]{2}"
+          pattern="+7\([0-9]{3}\)[0-9]{3}-[0-9]{2}-[0-9]{2}"
           className={styles["text-input"]}
           placeholder="+7(912)345-67-89"
           value={phoneNumber}

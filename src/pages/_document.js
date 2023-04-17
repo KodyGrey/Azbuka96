@@ -1,5 +1,4 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
-import headerLogo from "../public/header-logo.png";
 
 class MyDocument extends Document {
   render() {
@@ -7,7 +6,11 @@ class MyDocument extends Document {
       <Html lang="ru">
         <Head>
           <title>Азбука96 - Учебники, рабочие тетради</title>
-          <link rel="icon" type="image/png" href={headerLogo} />
+          <link
+            rel="icon"
+            type="image/png"
+            href="/static-images/header-logo.png"
+          />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"

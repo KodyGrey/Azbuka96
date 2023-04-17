@@ -16,7 +16,7 @@ function Update(props) {
   const router = useRouter();
 
   function onUpdateFormSubmit(event) {
-    fetch(`http://localhost:3000/api/users/${props.id}`, {
+    fetch(`/api/users/${props.id}`, {
       method: "PUT",
       body: JSON.stringify({
         name,

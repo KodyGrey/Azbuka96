@@ -12,9 +12,7 @@ function MyApp({ Component, pageProps }) {
   const [productsList, setProductsList] = useState([]);
   useEffect(() => {
     async function getProductsList() {
-      const data = await (
-        await fetch("http://localhost:3000/api/products")
-      ).json();
+      const data = await (await fetch("/api/products")).json();
       setProductsList(data);
     }
     getProductsList();

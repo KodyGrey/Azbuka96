@@ -29,7 +29,7 @@ export default function Profile(props) {
   useEffect(() => {
     async function getOrders() {
       const data = await (
-        await fetch("http://localhost:3000/api/orders", {
+        await fetch("/api/orders", {
           credentials: "same-origin",
         })
       ).json();

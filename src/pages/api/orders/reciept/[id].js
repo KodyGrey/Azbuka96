@@ -143,12 +143,12 @@ export default async function handler(req, res) {
                                 })
                                 .then(() => {
                                   return workbook.xlsx.writeFile(
-                                    `src/templates/${order._id}.xlsx`
+                                    `../excel_reciepts/${order._id}.xlsx`
                                   );
                                 })
                                 .then(() => {
                                   const readStream = createReadStream(
-                                    `src/templates/${order._id}.xlsx`
+                                    `../excel_reciepts/${order._id}.xlsx`
                                   );
 
                                   const today = new Date();

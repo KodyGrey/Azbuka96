@@ -72,11 +72,8 @@ export default async function handler(req, res) {
                           /\.(jpg|jpeg|png|gif)$/i
                         )[1];
                         // ПОМЕНЯТЬ ЗДЕСЬ
-                        const imagePath = join(
-                          process.cwd(),
-                          "product-images",
-                          `${productId}.${fileType}`
-                        );
+                        const imagePath = `../www/product-images/${productId}.${fileType}`
+
 
                         const writeStream = createWriteStream(imagePath);
                         const readStream = createReadStream(image.filepath);
@@ -130,11 +127,7 @@ export default async function handler(req, res) {
                         /\.(jpg|jpeg|png|gif)$/i
                       )[1];
                       // ПОМЕНЯТЬ ЗДЕСЬ
-                      const imagePath = join(
-                        process.cwd(),
-                        "product-images",
-                        `${productId}.${fileType}`
-                      );
+                      const imagePath = `../www/product-images/${productId}.${fileType}`
 
                       const writeStream = createWriteStream(imagePath);
                       const readStream = createReadStream(image.filepath);

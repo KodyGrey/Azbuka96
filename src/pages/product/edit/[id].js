@@ -16,7 +16,7 @@ export async function getServerSideProps(ctx) {
 
   const { query } = ctx;
   const data = await fetch(
-    `http://localhost:3000/api/products/${query.id}`
+    `https://next.na4u.ru/api/products/${query.id}`
   ).then((res) => res.json());
   if (!session) {
     return {

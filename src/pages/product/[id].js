@@ -26,9 +26,7 @@ export default function ProductPage(props) {
 
   useEffect(() => {
     async function getProductInfo() {
-      const data = await (
-        await fetch(`http://localhost:3000/api/products/${id}`)
-      ).json();
+      const data = await (await fetch(`/api/products/${id}`)).json();
       if (!data || data.error) router.push("/404");
       setProductInfo(data);
     }

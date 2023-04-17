@@ -104,6 +104,7 @@ export default function Catalogue(props) {
     let count = 0;
     const properties = [element.title, element.author, element.description];
     properties.forEach((property) => {
+      if (!property) return;
       const words = property.toLowerCase().split(" ");
       words.forEach((word) => {
         if (searchQuery.toLowerCase().includes(word)) {

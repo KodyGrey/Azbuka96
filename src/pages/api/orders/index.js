@@ -74,6 +74,10 @@ export default async function handler(req, res) {
                     order.totalPrice +=
                       order.products[productId]["amount"] *
                       (product.discountedPrice || product.price);
+                    if (error) {
+                      res.status(500).json({ error: err.toString() });
+                      resolve();
+                    }
                   }
                 );
               }
@@ -83,7 +87,22 @@ export default async function handler(req, res) {
                 order.number = count + 1;
                 ordersCollection.insertOne(order, (err, ok) => {
                   if (err) res.status(500).json({ error: err.toString() });
-                  else res.status(200).json({ ok: true });
+                  else {
+                    for (let productId in order.products) {
+                      productsCollection.updateOne(
+                        { _id: ObjectId(productId) },
+                        {
+                          $inc: {
+                            boughtScore: order.products[productId]["amount"],
+                          },
+                        },
+                        (error, result) => {
+                          if (error) console.log(error);
+                        }
+                      );
+                    }
+                    res.status(200).json({ ok: true });
+                  }
                   resolve();
                 });
               });

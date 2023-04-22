@@ -26,6 +26,18 @@
   }
 }
 
+.products-editing-block {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+@media (max-width: 860px) {
+  .products-editing-block {
+    flex-direction: column;
+  }
+}
+
 .csv-block {
   cursor: pointer;
   border: 1px solid #49516f;
@@ -50,6 +62,18 @@
   font-size: 18px;
   font-weight: 500;
   color: #49516f;
+}
+
+.add-new-product-link {
+  width: 297px;
+  height: 48px;
+  border: 1px solid #49516f;
+  border-radius: 10px;
+  background-color: #49516f;
+  color: white;
+  font-size: 18px;
+  line-height: 48px;
+  text-align: center;
 }
 
 .statuses-bar {

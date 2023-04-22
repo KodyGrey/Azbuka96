@@ -4,6 +4,7 @@ import OrderBar from "../../components/Order/OrderBar";
 import Card from "../../components/UI/Card";
 import Button from "../../components/UI/Button";
 import styles from "../../styles/admin/index.module.css";
+import Link from "next/link";
 
 export default function AdminPage(props) {
   const statusesList = [
@@ -64,12 +65,21 @@ export default function AdminPage(props) {
   return (
     <div className={styles["admin-page"]}>
       <h2>Страница администратора</h2>
-      <div>
-        <label className={styles["csv-block"]}>
-          Загрузить файл с товарами
-          <input type="file" accept=".csv" onChange={onRemnantsFileSelection} />
-        </label>
-        <p>{fileMessage}</p>
+      <div className={styles["products-editing-block"]}>
+        <div>
+          <label className={styles["csv-block"]}>
+            Загрузить файл с товарами
+            <input
+              type="file"
+              accept=".csv"
+              onChange={onRemnantsFileSelection}
+            />
+          </label>
+          <p>{fileMessage}</p>
+        </div>
+        <Link href="/product/new" className={styles["add-new-product-link"]}>
+          Добавить товар
+        </Link>
       </div>
       <Card className={styles["statuses-bar"]}>
         {statusesList.map((el) => {

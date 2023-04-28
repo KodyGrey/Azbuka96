@@ -58,49 +58,59 @@ export default async function handler(req, res) {
                     //     '4': '50',
                     //     '5': ''
                     //   },
-                    const products = [];
-                    let publisher = "";
-                    for (let el of results) {
-                      if (
-                        el["0"] &&
-                        !el["1"] &&
-                        !el["2"] &&
-                        !el["3"] &&
-                        !el["4"] &&
-                        !el["5"]
-                      ) {
-                        publisher = el["0"];
-                      } else {
-                        products.push({
-                          bookID: el["0"],
-                          title: el["1"],
-                          price: Number(el["3"].replace(",", ".")),
-                          inStock: Number(el["4"]) > 0,
-                          author: el["6"],
-                          categories: {
-                            publisher,
-                            grade: el["7"],
-                            subject: el["8"],
-                          },
-                        });
-                      }
-                    }
+
                     clientPromise.then((client) => {
                       const collection = client.db().collection("products");
-                      for (let product of products) {
-                        collection
-                          .updateOne(
-                            { bookID: product.bookID },
-                            { $set: product },
-                            { upsert: true }
-                          )
-                          .catch((error) => {
-                            res
-                              .status(500)
-                              .send("Не получилось добавить товар");
 
-                            resolve();
-                          });
+                      let publisher = "";
+                      for (let el of results) {
+                        if (
+                          el["0"] &&
+                          !el["1"] &&
+                          !el["2"] &&
+                          !el["3"] &&
+                          !el["4"]
+                        ) {
+                          publisher = el["0"];
+                        } else {
+                          const product = {
+                            bookID: el["0"],
+                            title: el["1"],
+                            price: Number(el["3"].replace(",", ".")),
+                            inStock: Number(el["4"]) > 0,
+                            categories: {
+                              publisher,
+                            },
+                          };
+                          if (el["6"]) product.author = el["6"];
+                          if (el["7"]) product.categories.grade = el["7"];
+                          if (el["8"]) product.categories.subject = el["8"];
+
+                          collection
+                            .findOne({ bookID: product.bookID })
+                            .then((existingProduct) => {
+                              if (existingProduct) {
+                                product.categories = {
+                                  ...existingProduct.categories,
+                                  ...product.categories,
+                                };
+                              }
+
+                              collection
+                                .updateOne(
+                                  { bookID: product.bookID },
+                                  { $set: product },
+                                  { upsert: true }
+                                )
+                                .catch((error) => {
+                                  res
+                                    .status(500)
+                                    .send("Не получилось добавить товар");
+
+                                  resolve();
+                                });
+                            });
+                        }
                       }
                     });
                   })

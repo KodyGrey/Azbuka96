@@ -55,11 +55,13 @@ export default function AdminPage(props) {
       method: "POST",
       body: formData,
       credentials: "include",
-    }).then((res) => {
-      if (res.ok) setFileMessage("Остатки обновлены");
-      else setFileMessage("Ошибка во время отправки");
-      console.log(res);
-    });
+    })
+      .then((res) => {
+        if (res.ok) setFileMessage("Остатки обновлены");
+        else setFileMessage("Ошибка во время отправки");
+        return res.text();
+      })
+      .then((data) => console.log(data));
   }
 
   return (

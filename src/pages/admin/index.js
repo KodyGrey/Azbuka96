@@ -58,8 +58,8 @@ export default function AdminPage(props) {
     }).then((res) => {
       if (res.ok) setFileMessage("Остатки обновлены");
       else setFileMessage("Ошибка во время отправки");
+      console.log(res);
     });
-    console.log(event.target.files);
   }
 
   return (

@@ -50,7 +50,9 @@ export default function ProductAdminHorizontalCard(props) {
           <div className={styles["price"]}>{`${props.price} ₽`}</div>
         </div>
       </div>
-      <Link href={`/product/edit/${id}`} className={styles["edit-link"]} />
+      <Link href={`/product/edit/${id}`} className={styles["edit-link"]}>
+        ✎
+      </Link>
     </Card>
   );
 }

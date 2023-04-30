@@ -174,3 +174,19 @@
     font-size: 11px;
   }
 }
+
+.edit-link {
+  height: 32px;
+  width: 32px;
+  margin: 4px;
+
+  border: 1.5px solid #49516f;
+  border-radius: 8px;
+  color: #49516f;
+
+  line-height: 32px;
+  font-size: 24px;
+
+  text-align: center;
+  align-self: center;
+}

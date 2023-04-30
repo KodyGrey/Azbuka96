@@ -11,7 +11,7 @@ import arrowImage from "../public/arrow-left-icon.svg";
 export default function Catalogue(props) {
   const searchQuery = props.searchQuery;
 
-  const [amountOfShownCards, setAmountOfShownCards] = useState(24);
+  const [amountOfShownCards, setAmountOfShownCards] = useState(48);
 
   const [isFieldsetModalHidden, setIsFieldsetModalHidden] = useState(true);
   let productsList = props.productsList.filter((el) => el.inStock);
@@ -100,27 +100,34 @@ export default function Catalogue(props) {
     else return true;
   });
 
-  function getCountOfMatchingWords(element) {
+  function getCountOfMatchingWords(element, searchQuery) {
+    const searchRegex = new RegExp(`${searchQuery}`, "gi");
     let count = 0;
-    const properties = [element.title, element.author, element.description];
+    const properties = [
+      element.title,
+      element.author,
+      element.description,
+      String(element.bookID),
+      element.categories.grade,
+      element.categories.publisher,
+      element.categories.subject,
+    ];
     properties.forEach((property) => {
-      if (!property) return;
-      const words = property.toLowerCase().split(" ");
-      words.forEach((word) => {
-        if (searchQuery.toLowerCase().includes(word)) {
-          count++;
-        }
-      });
+      if (property) {
+        const matches = property.match(searchRegex);
+        count += matches ? matches.length : 0;
+      }
     });
     return count;
   }
 
-  if (searchQuery)
+  if (searchQuery) {
     productsList.sort((a, b) => {
-      const countA = getCountOfMatchingWords(a);
-      const countB = getCountOfMatchingWords(b);
+      const countA = getCountOfMatchingWords(a, searchQuery.toLowerCase());
+      const countB = getCountOfMatchingWords(b, searchQuery.toLowerCase());
       return countB - countA;
     });
+  }
 
   return (
     <section

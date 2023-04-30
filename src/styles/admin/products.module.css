@@ -1,0 +1,77 @@
+.admin-products-page {
+  width: 845px;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.admin-products-page h2 {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 29px;
+
+  margin: 64px 0 0 0;
+
+  color: #49516f;
+}
+
+@media (max-width: 860px) {
+  .admin-products-page {
+    width: 297px;
+  }
+  .admin-products-page h2 {
+    margin: 32px 0 0 0;
+  }
+}
+
+.filters-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.search-bar {
+  width: 100%;
+  height: 32px;
+  border: 1px solid #49516f;
+  border-radius: 10px;
+  padding-inline: 8px;
+}
+
+.selectors-block {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.selectors-block > select {
+  height: 32px;
+  border: 1px solid #49516f;
+  border-radius: 10px;
+  width: 32%;
+}
+
+@media (max-width: 860px) {
+  .selectors-block {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .selectors-block > select {
+    width: 297px;
+  }
+}
+
+.products-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.show-more-button {
+  align-self: center;
+  height: 48px;
+  width: 128px;
+  font-size: 14px;
+}

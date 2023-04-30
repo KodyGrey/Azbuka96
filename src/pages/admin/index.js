@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]";
 
 import OrderBar from "../../components/Order/OrderBar";
 import Card from "../../components/UI/Card";
@@ -119,4 +121,30 @@ export default function AdminPage(props) {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps(ctx) {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/api/auth/signin",
+        permanent: false,
+      },
+    };
+  } else if (!session.user.isAdmin) {
+    return {
+      redirect: {
+        destination: "/403",
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      props: {
+        session: session.user.id,
+      },
+    };
+  }
 }

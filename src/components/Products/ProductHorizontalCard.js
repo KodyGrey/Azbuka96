@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import styles from "./ProductHorizontalCard.module.css";
 
 import Card from "../UI/Card";

@@ -79,10 +79,16 @@ export default function AdminPage(props) {
               onChange={onRemnantsFileSelection}
             />
           </label>
-          <p>{fileMessage}</p>
+          {fileMessage && <p>{fileMessage}</p>}
         </div>
         <Link href="/product/new" className={styles["add-new-product-link"]}>
           Добавить товар
+        </Link>
+        <Link href="/admin/images" className={styles["csv-block"]}>
+          Загрузить изображения
+        </Link>
+        <Link href="/admin/products" className={styles["add-new-product-link"]}>
+          Страница с товарами
         </Link>
       </div>
       <Card className={styles["statuses-bar"]}>

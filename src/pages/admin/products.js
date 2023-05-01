@@ -8,7 +8,8 @@ import styles from "../../styles/admin/products.module.css";
 import Button from "../../components/UI/Button";
 
 export default function ProductsAdmin(props) {
-  let productsList = props.productsList;
+  const [productsList, setProductsList] = useState(props.productsList);
+  const [filteredProducts, setFilteredProducts] = useState(productsList);
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -21,22 +22,6 @@ export default function ProductsAdmin(props) {
   const [gradeChosen, setGradeChosen] = useState("None");
   const [publisherChosen, setPublisherChosen] = useState("None");
   const [subjectChosen, setSubjectChosen] = useState("None");
-
-  if (gradeChosen !== "None") {
-    productsList = productsList.filter(
-      (el) => el.categories.grade === gradeChosen
-    );
-  }
-  if (publisherChosen !== "None") {
-    productsList = productsList.filter(
-      (el) => el.categories.publisher === publisherChosen
-    );
-  }
-  if (subjectChosen !== "None") {
-    productsList = productsList.filter(
-      (el) => el.categories.subject === subjectChosen
-    );
-  }
 
   useEffect(() => {
     let grades = [
@@ -58,7 +43,29 @@ export default function ProductsAdmin(props) {
     ];
     publishers.sort();
     setPublishersList(publishers);
-  });
+  }, [productsList]);
+
+  useEffect(() => {
+    let filteredProducts = productsList;
+
+    if (gradeChosen !== "None") {
+      filteredProducts = filteredProducts.filter(
+        (el) => el.categories.grade === gradeChosen
+      );
+    }
+    if (publisherChosen !== "None") {
+      filteredProducts = filteredProducts.filter(
+        (el) => el.categories.publisher === publisherChosen
+      );
+    }
+    if (subjectChosen !== "None") {
+      filteredProducts = filteredProducts.filter(
+        (el) => el.categories.subject === subjectChosen
+      );
+    }
+
+    setFilteredProducts(filteredProducts);
+  }, [productsList, gradeChosen, publisherChosen, subjectChosen]);
 
   function getCountOfMatchingWords(element, searchQuery) {
     const searchRegex = new RegExp(`${searchQuery}`, "gi");
@@ -81,13 +88,19 @@ export default function ProductsAdmin(props) {
     return count;
   }
 
-  if (searchQuery) {
-    productsList.sort((a, b) => {
-      const countA = getCountOfMatchingWords(a, searchQuery.toLowerCase());
-      const countB = getCountOfMatchingWords(b, searchQuery.toLowerCase());
-      return countB - countA;
-    });
-  }
+  useEffect(() => {
+    let filteredProducts = productsList;
+
+    if (searchQuery) {
+      filteredProducts.sort((a, b) => {
+        const countA = getCountOfMatchingWords(a, searchQuery.toLowerCase());
+        const countB = getCountOfMatchingWords(b, searchQuery.toLowerCase());
+        return countB - countA;
+      });
+    }
+
+    setFilteredProducts(filteredProducts);
+  }, [productsList, searchQuery]);
 
   return (
     <div className={styles["admin-products-page"]}>
@@ -142,7 +155,7 @@ export default function ProductsAdmin(props) {
         </div>
       </div>
       <div className={styles["products-block"]}>
-        {productsList.slice(0, amountOfShownCards).map((product) => {
+        {filteredProducts.slice(0, amountOfShownCards).map((product) => {
           return (
             <ProductAdminHorizontalCard
               {...product}

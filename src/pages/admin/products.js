@@ -45,28 +45,6 @@ export default function ProductsAdmin(props) {
     setPublishersList(publishers);
   }, [productsList]);
 
-  useEffect(() => {
-    let filteredProducts = productsList;
-
-    if (gradeChosen !== "None") {
-      filteredProducts = filteredProducts.filter(
-        (el) => el.categories.grade === gradeChosen
-      );
-    }
-    if (publisherChosen !== "None") {
-      filteredProducts = filteredProducts.filter(
-        (el) => el.categories.publisher === publisherChosen
-      );
-    }
-    if (subjectChosen !== "None") {
-      filteredProducts = filteredProducts.filter(
-        (el) => el.categories.subject === subjectChosen
-      );
-    }
-
-    setFilteredProducts(filteredProducts);
-  }, [productsList, gradeChosen, publisherChosen, subjectChosen]);
-
   function getCountOfMatchingWords(element, searchQuery) {
     const searchRegex = new RegExp(`${searchQuery}`, "gi");
     let count = 0;
@@ -91,6 +69,22 @@ export default function ProductsAdmin(props) {
   useEffect(() => {
     let filteredProducts = productsList;
 
+    if (gradeChosen !== "None") {
+      filteredProducts = filteredProducts.filter(
+        (el) => el.categories.grade === gradeChosen
+      );
+    }
+    if (publisherChosen !== "None") {
+      filteredProducts = filteredProducts.filter(
+        (el) => el.categories.publisher === publisherChosen
+      );
+    }
+    if (subjectChosen !== "None") {
+      filteredProducts = filteredProducts.filter(
+        (el) => el.categories.subject === subjectChosen
+      );
+    }
+
     if (searchQuery) {
       filteredProducts.sort((a, b) => {
         const countA = getCountOfMatchingWords(a, searchQuery.toLowerCase());
@@ -100,7 +94,7 @@ export default function ProductsAdmin(props) {
     }
 
     setFilteredProducts(filteredProducts);
-  }, [productsList, searchQuery]);
+  }, [productsList, gradeChosen, publisherChosen, subjectChosen, searchQuery]);
 
   return (
     <div className={styles["admin-products-page"]}>

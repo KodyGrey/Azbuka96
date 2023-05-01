@@ -22,6 +22,7 @@ export default function AdminPage(props) {
   const [usersList, setUsersList] = useState([]);
 
   const [fileMessage, setFileMessage] = useState("");
+  const [filesMessage, setFilesMessage] = useState("");
 
   useEffect(() => {
     async function getOrders() {
@@ -53,17 +54,63 @@ export default function AdminPage(props) {
     const formData = new FormData();
     formData.append("remnants", event.target.files[0]);
 
-    fetch("/api/products/remnants", {
-      method: "POST",
-      body: formData,
-      credentials: "include",
-    })
-      .then((res) => {
-        if (res.ok) setFileMessage("Остатки обновлены");
-        else setFileMessage("Ошибка во время отправки");
-        return res.text();
-      })
-      .then((data) => console.log(data));
+    const xhr = new XMLHttpRequest();
+
+    xhr.upload.addEventListener("progress", (event) => {
+      if (event.lengthComputable) {
+        const percentComplete = Math.round((event.loaded / event.total) * 100);
+        setFileMessage(`Загружено: ${percentComplete}%`);
+      }
+    });
+
+    xhr.addEventListener("load", (event) => {
+      if (xhr.status === 200) {
+        setFileMessage("Остатки обновлены");
+      } else {
+        setFileMessage("Ошибка во время отправки");
+      }
+    });
+
+    xhr.addEventListener("error", (event) => {
+      setFileMessage("Ошибка во время отправки");
+    });
+
+    xhr.open("POST", "/api/products/remnants");
+    xhr.withCredentials = true;
+    xhr.send(formData);
+  }
+
+  async function onImagesFileSelection(event) {
+    const formData = new FormData();
+
+    for (let i = 0; i < event.target.files.length; i++) {
+      formData.append(`image${i}`, event.target.files[i]);
+    }
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.upload.addEventListener("progress", (event) => {
+      if (event.lengthComputable) {
+        const percentComplete = Math.round((event.loaded / event.total) * 100);
+        setFilesMessage(`Загружено: ${percentComplete}%`);
+      }
+    });
+
+    xhr.addEventListener("load", (event) => {
+      if (xhr.status === 200) {
+        setFilesMessage("Изображения загружены");
+      } else {
+        setFilesMessage("Ошибка во время отправки");
+      }
+    });
+
+    xhr.addEventListener("error", (event) => {
+      setFilesMessage("Ошибка во время отправки");
+    });
+
+    xhr.open("POST", "/api/products/images");
+    xhr.withCredentials = true;
+    xhr.send(formData);
   }
 
   return (
@@ -84,9 +131,18 @@ export default function AdminPage(props) {
         <Link href="/product/new" className={styles["add-new-product-link"]}>
           Добавить товар
         </Link>
-        <Link href="/admin/images" className={styles["csv-block"]}>
-          Загрузить изображения
-        </Link>
+        <div>
+          <label className={styles["csv-block"]}>
+            Загрузить изображения
+            <input
+              type="file"
+              accept=".jpg"
+              onChange={onImagesFileSelection}
+              multiple
+            />
+          </label>
+          {filesMessage && <p>{filesMessage}</p>}
+        </div>
         <Link href="/admin/products" className={styles["add-new-product-link"]}>
           Страница с товарами
         </Link>

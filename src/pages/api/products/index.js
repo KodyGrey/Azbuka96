@@ -72,8 +72,7 @@ export default async function handler(req, res) {
                           /\.(jpg|jpeg|png|gif)$/i
                         )[1];
                         // ПОМЕНЯТЬ ЗДЕСЬ
-                        const imagePath = `../www/product-images/${productId}.${fileType}`
-
+                        const imagePath = `../www/product-images/${product.bookID}.${fileType}`;
 
                         const writeStream = createWriteStream(imagePath);
                         const readStream = createReadStream(image.filepath);
@@ -83,7 +82,7 @@ export default async function handler(req, res) {
                             { _id: productId },
                             {
                               $set: {
-                                image: `product-images/${productId}.${fileType}`,
+                                image: `product-images/${product.bookID}.${fileType}`,
                               },
                             },
                             (err, ok) => {
@@ -127,7 +126,7 @@ export default async function handler(req, res) {
                         /\.(jpg|jpeg|png|gif)$/i
                       )[1];
                       // ПОМЕНЯТЬ ЗДЕСЬ
-                      const imagePath = `../www/product-images/${productId}.${fileType}`
+                      const imagePath = `../www/product-images/${product.bookID}.${fileType}`;
 
                       const writeStream = createWriteStream(imagePath);
                       const readStream = createReadStream(image.filepath);
@@ -137,7 +136,7 @@ export default async function handler(req, res) {
                           { _id: ObjectId(productId) },
                           {
                             $set: {
-                              image: `product-images/${productId}.${fileType}`,
+                              image: `product-images/${product.bookID}.${fileType}`,
                               inStock: product.inStock,
                               title: product.title,
                               author: product.author,

@@ -127,6 +127,23 @@ export default async function handler(req, res) {
                       const fileType = filename.match(
                         /\.(jpg|jpeg|png|gif)$/i
                       )[1];
+
+                      const updatedProduct = {
+                        image: `product-images/${product.bookID}.${fileType}`,
+                        inStock: product.inStock,
+                        title: product.title,
+                        author: product.author,
+                        description: product.description,
+                        categories: product.categories,
+                        price: product.price,
+                        bookID: product.bookID,
+                        boughtScore: product.boughtScore,
+                        description: product.description,
+                      };
+                      if (product.discountedPrice)
+                        updatedProduct.discountedPrice =
+                          product.discountedPrice;
+
                       // ПОМЕНЯТЬ ЗДЕСЬ
                       const imagePath = `../www/product-images/${product.bookID}.${fileType}`;
 
@@ -137,19 +154,7 @@ export default async function handler(req, res) {
                         collection.updateOne(
                           { _id: ObjectId(productId) },
                           {
-                            $set: {
-                              image: `product-images/${product.bookID}.${fileType}`,
-                              inStock: product.inStock,
-                              title: product.title,
-                              author: product.author,
-                              description: product.description,
-                              categories: product.categories,
-                              price: product.price,
-                              discountedPrice: product.discountedPrice,
-                              bookID: product.bookID,
-                              boughtScore: product.boughtScore,
-                              description: product.description,
-                            },
+                            $set: updatedProduct,
                           },
                           (err, ok) => {
                             if (err) {
@@ -173,23 +178,26 @@ export default async function handler(req, res) {
                         resolve();
                       });
                     } else {
-                      console.log(fields.prevImage);
+                      const updatedProduct = {
+                        image: fields.prevImage,
+                        inStock: product.inStock,
+                        title: product.title,
+                        author: product.author,
+                        description: product.description,
+                        categories: product.categories,
+                        price: product.price,
+                        bookID: product.bookID,
+                        boughtScore: product.boughtScore,
+                        description: product.description,
+                      };
+                      if (product.discountedPrice)
+                        updatedProduct.discountedPrice =
+                          product.discountedPrice;
+
                       collection.updateOne(
                         { _id: ObjectId(fields.id) },
                         {
-                          $set: {
-                            image: fields.prevImage,
-                            inStock: product.inStock,
-                            title: product.title,
-                            author: product.author,
-                            description: product.description,
-                            categories: product.categories,
-                            price: product.price,
-                            discountedPrice: product.discountedPrice,
-                            bookID: product.bookID,
-                            boughtScore: product.boughtScore,
-                            description: product.description,
-                          },
+                          $set: updatedProduct,
                         },
                         (err, ok) => {
                           if (err) {

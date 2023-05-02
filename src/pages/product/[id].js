@@ -123,7 +123,7 @@ export default function ProductPage(props) {
                       productInfo["discountedPrice"] ?? productInfo["price"]
                     } ₽`}
                   </div>
-                  {typeof productInfo["discountedPrice"] !== "undefined" && (
+                  {productInfo["discountedPrice"] && (
                     <div
                       className={styles["price-without-discount"]}
                     >{`${productInfo["price"]} ₽`}</div>

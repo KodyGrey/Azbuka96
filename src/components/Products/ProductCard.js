@@ -104,7 +104,7 @@ const ProductCard = (props) => {
         <div className={styles["price"]}>
           {`${props.discountedPrice ?? props.price} ₽`}
         </div>
-        {typeof props.discountedPrice !== "undefined" && (
+        {props.discountedPrice && (
           <div
             className={styles["price-without-discount"]}
           >{`${props.price} ₽`}</div>

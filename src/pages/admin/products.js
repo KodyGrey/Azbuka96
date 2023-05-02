@@ -22,6 +22,7 @@ export default function ProductsAdmin(props) {
   const [gradeChosen, setGradeChosen] = useState("None");
   const [publisherChosen, setPublisherChosen] = useState("None");
   const [subjectChosen, setSubjectChosen] = useState("None");
+  const [withPhotoChosen, setWithPhotoChosen] = useState("None");
 
   useEffect(() => {
     let grades = [
@@ -84,6 +85,12 @@ export default function ProductsAdmin(props) {
         (el) => el.categories.subject === subjectChosen
       );
     }
+    if (withPhotoChosen !== "None") {
+      if (withPhotoChosen === "with")
+        filteredProducts = filteredProducts.filter((el) => !!el.image);
+      else if (withPhotoChosen === "without")
+        filteredProducts = filteredProducts.filter((el) => !el.image);
+    }
 
     if (searchQuery) {
       filteredProducts.sort((a, b) => {
@@ -94,7 +101,14 @@ export default function ProductsAdmin(props) {
     }
 
     setFilteredProducts(filteredProducts);
-  }, [productsList, gradeChosen, publisherChosen, subjectChosen, searchQuery]);
+  }, [
+    productsList,
+    gradeChosen,
+    publisherChosen,
+    subjectChosen,
+    searchQuery,
+    withPhotoChosen,
+  ]);
 
   return (
     <div className={styles["admin-products-page"]}>
@@ -107,6 +121,14 @@ export default function ProductsAdmin(props) {
           placeholder="Найти товар"
         />
         <div className={styles["selectors-block"]}>
+          <select
+            onChange={(event) => setWithPhotoChosen(event.target.value)}
+            id="photo"
+          >
+            <option value="None">Выберите фото</option>
+            <option value="with">С фото</option>
+            <option value="without">Без фото</option>
+          </select>
           <select
             onChange={(event) => setGradeChosen(event.target.value)}
             id="grade"

@@ -48,11 +48,11 @@ export default function ProductsAdmin(props) {
   function getCountOfMatchingWords(element, searchQuery) {
     const searchRegex = new RegExp(`${searchQuery}`, "gi");
     let count = 0;
+    if (String(element.bookID).match(searchRegex)) count += 1000;
     const properties = [
       element.title,
       element.author,
       element.description,
-      String(element.bookID),
       element.categories.grade,
       element.categories.publisher,
       element.categories.subject,

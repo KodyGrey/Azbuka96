@@ -52,10 +52,12 @@ export default async function handler(req, res) {
                 product.categories.subject = fields.subject;
                 product.categories.publisher = fields.publisher;
                 product.price = Number(fields.price);
-                product.discountedPrice = Number(fields.discountedPrice);
                 product.bookID = fields.bookID;
                 product.boughtScore = Number(fields.boughtScore);
                 product.description = fields.description;
+
+                if (fields.discountedPrice)
+                  product.discountedPrice = Number(fields.discountedPrice);
 
                 if (!fields.id) {
                   clientPromise.then((client) => {

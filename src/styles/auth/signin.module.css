@@ -1,0 +1,58 @@
+.sign-in-page {
+  width: 35%;
+  min-width: 297px;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.sign-in-page h1 {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 36px;
+
+  margin: 64px 0 0 0;
+
+  color: #49516f;
+}
+
+@media (max-width: 860px) {
+  .sign-in-page {
+    width: 297px;
+  }
+  .sign-in-page h1 {
+    margin: 32px 0 0 0;
+  }
+}
+
+.sign-in-form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.email-label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  color: #49516f;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+}
+
+.email-input {
+  height: 48px;
+}
+
+.sign-in-button {
+  height: 48px;
+  width: 200px;
+  align-self: center;
+
+  font-size: 16px;
+}

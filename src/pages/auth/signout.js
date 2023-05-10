@@ -1,10 +1,21 @@
-import { useEffect } from "react";
-import { signOut } from "next-auth/client";
+import { signOut } from "next-auth/react";
+
+import Button from "../../components/UI/Button";
 
 export default function SignOutPage() {
-  useEffect(() => {
-    signOut();
-  }, []);
-
-  return <p>Вы вышли из аккаунта</p>;
+  return (
+    <Button
+      style={{
+        height: "48px",
+        width: "200px",
+        "align-self": "center",
+        margin: "20% 0 0 0",
+      }}
+      onClick={() => {
+        signOut({ redirect: { destination: "/" } });
+      }}
+    >
+      Выйти из аккаунта
+    </Button>
+  );
 }

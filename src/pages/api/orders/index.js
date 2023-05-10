@@ -10,7 +10,7 @@ export default async function handler(req, res) {
         getServerSession(req, res, authOptions).then((session) => {
           if (!session) {
             res.status(401).json({ error: "Unauthorized" });
-          } else if (session.user.admin) {
+          } else if (session.user.isAdmin) {
             clientPromise
               .then((client) => {
                 const collection = client.db().collection("orders");

@@ -4,7 +4,6 @@ import { createReadStream, createWriteStream } from "fs";
 
 export default async function handler(req, res) {
   return new Promise((resolve) => {
-    const { id } = req.query;
     getServerSession(req, res, authOptions)
       .then((session) => {
         if (false && !session) {
@@ -67,6 +66,26 @@ export default async function handler(req, res) {
                   });
                 }
               );
+              break;
+            case "PUT":
+              const data = JSON.parse(req.body);
+
+              const writeStream = createWriteStream(
+                data.isIndividual
+                  ? "src/templates/IndividualPaymentDetails.txt"
+                  : "src/templates/LegalEntityPaymentDetails.txt"
+              );
+
+              writeStream.write((data.type ?? "") + "\n");
+              writeStream.write((data.reciever ?? "") + "\n");
+              writeStream.write((data.number ?? "") + "\n");
+              writeStream.write(data.comment ?? "");
+
+              writeStream.end();
+
+              res.status(200).json({ ok: true });
+              resolve();
+              break;
           }
         }
       })

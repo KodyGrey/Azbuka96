@@ -30,6 +30,7 @@ export const authOptions = {
   pages: {
     signIn: "/auth/signin",
     signOut: "/auth/signout",
+    verifyRequest: "/auth/verify-request",
   },
 };
 

@@ -1,0 +1,32 @@
+.verify-request-page {
+  width: 297px;
+  height: 150px;
+  border: 2px solid #49516f;
+  border-radius: 20px;
+
+  align-self: center;
+  margin-top: 25vh;
+  padding: 8px 16px 8px 16px;
+}
+
+.header {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 26px;
+
+  color: #49516f;
+  text-align: center;
+}
+
+.text {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18px;
+
+  color: #49516f;
+  text-align: center;
+}

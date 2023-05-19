@@ -1,0 +1,44 @@
+.table-block {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.table-block table {
+  max-width: 350px;
+  border: 2px solid #49516f;
+  border-radius: 20px;
+  border-collapse: collapse;
+}
+
+.table-block table td {
+  border: 1px solid #49516f;
+  padding: 8px;
+  font-size: 16px;
+  text-align: center;
+  color: #49516f;
+}
+
+.managers-time-block {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.region-time-block > * {
+  margin: 0 0 0 0;
+}
+.region-time-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.region-time-block > h3 {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 17px;
+
+  color: #49516f;
+}

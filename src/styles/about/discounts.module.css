@@ -1,0 +1,15 @@
+.table {
+  max-width: 350px;
+  border: 2px solid #49516f;
+  border-radius: 20px;
+  border-collapse: collapse;
+}
+
+.table td,
+.table th {
+  border: 1px solid #49516f;
+  padding: 8px;
+  font-size: 16px;
+  text-align: center;
+  color: #49516f;
+}

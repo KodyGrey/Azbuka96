@@ -1,0 +1,55 @@
+.text-page {
+  width: 845px;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.text-page h1 {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 34px;
+
+  margin: 64px 0 0 0;
+
+  color: #49516f;
+}
+
+@media (max-width: 860px) {
+  .text-page {
+    width: 297px;
+  }
+  .text-page h1 {
+    margin: 32px 0 0 0;
+  }
+}
+
+.text-page p {
+  color: #49516f;
+  margin: 0 0 0 0;
+}
+
+.text-page strong {
+  font-weight: 700;
+  color: #49516f;
+}
+
+.text-page h2 {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 22px;
+
+  margin: 8px 0 8px 0;
+
+  color: #49516f;
+}
+
+.text-block {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

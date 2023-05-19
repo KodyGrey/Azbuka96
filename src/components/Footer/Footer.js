@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React, { useState } from "react";
+import Link from "next/link";
 
 import styles from "./Footer.module.css";
 import arrowDown from "../../public/arrow-down.svg";
@@ -35,10 +36,18 @@ const Footer = () => {
             </span>
           </div>
           <ul>
-            <li>Информация о продавце</li>
-            <li>Адрес и пунуты выдачи</li>
-            <li>Доставка</li>
-            <li>График работы</li>
+            <li>
+              <Link href="/about/seller-info">Информация о продавце</Link>
+            </li>
+            <li>
+              <Link href="/about/address">Адрес пунктов выдачи</Link>
+            </li>
+            <li>
+              <Link href="/about/delivery">Доставка</Link>
+            </li>
+            <li>
+              <Link href="/about/work-schedule">График работы</Link>
+            </li>
           </ul>
         </section>
         <section
@@ -53,8 +62,12 @@ const Footer = () => {
             </span>
           </div>
           <ul>
-            <li>Способы оплаты заказа</li>
-            <li>Скидки</li>
+            <li>
+              <Link href="/about/payment">Способы оплаты заказа</Link>
+            </li>
+            <li>
+              <Link href="/about/discounts">Скидки</Link>
+            </li>
           </ul>
         </section>
         <section

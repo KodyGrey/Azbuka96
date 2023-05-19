@@ -21,6 +21,7 @@ export default function CartPage(props) {
 
   const [makeOrderClicked, setMakeOrderClicked] = useState(false);
   const fieldsetRef = useRef();
+  const isLegalEntityRef = useRef();
   const deliveryAddressRef = useRef();
   const commentRef = useRef();
   const [errorMessage, setErrorMessage] = useState(null);
@@ -50,6 +51,8 @@ export default function CartPage(props) {
     order.userId = props["user-id"];
     order.deliveryType =
       fieldsetRef.current.querySelector("input:checked").value;
+    order.isLegalEntity =
+      !!isLegalEntityRef.current.querySelector("input:checked");
     order.deliveryAddress = deliveryAddressRef.current.value;
     order.comment = commentRef.current.value;
     order.products = {};
@@ -134,6 +137,14 @@ export default function CartPage(props) {
               "Доставка по России",
             ]}
             fieldset_options={{ ref: fieldsetRef, required: true }}
+          />
+          <Fieldset
+            key="isLegalEntity"
+            legend="Тип заказа"
+            type="radio"
+            height="fit-content"
+            categories={["Заказать как Юрлицо"]}
+            fieldset_options={{ ref: isLegalEntityRef, required: false }}
           />
           <TextInput
             placeholder="Адрес доставки"

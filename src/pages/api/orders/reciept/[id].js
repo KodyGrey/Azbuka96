@@ -2,7 +2,7 @@ import clientPromise from "../../../../lib/mongodbClient";
 import { authOptions } from "../../auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 import { ObjectId } from "mongodb";
-import { createReadStream } from "fs";
+import { createReadStream, read } from "fs";
 import ExcelJS from "exceljs";
 const rubles = require("rubles").rubles;
 
@@ -48,9 +48,53 @@ export default async function handler(req, res) {
 
                               workbook.xlsx
                                 .readFile("src/templates/template.xlsx")
-                                .then(() => {
+                                .then(async () => {
                                   const worksheet =
                                     workbook.getWorksheet("Sheet1");
+
+                                  let paymentDetailsPath =
+                                    "src/templates/IndividualPaymentDetails.txt";
+
+                                  if (order.isLegalEntity) {
+                                    paymentDetailsPath =
+                                      "src/templates/LegalEntityPaymentDetails.txt";
+                                  }
+
+                                  const readStream =
+                                    createReadStream(paymentDetailsPath);
+
+                                  let text = "";
+                                  for await (const chunk of readStream) {
+                                    text += chunk;
+                                  }
+                                  const lines = text.split("\n");
+
+                                  const paymentDetails = {};
+
+                                  let index = 0;
+                                  for (let line of lines) {
+                                    switch (index) {
+                                      case 0:
+                                        paymentDetails.type = line.trim();
+                                      case 1:
+                                        paymentDetails.reciever = line.trim();
+                                      case 2:
+                                        paymentDetails.number = line.trim();
+                                      case 3:
+                                        paymentDetails.comment = line.trim();
+                                    }
+                                    index++;
+                                  }
+
+                                  // Payment Details changing
+                                  worksheet.getCell("D4").value =
+                                    paymentDetails.type;
+                                  worksheet.getCell("F5").value =
+                                    paymentDetails.reciever;
+                                  worksheet.getCell("W4").value =
+                                    paymentDetails.number;
+                                  worksheet.getCell("F6").value =
+                                    paymentDetails.comment;
 
                                   // Customer info changing
                                   worksheet.getCell(

@@ -49,6 +49,7 @@ export default async function handler(req, res) {
           order.deliveryAddress = body.deliveryAddress;
           order.comment = body.comment;
           order.products = body.products;
+          order.isLegalEntity = body.isLegalEntity;
 
           if (!session) {
             res.status(401).json({ error: "Unauthorized" });

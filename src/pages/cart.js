@@ -30,6 +30,19 @@ export default function CartPage(props) {
   const router = useRouter();
 
   let total = 0;
+  for (let el of productsList) {
+    if (cart[el["_id"]]) {
+      total += cart[el["_id"]] * (el.discountedPrice ?? el.price);
+    }
+  }
+  let shopDiscount = 0;
+  if (total < 5000) shopDiscount = 0;
+  else if (5000 <= total && total < 20000) shopDiscount = 2;
+  else if (20000 <= total && total < 50000) shopDiscount = 4;
+  else if (50000 <= total && total < 100000) shopDiscount = 6;
+  else if (100000 <= total) shopDiscount = 8;
+
+  let discountedTotal = 0;
 
   function onMakeOrderButtonClicked(event) {
     if (!props.isLoggedIn) {
@@ -100,7 +113,12 @@ export default function CartPage(props) {
       <div className={styles["products-list"]}>
         {productsList.map((el) => {
           if (cart[el["_id"]]) {
-            total += cart[el["_id"]] * (el.discountedPrice ?? el.price);
+            discountedTotal +=
+              cart[el["_id"]] *
+              Math.ceil(
+                ((el.discountedPrice ?? el.price) * (100 - shopDiscount)) / 100
+              );
+
             return (
               <ProductHorizontalCard
                 {...el}
@@ -114,9 +132,23 @@ export default function CartPage(props) {
           return;
         })}
       </div>
-      <div className={styles["total-price-block"]}>
-        <div className={styles["total-price-text"]}>Итого:</div>
-        <div className={styles["total-price"]}>{total} ₽</div>
+      <div className={styles["totals-block"]}>
+        <div className={styles["total-price-block"]}>
+          <div className={styles["total-price-text"]}>Сумма:</div>
+          <div className={styles["total-price"]}>{total} ₽</div>
+        </div>
+        <div className={styles["total-price-block"]}>
+          <div className={styles["total-price-text"]}>
+            Скидка при данной сумме:
+          </div>
+          <div className={styles["total-price"]}>{shopDiscount}%</div>
+        </div>
+        <div className={styles["total-price-block"]}>
+          <div className={styles["total-price-text"]}>
+            Итого с учетом скидки:
+          </div>
+          <div className={styles["total-price"]}>{discountedTotal} ₽</div>
+        </div>
       </div>
       <p className={styles["text-info"]}>
         Информация о подтверждении заказа, изменениях по вашему заказу,

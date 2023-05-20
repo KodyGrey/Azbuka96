@@ -75,6 +75,8 @@ export default async function handler(req, res) {
                     order.totalPrice +=
                       order.products[productId]["amount"] *
                       (product.discountedPrice || product.price);
+                    order.products[productId].discountedPrice =
+                      product.discountedPrice || product.price;
                     if (error) {
                       res.status(500).json({ error: err.toString() });
                       resolve();
@@ -86,6 +88,34 @@ export default async function handler(req, res) {
               ordersCollection.countDocuments({}, (err, count) => {
                 if (err) res.status(500).json({ error: err.toString() });
                 order.number = count + 1;
+
+                let shopDiscount = 0;
+                if (order.totalPrice < 5000) shopDiscount = 0;
+                else if (5000 <= order.totalPrice && order.totalPrice < 20000)
+                  shopDiscount = 2;
+                else if (20000 <= order.totalPrice && order.totalPrice < 50000)
+                  shopDiscount = 4;
+                else if (50000 <= order.totalPrice && order.totalPrice < 100000)
+                  shopDiscount = 6;
+                else if (100000 <= order.totalPrice) shopDiscount = 8;
+
+                let discountedTotal = 0;
+
+                for (let productId in order.products) {
+                  order.products[productId].discountedPrice = Math.ceil(
+                    ((order.products[productId].discountedPrice ||
+                      order.products[productId].price) *
+                      (100 - shopDiscount)) /
+                      100
+                  );
+                  discountedTotal +=
+                    order.products[productId].discountedPrice *
+                    order.products[productId].amount;
+                }
+
+                order.totalPrice = discountedTotal;
+                order.shopDiscount = shopDiscount;
+
                 ordersCollection.insertOne(order, (err, ok) => {
                   if (err) res.status(500).json({ error: err.toString() });
                   else {

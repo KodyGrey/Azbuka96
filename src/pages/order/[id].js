@@ -93,10 +93,20 @@ export default function OrderPage(props) {
               );
             })}
           </div>
-          <div className={styles["total-price-block"]}>
-            <div className={styles["total-price-text"]}>Итого:</div>
-            <div className={styles["total-price"]}>
-              {orderInfo.totalPrice} ₽
+          <div className={styles["totals-block"]}>
+            <div className={styles["total-price-block"]}>
+              <div className={styles["total-price-text"]}>Итого:</div>
+              <div className={styles["total-price"]}>
+                {orderInfo.totalPrice} ₽
+              </div>
+            </div>
+            <div className={styles["total-price-block"]}>
+              <div className={styles["total-price-text"]}>
+                Предоставленная скидка:
+              </div>
+              <div className={styles["total-price"]}>
+                {orderInfo.shopDiscount}%
+              </div>
             </div>
           </div>
           <form className={styles["delivery-form"]}>

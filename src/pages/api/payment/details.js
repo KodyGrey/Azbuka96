@@ -6,14 +6,13 @@ export default async function handler(req, res) {
   return new Promise((resolve) => {
     getServerSession(req, res, authOptions)
       .then((session) => {
-        if (false && !session) {
-          //ПОМЕНЯТЬ
+        if (!session) {
           res.status(401).json({ error: "Unauthenticated" });
           resolve();
-          // } else if (!session.user.isAdmin) {
-          //   res
-          //     .status(403)
-          //     .json({ error: "You don't have enough permissions for that" });
+        } else if (!session.user.isAdmin) {
+          res
+            .status(403)
+            .json({ error: "You don't have enough permissions for that" });
         } else {
           switch (req.method) {
             case "GET":

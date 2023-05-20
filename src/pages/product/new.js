@@ -168,7 +168,16 @@ export default function NewProduct(props) {
           legend="Наличие"
           type="radio"
           categories={["В наличии", "Не в наличии"]}
-          fieldset_options={{ required: true, ref: inStockFieldsetRef }}
+          fieldset_options={{
+            required: true,
+            ref: inStockFieldsetRef,
+            defaultValue:
+              props.inStock === undefined
+                ? undefined
+                : props.inStock
+                ? "В наличии"
+                : "Не в наличии",
+          }}
         />
         <label className={styles["text-input-block"]}>
           Класс

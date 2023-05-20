@@ -2,6 +2,7 @@ import styles from "./Fieldset.module.css";
 
 import checked from "../../public/check-mark_checked.svg";
 import unchecked from "../../public/check-mark_unchecked.svg";
+import { useRef, useEffect } from "react";
 
 const Fieldset = (props) => {
   const handleChoiceSelect = (event) => {
@@ -9,6 +10,20 @@ const Fieldset = (props) => {
       props.onChoiceSelect(event.target.value);
     }
   };
+
+  useEffect(() => {
+    if (
+      props.fieldset_options &&
+      props.fieldset_options.ref &&
+      props.fieldset_options.defaultValue
+    ) {
+      // Set the default value when the component mounts
+      const defaultValue = props.fieldset_options.defaultValue;
+      props.fieldset_options.ref.current.querySelector(
+        `input[value="${defaultValue}"]`
+      ).checked = true;
+    }
+  }, [props.fieldset_options]);
 
   return (
     <>

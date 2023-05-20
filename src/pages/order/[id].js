@@ -13,8 +13,11 @@ import styles from "../../styles/cart.module.css";
 
 export default function OrderPage(props) {
   const fieldsetRef = useRef();
-  const deliveryAddressRef = useRef();
-  const commentRef = useRef();
+  const isLegalEntityRef = useRef();
+
+  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [comment, setComment] = useState("");
+
   const statusRef = useRef();
   const router = useRouter();
 
@@ -37,6 +40,8 @@ export default function OrderPage(props) {
         })
         .then((data) => {
           setOrderInfo(data);
+          setDeliveryAddress(data.deliveryAddress);
+          setComment(data.comment);
         })
         .catch((error) => {
           console.error("There was a problem with the fetch operation:", error);
@@ -47,7 +52,7 @@ export default function OrderPage(props) {
     getOrderInfo();
   }, [id, router]);
 
-  async function onStatusChangingSubmit(event) {
+  async function onChangingOrderSubmit(event) {
     event.preventDefault();
     if (!statusRef.current.querySelector("input:checked")) {
       setStatusChangingMessage("Выберете тип доставки");
@@ -57,6 +62,11 @@ export default function OrderPage(props) {
       method: "PUT",
       body: JSON.stringify({
         status: statusRef.current.querySelector("input:checked").value,
+        deliveryType: fieldsetRef.current.querySelector("input:checked").value,
+        deliveryAddress,
+        comment,
+        isLegalEntity:
+          !!isLegalEntityRef.current.querySelector("input:checked"),
       }),
     }).then((res) => res.json());
     setStatusChangingMessage(
@@ -89,7 +99,7 @@ export default function OrderPage(props) {
               {orderInfo.totalPrice} ₽
             </div>
           </div>
-          <form className={styles["delivery-form"]} readOnly>
+          <form className={styles["delivery-form"]}>
             <Fieldset
               key="delivery"
               legend="Тип доставки"
@@ -103,21 +113,42 @@ export default function OrderPage(props) {
               fieldset_options={{
                 ref: fieldsetRef,
                 required: true,
-                readOnly: true,
+                readOnly: !props.isAdmin,
+                defaultValue: orderInfo.deliveryType,
+                onChange: (event) => {
+                  setOrderInfo({
+                    ...orderInfo,
+                    deliveryType: event.target.value,
+                  });
+                },
               }}
-              choice={orderInfo.deliveryType}
+            />
+            <Fieldset
+              key="isLegalEntity"
+              legend="Тип заказа"
+              type="checkbox"
+              height="fit-content"
+              categories={["Заказать как Юрлицо"]}
+              fieldset_options={{
+                ref: isLegalEntityRef,
+                required: false,
+                readOnly: !props.isAdmin,
+                defaultValue: orderInfo.isLegalEntity
+                  ? "Заказать как Юрлицо"
+                  : undefined,
+              }}
             />
             <TextInput
               placeholder="Адрес доставки"
-              innerRef={deliveryAddressRef}
-              value={orderInfo.deliveryAddress}
-              readOnly
+              value={deliveryAddress}
+              onChange={(event) => setDeliveryAddress(event.target.value)}
+              readOnly={!props.isAdmin}
             />
             <TextInput
               placeholder="Комментарий к заказу"
-              innerRef={commentRef}
-              value={orderInfo.comment}
-              readOnly
+              value={comment}
+              onChange={(event) => setComment(event.target.value)}
+              readOnly={!props.isAdmin}
             />
           </form>
           {props.isAdmin && (
@@ -139,10 +170,7 @@ export default function OrderPage(props) {
               >
                 Скачать накладную
               </Button>
-              <form
-                className={styles["delivery-form"]}
-                onSubmit={onStatusChangingSubmit}
-              >
+              <form className={styles["delivery-form"]}>
                 <Fieldset
                   key="status"
                   legend="Статус"
@@ -156,13 +184,24 @@ export default function OrderPage(props) {
                     "Отменен",
                     "Завершен",
                   ]}
-                  fieldset_options={{ ref: statusRef, required: true }}
+                  fieldset_options={{
+                    ref: statusRef,
+                    required: true,
+                    defaultValue: orderInfo.status,
+                    onChange: (event) => {
+                      setOrderInfo({
+                        ...orderInfo,
+                        status: event.target.value,
+                      });
+                    },
+                  }}
                 />
                 <Button
                   type="submit"
                   style={{ width: "297px", height: "48px" }}
+                  onClick={onChangingOrderSubmit}
                 >
-                  Изменить Статус заказа
+                  Сохранить изменения в заказе
                 </Button>
                 {statusChangingMessage && <p>{statusChangingMessage}</p>}
               </form>

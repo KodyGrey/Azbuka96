@@ -141,7 +141,7 @@ export default function CartPage(props) {
           <Fieldset
             key="isLegalEntity"
             legend="Тип заказа"
-            type="radio"
+            type="checkbox"
             height="fit-content"
             categories={["Заказать как Юрлицо"]}
             fieldset_options={{ ref: isLegalEntityRef, required: false }}

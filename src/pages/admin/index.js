@@ -146,6 +146,13 @@ export default function AdminPage(props) {
         <Link href="/admin/products" className={styles["add-new-product-link"]}>
           Страница с товарами
         </Link>
+        <Link
+          href="/admin/payment/details"
+          className={styles["add-new-product-link"]}
+          style={{ "font-size": "15px" }}
+        >
+          Настройка платежных реквизитов
+        </Link>
       </div>
       <Card className={styles["statuses-bar"]}>
         {statusesList.map((el) => {

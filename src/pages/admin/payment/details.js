@@ -13,6 +13,26 @@ function PaymentDetailsComponent(props) {
   const [number, setNumber] = useState(props.number);
   const [comment, setComment] = useState(props.comment);
 
+  useEffect(() => {
+    async function getData() {
+      const data = await (
+        await fetch("/api/payment/details", {
+          method: "GET",
+          credentials: "include",
+        })
+      ).json();
+      const fields = props.isIndividual
+        ? data.individualPaymentDetails
+        : data.legalEntityPaymentDetails;
+      setType(fields.type);
+      setReciever(fields.reciever);
+      setNumber(fields.number);
+      setComment(fields.comment);
+    }
+
+    getData();
+  }, [props.isIndividual]);
+
   const sendData = () => {
     fetch("/api/payment/details", {
       method: "PUT",
@@ -67,24 +87,16 @@ function PaymentDetailsComponent(props) {
 }
 
 export default function PaymentDetailsPage(props) {
-  const [data, setData] = useState(props.data);
-
   return (
     <div className={styles["details-page"]}>
       <h1>Платежные реквизиты</h1>
       <div className={styles["payment-details-component"]}>
         <h2>Для ФЛ</h2>
-        <PaymentDetailsComponent
-          isIndividual={true}
-          {...data.individualPaymentDetails}
-        />
+        <PaymentDetailsComponent isIndividual={true} />
       </div>
       <div className={styles["payment-details-component"]}>
         <h2>Для ЮР</h2>
-        <PaymentDetailsComponent
-          isIndividual={false}
-          {...data.legalEntityPaymentDetails}
-        />
+        <PaymentDetailsComponent isIndividual={false} />
       </div>
     </div>
   );
@@ -92,14 +104,6 @@ export default function PaymentDetailsPage(props) {
 
 export async function getServerSideProps(ctx) {
   const session = await getServerSession(ctx.req, ctx.res, authOptions);
-
-  const data = await // ВАЖНО ПОМЕНЯТЬ
-  (
-    await fetch("http://localhost:3000/api/payment/details", {
-      method: "GET",
-      credentials: "include",
-    })
-  ).json();
 
   if (!session) {
     return {
@@ -119,7 +123,6 @@ export async function getServerSideProps(ctx) {
     return {
       props: {
         session: session.user.id,
-        data,
       },
     };
   }

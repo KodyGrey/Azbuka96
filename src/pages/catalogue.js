@@ -121,11 +121,16 @@ export default function Catalogue(props) {
     return count;
   }
 
+  let searchRes = undefined;
   if (searchQuery) {
     productsList.sort((a, b) => {
       const countA = getCountOfMatchingWords(a, searchQuery.toLowerCase());
       const countB = getCountOfMatchingWords(b, searchQuery.toLowerCase());
       return countB - countA;
+    });
+
+    searchRes = productsList.find((product) => {
+      String(product.bookID) === searchQuery;
     });
   }
 
@@ -163,16 +168,26 @@ export default function Catalogue(props) {
             <p onClick={onChangeFieldsetModalHidden}>Фильтры</p>
           </div>
           <div>
-            {productsList.slice(0, amountOfShownCards).map((el) => {
-              return (
-                <ProductCard
-                  {...el}
-                  url={props.url}
-                  key={el["_id"]}
-                  id={el["_id"]}
-                />
-              );
-            })}
+            {searchRes ? (
+              <ProductCard
+                {...searchRes}
+                url={props.url}
+                key={searchRes["_id"]}
+                id={searchRes["_id"]}
+              />
+            ) : (
+              productsList.slice(0, amountOfShownCards).map((el) => {
+                return (
+                  <ProductCard
+                    {...el}
+                    url={props.url}
+                    key={el["_id"]}
+                    id={el["_id"]}
+                  />
+                );
+              })
+            )}
+            {}
           </div>
         </div>
         <Button

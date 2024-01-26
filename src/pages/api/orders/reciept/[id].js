@@ -46,60 +46,67 @@ export default async function handler(req, res) {
                             else {
                               const workbook = new ExcelJS.Workbook();
 
+                              let isLegalEntity = false;
+                              if (order.isLegalEntity) isLegalEntity = true;
+
                               workbook.xlsx
-                                .readFile("src/templates/template.xlsx")
+                                .readFile(
+                                  isLegalEntity
+                                    ? "src/templates/templateLegal.xlsx"
+                                    : "src/templates/template.xlsx"
+                                )
                                 .then(async () => {
                                   const worksheet =
                                     workbook.getWorksheet("Sheet1");
 
-                                  let paymentDetailsPath =
-                                    "src/templates/IndividualPaymentDetails.txt";
+                                  // let paymentDetailsPath =
+                                  //   "src/templates/IndividualPaymentDetails.txt";
 
-                                  if (order.isLegalEntity) {
-                                    paymentDetailsPath =
-                                      "src/templates/LegalEntityPaymentDetails.txt";
-                                  }
+                                  // if (order.isLegalEntity) {
+                                  //   paymentDetailsPath =
+                                  //     "src/templates/LegalEntityPaymentDetails.txt";
+                                  // }
 
-                                  const readStream =
-                                    createReadStream(paymentDetailsPath);
+                                  // const readStream =
+                                  //   createReadStream(paymentDetailsPath);
 
-                                  let text = "";
-                                  for await (const chunk of readStream) {
-                                    text += chunk;
-                                  }
-                                  const lines = text.split("\n");
+                                  // let text = "";
+                                  // for await (const chunk of readStream) {
+                                  //   text += chunk;
+                                  // }
+                                  // const lines = text.split("\n");
 
-                                  const paymentDetails = {};
+                                  // const paymentDetails = {};
 
-                                  let index = 0;
-                                  for (let line of lines) {
-                                    switch (index) {
-                                      case 0:
-                                        paymentDetails.type = line.trim();
-                                      case 1:
-                                        paymentDetails.reciever = line.trim();
-                                      case 2:
-                                        paymentDetails.number = line.trim();
-                                      case 3:
-                                        paymentDetails.comment = line.trim();
-                                    }
-                                    index++;
-                                  }
+                                  // let index = 0;
+                                  // for (let line of lines) {
+                                  //   switch (index) {
+                                  //     case 0:
+                                  //       paymentDetails.type = line.trim();
+                                  //     case 1:
+                                  //       paymentDetails.reciever = line.trim();
+                                  //     case 2:
+                                  //       paymentDetails.number = line.trim();
+                                  //     case 3:
+                                  //       paymentDetails.comment = line.trim();
+                                  //   }
+                                  //   index++;
+                                  // }
 
-                                  // Payment Details changing
-                                  worksheet.getCell("D4").value =
-                                    paymentDetails.type;
-                                  worksheet.getCell("F5").value =
-                                    paymentDetails.reciever;
-                                  worksheet.getCell("W4").value =
-                                    paymentDetails.number;
-                                  worksheet.getCell("F6").value =
-                                    paymentDetails.comment;
+                                  // // Payment Details changing
+                                  // worksheet.getCell("D4").value =
+                                  //   paymentDetails.type;
+                                  // worksheet.getCell("F5").value =
+                                  //   paymentDetails.reciever;
+                                  // worksheet.getCell("W4").value =
+                                  //   paymentDetails.number;
+                                  // worksheet.getCell("F6").value =
+                                  //   paymentDetails.comment;
 
                                   // Customer info changing
                                   worksheet.getCell(
-                                    "F14"
-                                  ).value = `${user.name}, Email: ${user.email}, Номер телефона: ${user.phoneNumber}`;
+                                    isLegalEntity ? "F24" : "F14"
+                                  ).value = `${user.name}, Email: ${user.email}, Номер телефона: ${user.phoneNumber}, Город: ${user.city}`;
 
                                   // Header with order nubmer and today date changing
                                   const today = new Date();
@@ -116,7 +123,7 @@ export default async function handler(req, res) {
                                   ).value = `Счет № ${order.number} от ${day}.${month}.${year}`;
 
                                   // Changing products rows
-                                  let row_index = 18;
+                                  let row_index = isLegalEntity ? 28 : 18;
                                   worksheet.duplicateRow(
                                     row_index,
                                     Object.keys(order.products).length - 1,
@@ -125,7 +132,9 @@ export default async function handler(req, res) {
                                   for (let product in order.products) {
                                     const product_row =
                                       worksheet.getRow(row_index);
-                                    if (row_index !== 18) {
+                                    if (
+                                      row_index !== (isLegalEntity ? 28 : 18)
+                                    ) {
                                       worksheet.mergeCells(
                                         `B${row_index}:C${row_index}`
                                       );
@@ -149,7 +158,7 @@ export default async function handler(req, res) {
                                       );
                                     }
                                     product_row.getCell("B").value =
-                                      row_index - 17;
+                                      row_index - (isLegalEntity ? 28 : 18) + 1;
                                     product_row.getCell("D").value =
                                       order.products[product].title;
                                     product_row.getCell("U").value =

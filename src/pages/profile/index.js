@@ -169,7 +169,7 @@ export async function getServerSideProps(ctx) {
       "user-city": session.user.city,
       "user-phone-number": session.user.phoneNumber,
       email: session.user.email,
-      isAdmin: session.user.isAdmin,
+      isAdmin: session.user.isAdmin || null,
     },
   };
 }

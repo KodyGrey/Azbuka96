@@ -98,6 +98,14 @@ export default function ProductsAdmin(props) {
         const countB = getCountOfMatchingWords(b, searchQuery.toLowerCase());
         return countB - countA;
       });
+
+      filteredProducts = filteredProducts.filter((product) => {
+        return (
+          String(product.bookID) === searchQuery ||
+          (product.author &&
+            product.author.toLowerCase() === searchQuery.toLowerCase())
+        );
+      });
     }
 
     setFilteredProducts(filteredProducts);

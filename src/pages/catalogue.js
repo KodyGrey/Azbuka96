@@ -103,7 +103,6 @@ export default function Catalogue(props) {
   function getCountOfMatchingWords(element, searchQuery) {
     const searchRegex = new RegExp(`${searchQuery}`, "gi");
     let count = 0;
-    if (String(element.bookID).match(searchRegex)) count += 1000;
     const properties = [
       element.title,
       element.author,
@@ -129,8 +128,12 @@ export default function Catalogue(props) {
       return countB - countA;
     });
 
-    searchRes = productsList.find((product) => {
-      String(product.bookID) === searchQuery;
+    productsList = productsList.filter((product) => {
+      return (
+        String(product.bookID) === searchQuery ||
+        (product.author &&
+          product.author.toLowerCase() === searchQuery.toLowerCase())
+      );
     });
   }
 
@@ -168,26 +171,16 @@ export default function Catalogue(props) {
             <p onClick={onChangeFieldsetModalHidden}>Фильтры</p>
           </div>
           <div>
-            {searchRes ? (
-              <ProductCard
-                {...searchRes}
-                url={props.url}
-                key={searchRes["_id"]}
-                id={searchRes["_id"]}
-              />
-            ) : (
-              productsList.slice(0, amountOfShownCards).map((el) => {
-                return (
-                  <ProductCard
-                    {...el}
-                    url={props.url}
-                    key={el["_id"]}
-                    id={el["_id"]}
-                  />
-                );
-              })
-            )}
-            {}
+            {productsList.slice(0, amountOfShownCards).map((el) => {
+              return (
+                <ProductCard
+                  {...el}
+                  url={props.url}
+                  key={el["_id"]}
+                  id={el["_id"]}
+                />
+              );
+            })}
           </div>
         </div>
         <Button

@@ -7,12 +7,21 @@ import IndexImageSection from "../components/InfoElements/IndexImageSection";
 export default function Home(props) {
   const productsList = props.productsList;
 
-  productsList.sort((a, b) => b.boughtScore - a.boughtScore);
+  productsList.sort(
+    (a, b) =>
+      (b.boughtScore || 0) +
+      (b.relevanceCoefficient || 0) * 10000000 -
+      ((a.boughtScore || 0) + (a.relevanceCoefficient || 0) * 10000000)
+  );
   const relevantList = productsList.slice(0, 6);
   productsList.sort(
     (a, b) =>
-      (a.discountedPrice ?? a.price) / a.price -
-      (b.discountedPrice ?? b.price) / b.price
+      (a.discountedPrice ?? a.price) /
+        a.price /
+        ((a.discountCoefficient || 0) * 10000000) -
+      (b.discountedPrice ?? b.price) /
+        b.price /
+        ((b.discountCoefficient || 0) * 10000000)
   );
   const discountList = productsList.slice(0, 6);
 

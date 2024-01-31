@@ -1,0 +1,59 @@
+.main-page-settings-page {
+  width: 845px;
+  align-self: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.main-page-settings-page h2 {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 29px;
+
+  margin: 64px 0 0 0;
+
+  color: #49516f;
+}
+
+@media (max-width: 860px) {
+  .main-page-settings-page {
+    width: 297px;
+    flex-direction: column;
+  }
+  .main-page-settings-page h2 {
+    margin: 32px 0 0 0;
+  }
+}
+
+.save-button {
+  align-self: center;
+  height: 48px;
+  width: 128px;
+  font-size: 14px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 297px;
+}
+
+.form input {
+  height: 32px;
+  max-width: 297px;
+  width: 270px;
+}
+
+.form label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 18px;
+  font-weight: 600;
+  color: #49516f;
+}

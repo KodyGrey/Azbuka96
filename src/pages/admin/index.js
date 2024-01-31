@@ -146,6 +146,9 @@ export default function AdminPage(props) {
         <Link href="/admin/products" className={styles["add-new-product-link"]}>
           Страница с товарами
         </Link>
+        <Link href="/admin/main-page-settings" className={styles["csv-block"]}>
+          Настройка главной страницы
+        </Link>
         <Link
           href="/admin/payment/details"
           className={styles["add-new-product-link"]}

@@ -33,7 +33,7 @@ export default async function handler(req, res) {
               .json({ error: "You have not enough permissions for that" });
             resolve();
           } else {
-            const updateParams = req.body;
+            const updateParams = JSON.parse(req.body);
             clientPromise
               .then((client) => {
                 const collection = client.db().collection("products");

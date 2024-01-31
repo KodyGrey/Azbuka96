@@ -23,7 +23,11 @@ function MyApp({ Component, pageProps }) {
       <Header></Header>
 
       <main className="main-body">
-        <Component {...pageProps} productsList={productsList} />
+        <Component
+          {...pageProps}
+          productsList={productsList}
+          setProductsList={setProductsList}
+        />
       </main>
 
       <MenuBar />

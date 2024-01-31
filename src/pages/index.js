@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Head from "next/head";
 import styles from "../styles/index.module.css";
 
 import ProductCard from "../components/Products/ProductCard";
@@ -27,6 +28,9 @@ export default function Home(props) {
 
   return (
     <>
+      <Head>
+        <title>Азбука96 - Учебники, рабочие тетради</title>
+      </Head>
       <IndexImageSection className={styles["image-section"]} />
       <section className={styles["products-grid"]}>
         <h2>Актуальное</h2>

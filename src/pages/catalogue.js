@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/catalogue.module.css";
 
@@ -138,63 +139,68 @@ export default function Catalogue(props) {
   }
 
   return (
-    <section
-      className={`${!isFieldsetModalHidden && styles["overflow-hidden"]} ${
-        styles["catalogue"]
-      }`}
-    >
-      <Card
-        className={`${!isFieldsetModalHidden && styles["filter-modal"]} ${
-          styles["filter-field"]
+    <>
+      <Head>
+        <title>Азбука96 - Каталог учебников, рабочих тетрадей</title>
+      </Head>
+      <section
+        className={`${!isFieldsetModalHidden && styles["overflow-hidden"]} ${
+          styles["catalogue"]
         }`}
       >
-        <div onClick={onChangeFieldsetModalHidden}>
-          <Image src={arrowImage} alt="Назад" layout="fill" />
-        </div>
-        <Fieldset
-          {...gradeArgsFieldset}
-          onChoiceSelect={handleGradeChoiceSelection}
-        />
-        <Fieldset
-          {...subjectArgsFieldset}
-          onChoiceSelect={handleSubjectChoiceSelection}
-        />
-        <Fieldset
-          {...publisherArgsFieldset}
-          onChoiceSelect={handlePublisherChoiceSelection}
-        />
-      </Card>
-      <div className={styles["products-placement"]}>
-        <div className={styles["products-grid"]}>
-          <div className={styles["headers"]}>
-            <h2>{searchQuery ? "Результаты поиска" : "Каталог"}</h2>
-            <p onClick={onChangeFieldsetModalHidden}>Фильтры</p>
-          </div>
-          <div>
-            {productsList.slice(0, amountOfShownCards).map((el) => {
-              return (
-                <ProductCard
-                  {...el}
-                  url={props.url}
-                  key={el["_id"]}
-                  id={el["_id"]}
-                />
-              );
-            })}
-          </div>
-        </div>
-        <Button
-          onClick={(event) => {
-            setAmountOfShownCards(
-              Math.min(amountOfShownCards + 24, productsList.length)
-            );
-          }}
-          className={styles["show-more-button"]}
+        <Card
+          className={`${!isFieldsetModalHidden && styles["filter-modal"]} ${
+            styles["filter-field"]
+          }`}
         >
-          Показать ещё
-        </Button>
-      </div>
-    </section>
+          <div onClick={onChangeFieldsetModalHidden}>
+            <Image src={arrowImage} alt="Назад" layout="fill" />
+          </div>
+          <Fieldset
+            {...gradeArgsFieldset}
+            onChoiceSelect={handleGradeChoiceSelection}
+          />
+          <Fieldset
+            {...subjectArgsFieldset}
+            onChoiceSelect={handleSubjectChoiceSelection}
+          />
+          <Fieldset
+            {...publisherArgsFieldset}
+            onChoiceSelect={handlePublisherChoiceSelection}
+          />
+        </Card>
+        <div className={styles["products-placement"]}>
+          <div className={styles["products-grid"]}>
+            <div className={styles["headers"]}>
+              <h2>{searchQuery ? "Результаты поиска" : "Каталог"}</h2>
+              <p onClick={onChangeFieldsetModalHidden}>Фильтры</p>
+            </div>
+            <div>
+              {productsList.slice(0, amountOfShownCards).map((el) => {
+                return (
+                  <ProductCard
+                    {...el}
+                    url={props.url}
+                    key={el["_id"]}
+                    id={el["_id"]}
+                  />
+                );
+              })}
+            </div>
+          </div>
+          <Button
+            onClick={(event) => {
+              setAmountOfShownCards(
+                Math.min(amountOfShownCards + 24, productsList.length)
+              );
+            }}
+            className={styles["show-more-button"]}
+          >
+            Показать ещё
+          </Button>
+        </div>
+      </section>
+    </>
   );
 }
 

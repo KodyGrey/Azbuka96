@@ -3,6 +3,7 @@ import Button from "../../components/UI/Button";
 import TextInput from "../../components/UI/TextInput";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 export default function MainPageSettings(props) {
   const productsList = props.productsList;
@@ -155,138 +156,143 @@ export default function MainPageSettings(props) {
   }, []);
 
   return (
-    <div className={styles["main-page-settings-page"]}>
-      <div>
-        <h2>Настройка актуального</h2>
-        <form className={styles["form"]}>
-          <p>
-            В полях необходимо указать артикул требуемого продукта, например,
-            00158
-          </p>
-          <label>
-            1.
-            <TextInput
-              value={relevant1}
-              onChange={(event) => setRelevant1(event.target.value.trim())}
-            ></TextInput>
-          </label>
-          <label>
-            2.
-            <TextInput
-              value={relevant2}
-              onChange={(event) => setRelevant2(event.target.value.trim())}
-            ></TextInput>
-          </label>
-          <label>
-            3.
-            <TextInput
-              value={relevant3}
-              onChange={(event) => setRelevant3(event.target.value.trim())}
-            ></TextInput>
-          </label>
-          <label>
-            4.
-            <TextInput
-              value={relevant4}
-              onChange={(event) => setRelevant4(event.target.value.trim())}
-            ></TextInput>
-          </label>
-          <label>
-            5.
-            <TextInput
-              value={relevant5}
-              onChange={(event) => setRelevant5(event.target.value.trim())}
-            ></TextInput>
-          </label>
-          <label>
-            6.
-            <TextInput
-              value={relevant6}
-              onChange={(event) => setRelevant6(event.target.value.trim())}
-            ></TextInput>
-          </label>
-          <Button
-            type="button"
-            className={styles["save-button"]}
-            onClick={updateRelevanceCoefficients}
-          >
-            Сохранить
-          </Button>
-          {successfulRelevanceSave && (
-            <p style={{ color: "green" }}>Успешно сохранено</p>
-          )}
-          <p>
-            В случае, если значения будут пустыми - первыми будут наиболее часто
-            покупаемые продукты
-          </p>
-        </form>
-      </div>
-      <div>
-        <h2>Настройка скидок</h2>
-        <form className={styles["form"]}>
-          <p>
-            В полях необходимо указать артикул требуемого продукта, например,
-            00158
-          </p>
-          <label>
-            1.
-            <TextInput
-              value={discount1}
-              onChange={(event) => setDiscount1(event.target.value.trim())}
-            ></TextInput>
-          </label>
-          <label>
-            2.
-            <TextInput
-              value={discount2}
-              onChange={(event) => setDiscount2(event.target.value.trim())}
-            ></TextInput>
-          </label>
-          <label>
-            3.
-            <TextInput
-              value={discount3}
-              onChange={(event) => setDiscount3(event.target.value.trim())}
-            ></TextInput>
-          </label>
-          <label>
-            4.
-            <TextInput
-              value={discount4}
-              onChange={(event) => setDiscount4(event.target.value.trim())}
-            ></TextInput>
-          </label>
-          <label>
-            5.
-            <TextInput
-              value={discount5}
-              onChange={(event) => setDiscount5(event.target.value.trim())}
-            ></TextInput>
-          </label>
-          <label>
-            6.
-            <TextInput
-              value={discount6}
-              onChange={(event) => setDiscount6(event.target.value.trim())}
-            ></TextInput>
-          </label>
+    <>
+      <Head>
+        <title>Азбука96 - Настройка главной страницы</title>
+      </Head>
+      <div className={styles["main-page-settings-page"]}>
+        <div>
+          <h2>Настройка актуального</h2>
+          <form className={styles["form"]}>
+            <p>
+              В полях необходимо указать артикул требуемого продукта, например,
+              00158
+            </p>
+            <label>
+              1.
+              <TextInput
+                value={relevant1}
+                onChange={(event) => setRelevant1(event.target.value.trim())}
+              ></TextInput>
+            </label>
+            <label>
+              2.
+              <TextInput
+                value={relevant2}
+                onChange={(event) => setRelevant2(event.target.value.trim())}
+              ></TextInput>
+            </label>
+            <label>
+              3.
+              <TextInput
+                value={relevant3}
+                onChange={(event) => setRelevant3(event.target.value.trim())}
+              ></TextInput>
+            </label>
+            <label>
+              4.
+              <TextInput
+                value={relevant4}
+                onChange={(event) => setRelevant4(event.target.value.trim())}
+              ></TextInput>
+            </label>
+            <label>
+              5.
+              <TextInput
+                value={relevant5}
+                onChange={(event) => setRelevant5(event.target.value.trim())}
+              ></TextInput>
+            </label>
+            <label>
+              6.
+              <TextInput
+                value={relevant6}
+                onChange={(event) => setRelevant6(event.target.value.trim())}
+              ></TextInput>
+            </label>
+            <Button
+              type="button"
+              className={styles["save-button"]}
+              onClick={updateRelevanceCoefficients}
+            >
+              Сохранить
+            </Button>
+            {successfulRelevanceSave && (
+              <p style={{ color: "green" }}>Успешно сохранено</p>
+            )}
+            <p>
+              В случае, если значения будут пустыми - первыми будут наиболее
+              часто покупаемые продукты
+            </p>
+          </form>
+        </div>
+        <div>
+          <h2>Настройка скидок</h2>
+          <form className={styles["form"]}>
+            <p>
+              В полях необходимо указать артикул требуемого продукта, например,
+              00158
+            </p>
+            <label>
+              1.
+              <TextInput
+                value={discount1}
+                onChange={(event) => setDiscount1(event.target.value.trim())}
+              ></TextInput>
+            </label>
+            <label>
+              2.
+              <TextInput
+                value={discount2}
+                onChange={(event) => setDiscount2(event.target.value.trim())}
+              ></TextInput>
+            </label>
+            <label>
+              3.
+              <TextInput
+                value={discount3}
+                onChange={(event) => setDiscount3(event.target.value.trim())}
+              ></TextInput>
+            </label>
+            <label>
+              4.
+              <TextInput
+                value={discount4}
+                onChange={(event) => setDiscount4(event.target.value.trim())}
+              ></TextInput>
+            </label>
+            <label>
+              5.
+              <TextInput
+                value={discount5}
+                onChange={(event) => setDiscount5(event.target.value.trim())}
+              ></TextInput>
+            </label>
+            <label>
+              6.
+              <TextInput
+                value={discount6}
+                onChange={(event) => setDiscount6(event.target.value.trim())}
+              ></TextInput>
+            </label>
 
-          <Button
-            type="button"
-            className={styles["save-button"]}
-            onClick={updateDiscountedCoefficients}
-          >
-            Сохранить
-          </Button>
-          {successfulDiscountSave && (
-            <p style={{ color: "green" }}>Успешно сохранено</p>
-          )}
-          <p>
-            В случае, если значения будут пустыми - первыми будут продукты с
-            наибольшей скидкой (в процентах)
-          </p>
-        </form>
+            <Button
+              type="button"
+              className={styles["save-button"]}
+              onClick={updateDiscountedCoefficients}
+            >
+              Сохранить
+            </Button>
+            {successfulDiscountSave && (
+              <p style={{ color: "green" }}>Успешно сохранено</p>
+            )}
+            <p>
+              В случае, если значения будут пустыми - первыми будут продукты с
+              наибольшей скидкой (в процентах)
+            </p>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

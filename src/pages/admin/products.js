@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import Head from "next/head";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
@@ -119,84 +120,89 @@ export default function ProductsAdmin(props) {
   ]);
 
   return (
-    <div className={styles["admin-products-page"]}>
-      <h2>Номенклатура товаров</h2>
-      <div className={styles["filters-block"]}>
-        <input
-          className={styles["search-bar"]}
-          type="search"
-          onChange={(event) => setSearchQuery(event.target.value)}
-          placeholder="Найти товар"
-        />
-        <div className={styles["selectors-block"]}>
-          <select
-            onChange={(event) => setWithPhotoChosen(event.target.value)}
-            id="photo"
-          >
-            <option value="None">Выберите фото</option>
-            <option value="with">С фото</option>
-            <option value="without">Без фото</option>
-          </select>
-          <select
-            onChange={(event) => setGradeChosen(event.target.value)}
-            id="grade"
-          >
-            <option key="grade" value="None">
-              Выберите класс
-            </option>
-            {gradesList.map((el) => (
-              <option key={el} value={el}>
-                {el}
+    <>
+      <Head>
+        <title>Азбука96 - Настройки товаров</title>
+      </Head>
+      <div className={styles["admin-products-page"]}>
+        <h2>Номенклатура товаров</h2>
+        <div className={styles["filters-block"]}>
+          <input
+            className={styles["search-bar"]}
+            type="search"
+            onChange={(event) => setSearchQuery(event.target.value)}
+            placeholder="Найти товар"
+          />
+          <div className={styles["selectors-block"]}>
+            <select
+              onChange={(event) => setWithPhotoChosen(event.target.value)}
+              id="photo"
+            >
+              <option value="None">Выберите фото</option>
+              <option value="with">С фото</option>
+              <option value="without">Без фото</option>
+            </select>
+            <select
+              onChange={(event) => setGradeChosen(event.target.value)}
+              id="grade"
+            >
+              <option key="grade" value="None">
+                Выберите класс
               </option>
-            ))}
-          </select>
-          <select
-            onChange={(event) => setPublisherChosen(event.target.value)}
-            id="publisher"
-          >
-            <option key="publisher" value="None">
-              Выберите издательство
-            </option>
-            {publishersList.map((el) => (
-              <option key={el} value={el}>
-                {el}
+              {gradesList.map((el) => (
+                <option key={el} value={el}>
+                  {el}
+                </option>
+              ))}
+            </select>
+            <select
+              onChange={(event) => setPublisherChosen(event.target.value)}
+              id="publisher"
+            >
+              <option key="publisher" value="None">
+                Выберите издательство
               </option>
-            ))}
-          </select>
-          <select
-            onChange={(event) => setSubjectChosen(event.target.value)}
-            id="subject"
-          >
-            <option key="subject" value="None">
-              Выберите предмет
-            </option>
-            {subjectsList.map((el) => (
-              <option key={el} value={el}>
-                {el}
+              {publishersList.map((el) => (
+                <option key={el} value={el}>
+                  {el}
+                </option>
+              ))}
+            </select>
+            <select
+              onChange={(event) => setSubjectChosen(event.target.value)}
+              id="subject"
+            >
+              <option key="subject" value="None">
+                Выберите предмет
               </option>
-            ))}
-          </select>
+              {subjectsList.map((el) => (
+                <option key={el} value={el}>
+                  {el}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
+        <div className={styles["products-block"]}>
+          {filteredProducts.slice(0, amountOfShownCards).map((product) => {
+            return (
+              <ProductAdminHorizontalCard
+                {...product}
+                url={props.url}
+                key={product["_id"]}
+                id={product["_id"]}
+              />
+            );
+          })}
+        </div>
+        <Button
+          className={styles["show-more-button"]}
+          onClick={() => setAmountOfShownCards((prev) => prev + 48)}
+        >
+          Показать ещё
+        </Button>
       </div>
-      <div className={styles["products-block"]}>
-        {filteredProducts.slice(0, amountOfShownCards).map((product) => {
-          return (
-            <ProductAdminHorizontalCard
-              {...product}
-              url={props.url}
-              key={product["_id"]}
-              id={product["_id"]}
-            />
-          );
-        })}
-      </div>
-      <Button
-        className={styles["show-more-button"]}
-        onClick={() => setAmountOfShownCards((prev) => prev + 48)}
-      >
-        Показать ещё
-      </Button>
-    </div>
+    </>
   );
 }
 

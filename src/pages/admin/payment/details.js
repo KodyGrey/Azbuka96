@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { useEffect, useState } from "react";
+import Head from "next/head";
 
 import TextInput from "../../../components/UI/TextInput";
 import Button from "../../../components/UI/Button";
@@ -88,17 +89,23 @@ function PaymentDetailsComponent(props) {
 
 export default function PaymentDetailsPage(props) {
   return (
-    <div className={styles["details-page"]}>
-      <h1>Платежные реквизиты</h1>
-      <div className={styles["payment-details-component"]}>
-        <h2>Для ФЛ</h2>
-        <PaymentDetailsComponent isIndividual={true} />
+    <>
+      <Head>
+        <title>Азбука96 - Настройка платежных реквизитов</title>
+      </Head>
+
+      <div className={styles["details-page"]}>
+        <h1>Платежные реквизиты</h1>
+        <div className={styles["payment-details-component"]}>
+          <h2>Для ФЛ</h2>
+          <PaymentDetailsComponent isIndividual={true} />
+        </div>
+        <div className={styles["payment-details-component"]}>
+          <h2>Для ЮР</h2>
+          <PaymentDetailsComponent isIndividual={false} />
+        </div>
       </div>
-      <div className={styles["payment-details-component"]}>
-        <h2>Для ЮР</h2>
-        <PaymentDetailsComponent isIndividual={false} />
-      </div>
-    </div>
+    </>
   );
 }
 

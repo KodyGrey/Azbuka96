@@ -8,6 +8,7 @@ import { useState } from "react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 function Update(props) {
   const [name, setName] = useState("");
@@ -65,41 +66,46 @@ function Update(props) {
   }
 
   return (
-    <div className={styles["update-block"]}>
-      <h2>Введите пользовательские данные</h2>
-      <form className={styles["update-form"]} onSubmit={onUpdateFormSubmit}>
-        <TextInput
-          id="name"
-          className={styles["text-input"]}
-          placeholder="ФИО"
-          value={name}
-          onChange={onNameChanged}
-          required
-        />
-        <TextInput
-          id="city"
-          className={styles["text-input"]}
-          placeholder="Город"
-          value={city}
-          onChange={onCityChanged}
-          required
-        />
-        <TextInput
-          id="phoneNumber"
-          type="tel"
-          pattern="+7\([0-9]{3}\)[0-9]{3}-[0-9]{2}-[0-9]{2}"
-          className={styles["text-input"]}
-          placeholder="+7(912)345-67-89"
-          value={phoneNumber}
-          onChange={onPhoneNumberChanged}
-          required
-        />
+    <>
+      <Head>
+        <title>Азбука96 - Обновление данных профиля</title>
+      </Head>
+      <div className={styles["update-block"]}>
+        <h2>Введите пользовательские данные</h2>
+        <form className={styles["update-form"]} onSubmit={onUpdateFormSubmit}>
+          <TextInput
+            id="name"
+            className={styles["text-input"]}
+            placeholder="ФИО"
+            value={name}
+            onChange={onNameChanged}
+            required
+          />
+          <TextInput
+            id="city"
+            className={styles["text-input"]}
+            placeholder="Город"
+            value={city}
+            onChange={onCityChanged}
+            required
+          />
+          <TextInput
+            id="phoneNumber"
+            type="tel"
+            pattern="+7\([0-9]{3}\)[0-9]{3}-[0-9]{2}-[0-9]{2}"
+            className={styles["text-input"]}
+            placeholder="+7(912)345-67-89"
+            value={phoneNumber}
+            onChange={onPhoneNumberChanged}
+            required
+          />
 
-        <Button type="submit" className={styles["submit-button"]}>
-          Отправить
-        </Button>
-      </form>
-    </div>
+          <Button type="submit" className={styles["submit-button"]}>
+            Отправить
+          </Button>
+        </form>
+      </div>
+    </>
   );
 }
 

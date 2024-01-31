@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Head from "next/head";
 
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -55,6 +56,11 @@ export default function ProductPage(props) {
 
   return (
     <>
+      <Head>
+        <title>
+          Азбука96 - {productInfo.title} {productInfo.author}
+        </title>
+      </Head>
       <div className={styles["product-page"]}>
         {productInfo ? (
           <>

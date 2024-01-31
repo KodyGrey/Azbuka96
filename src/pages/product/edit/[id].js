@@ -2,13 +2,21 @@ import { useRouter } from "next/router";
 import NewProduct from "../new";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
+import Head from "next/head";
 
 export default function EditProduct(props) {
   //   const router = useRouter();
   //   const id = router.query.id;
   //   const product = props.productsList.find((el) => el.id === id);
   //   if (!product) router.push("/404");
-  return <NewProduct {...props} {...props.product} />;
+  return (
+    <>
+      <Head>
+        <title>Азбука96 - Редактировать {props.product.title}</title>
+      </Head>
+      <NewProduct {...props} {...props.product} />;
+    </>
+  );
 }
 
 export async function getServerSideProps(ctx) {

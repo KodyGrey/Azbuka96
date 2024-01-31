@@ -5,6 +5,7 @@ import Fieldset from "../../components/Fieldset/Fieldset";
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
@@ -75,151 +76,156 @@ export default function OrderPage(props) {
   }
 
   return (
-    <div className={styles["cart-page"]}>
-      {Object.keys(orderInfo).length !== 0 && (
-        <>
-          <h2>Заказ №{orderInfo.number}</h2>
-          <div className={styles["products-list"]}>
-            {Object.keys(orderInfo.products).map((key) => {
-              const el = orderInfo.products[key];
-              return (
-                <ProductHorizontalCard
-                  type="inOrder"
-                  {...el}
-                  url={props.url}
-                  key={el["_id"]}
-                  id={el["_id"]}
-                />
-              );
-            })}
-          </div>
-          <div className={styles["totals-block"]}>
-            <div className={styles["total-price-block"]}>
-              <div className={styles["total-price-text"]}>Итого:</div>
-              <div className={styles["total-price"]}>
-                {orderInfo.totalPrice} ₽
+    <>
+      <Head>
+        <title>Азбука96 - Заказ №{orderInfo.number}</title>
+      </Head>
+      <div className={styles["cart-page"]}>
+        {Object.keys(orderInfo).length !== 0 && (
+          <>
+            <h2>Заказ №{orderInfo.number}</h2>
+            <div className={styles["products-list"]}>
+              {Object.keys(orderInfo.products).map((key) => {
+                const el = orderInfo.products[key];
+                return (
+                  <ProductHorizontalCard
+                    type="inOrder"
+                    {...el}
+                    url={props.url}
+                    key={el["_id"]}
+                    id={el["_id"]}
+                  />
+                );
+              })}
+            </div>
+            <div className={styles["totals-block"]}>
+              <div className={styles["total-price-block"]}>
+                <div className={styles["total-price-text"]}>Итого:</div>
+                <div className={styles["total-price"]}>
+                  {orderInfo.totalPrice} ₽
+                </div>
+              </div>
+              <div className={styles["total-price-block"]}>
+                <div className={styles["total-price-text"]}>
+                  Предоставленная скидка:
+                </div>
+                <div className={styles["total-price"]}>
+                  {orderInfo.shopDiscount}%
+                </div>
               </div>
             </div>
-            <div className={styles["total-price-block"]}>
-              <div className={styles["total-price-text"]}>
-                Предоставленная скидка:
-              </div>
-              <div className={styles["total-price"]}>
-                {orderInfo.shopDiscount}%
-              </div>
-            </div>
-          </div>
-          <form className={styles["delivery-form"]}>
-            <Fieldset
-              key="delivery"
-              legend="Тип доставки"
-              type="radio"
-              height="fit-content"
-              categories={[
-                "Забрать из пункта выдачи",
-                "Доставка по Екатеринбургу",
-                "Доставка по России",
-              ]}
-              fieldset_options={{
-                ref: fieldsetRef,
-                required: true,
-                readOnly: !props.isAdmin,
-                defaultValue: orderInfo.deliveryType,
-                onChange: (event) => {
-                  setOrderInfo({
-                    ...orderInfo,
-                    deliveryType: event.target.value,
-                  });
-                },
-              }}
-            />
-            <Fieldset
-              key="isLegalEntity"
-              legend="Тип заказа"
-              type="checkbox"
-              height="fit-content"
-              categories={["Заказать как Юрлицо"]}
-              fieldset_options={{
-                ref: isLegalEntityRef,
-                required: false,
-                readOnly: !props.isAdmin,
-                defaultValue: orderInfo.isLegalEntity
-                  ? "Заказать как Юрлицо"
-                  : undefined,
-              }}
-            />
-            <TextInput
-              placeholder="Адрес доставки"
-              value={deliveryAddress}
-              onChange={(event) => setDeliveryAddress(event.target.value)}
-              readOnly={!props.isAdmin}
-            />
-            <TextInput
-              placeholder="Комментарий к заказу"
-              value={comment}
-              onChange={(event) => setComment(event.target.value)}
-              readOnly={!props.isAdmin}
-            />
-          </form>
-          {props.isAdmin && (
-            <>
-              <Button
-                isSecondary={true}
-                style={{ width: "297px", height: "48px" }}
-                onClick={() => {
-                  fetch(`/api/orders/reciept/${id}`)
-                    .then((response) => response.blob())
-                    .then((blob) => {
-                      const url = URL.createObjectURL(blob);
-                      const link = document.createElement("a");
-                      link.href = url;
-                      link.download = `Счёт № ${orderInfo.number} Азбука96.xlsx`;
-                      link.click();
+            <form className={styles["delivery-form"]}>
+              <Fieldset
+                key="delivery"
+                legend="Тип доставки"
+                type="radio"
+                height="fit-content"
+                categories={[
+                  "Забрать из пункта выдачи",
+                  "Доставка по Екатеринбургу",
+                  "Доставка по России",
+                ]}
+                fieldset_options={{
+                  ref: fieldsetRef,
+                  required: true,
+                  readOnly: !props.isAdmin,
+                  defaultValue: orderInfo.deliveryType,
+                  onChange: (event) => {
+                    setOrderInfo({
+                      ...orderInfo,
+                      deliveryType: event.target.value,
                     });
+                  },
                 }}
-              >
-                Скачать накладную
-              </Button>
-              <form className={styles["delivery-form"]}>
-                <Fieldset
-                  key="status"
-                  legend="Статус"
-                  type="radio"
-                  height="230px"
-                  categories={[
-                    "В обработке",
-                    "В сборке",
-                    "В пункте выдачи",
-                    "В доставке",
-                    "Отменен",
-                    "Завершен",
-                  ]}
-                  fieldset_options={{
-                    ref: statusRef,
-                    required: true,
-                    defaultValue: orderInfo.status,
-                    onChange: (event) => {
-                      setOrderInfo({
-                        ...orderInfo,
-                        status: event.target.value,
-                      });
-                    },
-                  }}
-                />
+              />
+              <Fieldset
+                key="isLegalEntity"
+                legend="Тип заказа"
+                type="checkbox"
+                height="fit-content"
+                categories={["Заказать как Юрлицо"]}
+                fieldset_options={{
+                  ref: isLegalEntityRef,
+                  required: false,
+                  readOnly: !props.isAdmin,
+                  defaultValue: orderInfo.isLegalEntity
+                    ? "Заказать как Юрлицо"
+                    : undefined,
+                }}
+              />
+              <TextInput
+                placeholder="Адрес доставки"
+                value={deliveryAddress}
+                onChange={(event) => setDeliveryAddress(event.target.value)}
+                readOnly={!props.isAdmin}
+              />
+              <TextInput
+                placeholder="Комментарий к заказу"
+                value={comment}
+                onChange={(event) => setComment(event.target.value)}
+                readOnly={!props.isAdmin}
+              />
+            </form>
+            {props.isAdmin && (
+              <>
                 <Button
-                  type="submit"
+                  isSecondary={true}
                   style={{ width: "297px", height: "48px" }}
-                  onClick={onChangingOrderSubmit}
+                  onClick={() => {
+                    fetch(`/api/orders/reciept/${id}`)
+                      .then((response) => response.blob())
+                      .then((blob) => {
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement("a");
+                        link.href = url;
+                        link.download = `Счёт № ${orderInfo.number} Азбука96.xlsx`;
+                        link.click();
+                      });
+                  }}
                 >
-                  Сохранить изменения в заказе
+                  Скачать накладную
                 </Button>
-                {statusChangingMessage && <p>{statusChangingMessage}</p>}
-              </form>
-            </>
-          )}
-        </>
-      )}
-    </div>
+                <form className={styles["delivery-form"]}>
+                  <Fieldset
+                    key="status"
+                    legend="Статус"
+                    type="radio"
+                    height="230px"
+                    categories={[
+                      "В обработке",
+                      "В сборке",
+                      "В пункте выдачи",
+                      "В доставке",
+                      "Отменен",
+                      "Завершен",
+                    ]}
+                    fieldset_options={{
+                      ref: statusRef,
+                      required: true,
+                      defaultValue: orderInfo.status,
+                      onChange: (event) => {
+                        setOrderInfo({
+                          ...orderInfo,
+                          status: event.target.value,
+                        });
+                      },
+                    }}
+                  />
+                  <Button
+                    type="submit"
+                    style={{ width: "297px", height: "48px" }}
+                    onClick={onChangingOrderSubmit}
+                  >
+                    Сохранить изменения в заказе
+                  </Button>
+                  {statusChangingMessage && <p>{statusChangingMessage}</p>}
+                </form>
+              </>
+            )}
+          </>
+        )}
+      </div>
+    </>
   );
 }
 

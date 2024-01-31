@@ -5,7 +5,6 @@ class MyDocument extends Document {
     return (
       <Html lang="ru">
         <Head>
-          <title>Азбука96 - Учебники, рабочие тетради</title>
           <link
             rel="icon"
             type="image/png"

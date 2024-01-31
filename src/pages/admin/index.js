@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
+import Head from "next/head";
 
 import OrderBar from "../../components/Order/OrderBar";
 import Card from "../../components/UI/Card";
@@ -114,84 +115,97 @@ export default function AdminPage(props) {
   }
 
   return (
-    <div className={styles["admin-page"]}>
-      <h2>Страница администратора</h2>
-      <div className={styles["products-editing-block"]}>
-        <div>
-          <label className={styles["csv-block"]}>
-            Загрузить файл с товарами
-            <input
-              type="file"
-              accept=".csv"
-              onChange={onRemnantsFileSelection}
-            />
-          </label>
-          {fileMessage && <p>{fileMessage}</p>}
-        </div>
-        <Link href="/product/new" className={styles["add-new-product-link"]}>
-          Добавить товар
-        </Link>
-        <div>
-          <label className={styles["csv-block"]}>
-            Загрузить изображения
-            <input
-              type="file"
-              accept=".jpg"
-              onChange={onImagesFileSelection}
-              multiple
-            />
-          </label>
-          {filesMessage && <p>{filesMessage}</p>}
-        </div>
-        <Link href="/admin/products" className={styles["add-new-product-link"]}>
-          Страница с товарами
-        </Link>
-        <Link href="/admin/main-page-settings" className={styles["csv-block"]}>
-          Настройка главной страницы
-        </Link>
-        <Link
-          href="/admin/payment/details"
-          className={styles["add-new-product-link"]}
-          style={{ "font-size": "15px" }}
-        >
-          Настройка платежных реквизитов
-        </Link>
-      </div>
-      <Card className={styles["statuses-bar"]}>
-        {statusesList.map((el) => {
-          return (
-            <div
-              className={
-                el === selectedStatus
-                  ? styles["selected-status"]
-                  : styles["unselected-status"]
-              }
-              key={el}
-              onClick={() => setSelectedStatus(el)}
-            >
-              {el}
-            </div>
-          );
-        })}
-      </Card>
-      <div className={styles["orders-list"]}>
-        {ordersList
-          .filter((order) => order.status === selectedStatus)
-          .map((order) => {
-            let customer = usersList.find((user) => user._id === order.userId);
-            return (
-              <OrderBar
-                id={order["_id"]}
-                key={order.number}
-                Number={order.number}
-                Money={order.totalPrice}
-                Date={`${order.date.getDate()}.${order.date.getMonth()}.${order.date.getFullYear()}`}
-                Text={customer && customer.name}
+    <>
+      <Head>
+        <title>Азбука96 - Страница администратора</title>
+      </Head>
+      <div className={styles["admin-page"]}>
+        <h2>Страница администратора</h2>
+        <div className={styles["products-editing-block"]}>
+          <div>
+            <label className={styles["csv-block"]}>
+              Загрузить файл с товарами
+              <input
+                type="file"
+                accept=".csv"
+                onChange={onRemnantsFileSelection}
               />
+            </label>
+            {fileMessage && <p>{fileMessage}</p>}
+          </div>
+          <Link href="/product/new" className={styles["add-new-product-link"]}>
+            Добавить товар
+          </Link>
+          <div>
+            <label className={styles["csv-block"]}>
+              Загрузить изображения
+              <input
+                type="file"
+                accept=".jpg"
+                onChange={onImagesFileSelection}
+                multiple
+              />
+            </label>
+            {filesMessage && <p>{filesMessage}</p>}
+          </div>
+          <Link
+            href="/admin/products"
+            className={styles["add-new-product-link"]}
+          >
+            Страница с товарами
+          </Link>
+          <Link
+            href="/admin/main-page-settings"
+            className={styles["csv-block"]}
+          >
+            Настройка главной страницы
+          </Link>
+          {/* <Link
+            href="/admin/payment/details"
+            className={styles["add-new-product-link"]}
+            style={{ "font-size": "15px" }}
+          >
+            Настройка платежных реквизитов
+          </Link> */}
+        </div>
+        <Card className={styles["statuses-bar"]}>
+          {statusesList.map((el) => {
+            return (
+              <div
+                className={
+                  el === selectedStatus
+                    ? styles["selected-status"]
+                    : styles["unselected-status"]
+                }
+                key={el}
+                onClick={() => setSelectedStatus(el)}
+              >
+                {el}
+              </div>
             );
           })}
+        </Card>
+        <div className={styles["orders-list"]}>
+          {ordersList
+            .filter((order) => order.status === selectedStatus)
+            .map((order) => {
+              let customer = usersList.find(
+                (user) => user._id === order.userId
+              );
+              return (
+                <OrderBar
+                  id={order["_id"]}
+                  key={order.number}
+                  Number={order.number}
+                  Money={order.totalPrice}
+                  Date={`${order.date.getDate()}.${order.date.getMonth()}.${order.date.getFullYear()}`}
+                  Text={customer && customer.name}
+                />
+              );
+            })}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

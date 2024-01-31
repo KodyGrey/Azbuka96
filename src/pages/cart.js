@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { cartActions } from "../store/cartSlice";
 import { useState, useRef } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 export default function CartPage(props) {
   const productsList = props.productsList;
@@ -108,102 +109,116 @@ export default function CartPage(props) {
   }
 
   return (
-    <div className={styles["cart-page"]}>
-      <h2>Корзина</h2>
-      <div className={styles["products-list"]}>
-        {productsList.map((el) => {
-          if (cart[el["_id"]]) {
-            discountedTotal +=
-              cart[el["_id"]] *
-              Math.ceil(
-                ((el.discountedPrice ?? el.price) * (100 - shopDiscount)) / 100
+    <>
+      <Head>
+        <title>Азбука96 - Корзина</title>
+      </Head>
+      <div className={styles["cart-page"]}>
+        <h2>Корзина</h2>
+        <div className={styles["products-list"]}>
+          {productsList.map((el) => {
+            if (cart[el["_id"]]) {
+              discountedTotal +=
+                cart[el["_id"]] *
+                Math.ceil(
+                  ((el.discountedPrice ?? el.price) * (100 - shopDiscount)) /
+                    100
+                );
+
+              return (
+                <ProductHorizontalCard
+                  {...el}
+                  url={props.url}
+                  key={el["_id"]}
+                  id={el["_id"]}
+                  amount={cart[el["_id"]]}
+                />
               );
-
-            return (
-              <ProductHorizontalCard
-                {...el}
-                url={props.url}
-                key={el["_id"]}
-                id={el["_id"]}
-                amount={cart[el["_id"]]}
-              />
-            );
-          }
-          return;
-        })}
-      </div>
-      <div className={styles["totals-block"]}>
-        <div className={styles["total-price-block"]}>
-          <div className={styles["total-price-text"]}>Сумма:</div>
-          <div className={styles["total-price"]}>{total} ₽</div>
+            }
+            return;
+          })}
         </div>
-        <div className={styles["total-price-block"]}>
-          <div className={styles["total-price-text"]}>
-            Скидка при данной сумме:
+        <div className={styles["totals-block"]}>
+          <div className={styles["total-price-block"]}>
+            <div className={styles["total-price-text"]}>Сумма:</div>
+            <div className={styles["total-price"]}>{total} ₽</div>
           </div>
-          <div className={styles["total-price"]}>{shopDiscount}%</div>
-        </div>
-        <div className={styles["total-price-block"]}>
-          <div className={styles["total-price-text"]}>
-            Итого с учетом скидки:
+          <div className={styles["total-price-block"]}>
+            <div className={styles["total-price-text"]}>
+              Скидка при данной сумме:
+            </div>
+            <div className={styles["total-price"]}>{shopDiscount}%</div>
           </div>
-          <div className={styles["total-price"]}>{discountedTotal} ₽</div>
+          <div className={styles["total-price-block"]}>
+            <div className={styles["total-price-text"]}>
+              Итого с учетом скидки:
+            </div>
+            <div className={styles["total-price"]}>{discountedTotal} ₽</div>
+          </div>
         </div>
-      </div>
-      <p className={styles["text-info"]}>
-        Информация о подтверждении заказа, изменениях по вашему заказу,
-        предоставленной скидке, накладная, а также информация о способах оплаты
-        придет на электронную почту, указанную в вашем профиле
-      </p>
+        <p className={styles["text-info"]}>
+          Информация о подтверждении заказа, изменениях по вашему заказу,
+          предоставленной скидке, накладная, а также информация о способах
+          оплаты придет на электронную почту, указанную в вашем профиле
+        </p>
 
-      {makeOrderClicked && (
-        <form className={styles["delivery-form"]} onSubmit={onOrderSubmitting}>
-          <Fieldset
-            key="delivery"
-            legend="Тип доставки"
-            type="radio"
-            height="fit-content"
-            categories={[
-              "Забрать из пункта выдачи",
-              "Доставка по Екатеринбургу",
-              "Доставка по России",
-            ]}
-            fieldset_options={{ ref: fieldsetRef, required: true }}
-          />
-          <Fieldset
-            key="isLegalEntity"
-            legend="Тип заказа"
-            type="checkbox"
-            height="fit-content"
-            categories={["Заказать как Юрлицо"]}
-            fieldset_options={{ ref: isLegalEntityRef, required: false }}
-          />
-          <TextInput
-            placeholder="Адрес доставки"
-            innerRef={deliveryAddressRef}
-          />
-          <TextInput placeholder="Комментарий к заказу" innerRef={commentRef} />
-          {errorMessage && (
-            <Card className={styles["error-message"]}>{errorMessage}</Card>
-          )}
-          {successMessage && (
-            <Card className={styles["success-message"]}>{successMessage}</Card>
-          )}
-          <Button type="submit" className={styles["make-order-button"]}>
+        {makeOrderClicked && (
+          <form
+            className={styles["delivery-form"]}
+            onSubmit={onOrderSubmitting}
+          >
+            <Fieldset
+              key="delivery"
+              legend="Тип доставки"
+              type="radio"
+              height="fit-content"
+              categories={[
+                "Забрать из пункта выдачи",
+                "Доставка по Екатеринбургу",
+                "Доставка по России",
+              ]}
+              fieldset_options={{ ref: fieldsetRef, required: true }}
+            />
+            <Fieldset
+              key="isLegalEntity"
+              legend="Тип заказа"
+              type="checkbox"
+              height="fit-content"
+              categories={["Заказать как Юрлицо"]}
+              fieldset_options={{ ref: isLegalEntityRef, required: false }}
+            />
+            <TextInput
+              placeholder="Адрес доставки"
+              innerRef={deliveryAddressRef}
+            />
+            <TextInput
+              placeholder="Комментарий к заказу"
+              innerRef={commentRef}
+            />
+            {errorMessage && (
+              <Card className={styles["error-message"]}>{errorMessage}</Card>
+            )}
+            {successMessage && (
+              <Card className={styles["success-message"]}>
+                {successMessage}
+              </Card>
+            )}
+            <Button type="submit" className={styles["make-order-button"]}>
+              Оформить заказ
+            </Button>
+          </form>
+        )}
+
+        {!makeOrderClicked && (
+          <Button
+            className={styles["make-order-button"]}
+            onClick={onMakeOrderButtonClicked}
+          >
             Оформить заказ
           </Button>
-        </form>
-      )}
-
-      {!makeOrderClicked && (
-        <Button
-          className={styles["make-order-button"]}
-          onClick={onMakeOrderButtonClicked}
-        >
-          Оформить заказ
-        </Button>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 }
 

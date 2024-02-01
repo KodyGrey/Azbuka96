@@ -18,21 +18,17 @@ const ProductCard = (props) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const [quantityInCart, setQuantityInCart] = useState(productInCart || 0);
-
   function onRedirectElementClicked() {
     router.push(`/product/${id}`);
   }
 
   function onAddInCartButtonPressed() {
     dispatch(cartActions.addProduct({ id, quantity: 1 }));
-    setQuantityInCart(1);
   }
 
   function onDecreaseQuantityButtonPressed() {
     if (productInCart > 1) {
       dispatch(cartActions.changeItem({ id, quantity: productInCart - 1 }));
-      setQuantityInCart(productInCart - 1);
     } else {
       dispatch(cartActions.removeProduct(id));
     }
@@ -40,7 +36,6 @@ const ProductCard = (props) => {
 
   function onIncreaseQuantityButtonPressed() {
     dispatch(cartActions.changeItem({ id, quantity: productInCart + 1 }));
-    setQuantityInCart(productInCart + 1);
   }
 
   const insertAddContentToCartBlock = (props) => {
@@ -55,8 +50,9 @@ const ProductCard = (props) => {
       } else {
         return (
           <QuantityChanging
+            key={id}
             className={styles["quantity-changing-item"]}
-            amount={quantityInCart}
+            amount={productInCart}
             decrease={{ onClick: onDecreaseQuantityButtonPressed }}
             increase={{ onClick: onIncreaseQuantityButtonPressed }}
           />

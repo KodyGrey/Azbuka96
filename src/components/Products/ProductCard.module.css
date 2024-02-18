@@ -114,7 +114,7 @@
 .title {
   width: 166px;
 
-  font-weight: 400;
+  font-weight: 600;
   font-size: 13px;
   line-height: 16px;
   max-height: 32px;
@@ -128,7 +128,7 @@
 .author {
   width: 166px;
 
-  font-weight: 200;
+  font-weight: 500;
   font-size: 12px;
   line-height: 13px;
   max-height: 13px;

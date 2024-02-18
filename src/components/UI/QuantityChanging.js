@@ -39,10 +39,11 @@ const QuantityChanging = (props) => {
       <input
         className={styles["number"]}
         type="number"
-        value={props.amount}
-        min="0"
-        readOnly
-        // onChange={onValueChangeHandler}
+        value={props.valueFlag ? props.value : props.amount}
+        min="1"
+        {...props.changeAmount}
+        //readOnly
+
         // onBlur={onBlurHandler}
       />
       <Button className={styles["increase"]} {...props.increase}>

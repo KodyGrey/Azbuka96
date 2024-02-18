@@ -17,6 +17,8 @@ const ProductCard = (props) => {
   const productInCart = useSelector((state) => state.cart[id]);
   const dispatch = useDispatch();
   const router = useRouter();
+  const [value, setValue] = useState("");
+  const [valueFlag, setValueFlag] = useState(false);
 
   function onRedirectElementClicked() {
     router.push(`/product/${id}`);
@@ -38,6 +40,29 @@ const ProductCard = (props) => {
     dispatch(cartActions.changeItem({ id, quantity: productInCart + 1 }));
   }
 
+  function onBlurAmountHandler(event) {
+    event.preventDefault();
+    if (isNaN(event.target.value)) {
+      setValueFlag(false);
+      setValue(productInCart.toString());
+    }
+    if (Number(event.target.value) < 1) {
+      setValueFlag(false);
+      setValue(productInCart.toString());
+    } else {
+      dispatch(
+        cartActions.changeItem({ id, quantity: Number(event.target.value) })
+      );
+      setValueFlag(false);
+      setValue(productInCart.toString());
+    }
+  }
+  function onChangeAmountHandler(event) {
+    event.preventDefault();
+    setValueFlag(true);
+    setValue(event.target.value);
+  }
+
   const insertAddContentToCartBlock = (props) => {
     if (props.inStock) {
       if (!productInCart) {
@@ -55,6 +80,12 @@ const ProductCard = (props) => {
             amount={productInCart}
             decrease={{ onClick: onDecreaseQuantityButtonPressed }}
             increase={{ onClick: onIncreaseQuantityButtonPressed }}
+            changeAmount={{
+              onBlur: onBlurAmountHandler,
+              onChange: onChangeAmountHandler,
+            }}
+            value={value}
+            valueFlag={valueFlag}
           />
         );
       }

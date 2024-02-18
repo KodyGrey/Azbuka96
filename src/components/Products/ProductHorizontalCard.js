@@ -19,6 +19,9 @@ const ProductHorizontalCard = (props) => {
 
   const [quantityInCart, setQuantityInCart] = useState(productInCart || 0);
 
+  const [value, setValue] = useState("");
+  const [valueFlag, setValueFlag] = useState(false);
+
   function onRedirectElementClicked() {
     router.push(`/product/${id}`);
   }
@@ -39,6 +42,29 @@ const ProductHorizontalCard = (props) => {
 
   function onDeleteButtonClicked() {
     dispatch(cartActions.removeProduct(id));
+  }
+
+  function onBlurAmountHandler(event) {
+    event.preventDefault();
+    if (isNaN(event.target.value)) {
+      setValueFlag(false);
+      setValue(productInCart.toString());
+    }
+    if (Number(event.target.value) < 1) {
+      setValueFlag(false);
+      setValue(productInCart.toString());
+    } else {
+      dispatch(
+        cartActions.changeItem({ id, quantity: Number(event.target.value) })
+      );
+      setValueFlag(false);
+      setValue(productInCart.toString());
+    }
+  }
+  function onChangeAmountHandler(event) {
+    event.preventDefault();
+    setValueFlag(true);
+    setValue(event.target.value);
   }
 
   return (
@@ -69,6 +95,12 @@ const ProductHorizontalCard = (props) => {
             amount={quantityInCart}
             decrease={{ onClick: onDecreaseQuantityButtonPressed }}
             increase={{ onClick: onIncreaseQuantityButtonPressed }}
+            changeAmount={{
+              onBlur: onBlurAmountHandler,
+              onChange: onChangeAmountHandler,
+            }}
+            value={value}
+            valueFlag={valueFlag}
           />
         )}
 

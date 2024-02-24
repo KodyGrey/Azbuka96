@@ -8,23 +8,13 @@ import IndexImageSection from "../components/InfoElements/IndexImageSection";
 export default function Home(props) {
   const productsList = props.productsList;
 
-  productsList.sort(
-    (a, b) =>
-      (b.boughtScore || 0) +
-      (b.relevanceCoefficient || 0) * 10000000 -
-      ((a.boughtScore || 0) + (a.relevanceCoefficient || 0) * 10000000)
-  );
-  const relevantList = productsList.slice(0, 6);
-  productsList.sort(
-    (a, b) =>
-      (a.discountedPrice ?? a.price) /
-        a.price /
-        ((a.discountCoefficient || 0) * 10000000) -
-      (b.discountedPrice ?? b.price) /
-        b.price /
-        ((b.discountCoefficient || 0) * 10000000)
-  );
-  const discountList = productsList.slice(0, 6);
+  const relevantList = productsList
+    .filter((product) => product.relevanceCoefficient)
+    .sort((a, b) => b.relevanceCoefficient - a.relevanceCoefficient);
+
+  const discountList = productsList
+    .filter((product) => product.discountCoefficient)
+    .sort((a, b) => b.discountCoefficient - a.discountCoefficient);
 
   return (
     <>
@@ -32,36 +22,44 @@ export default function Home(props) {
         <title>Азбука96 - Учебники, рабочие тетради</title>
       </Head>
       <IndexImageSection className={styles["image-section"]} />
-      <section className={styles["products-grid"]}>
-        <h2>Актуальное</h2>
-        <div>
-          {relevantList.map((el) => {
-            return (
-              <ProductCard
-                {...el}
-                url={props.url}
-                key={el["_id"]}
-                id={el["_id"]}
-              />
-            );
-          })}
-        </div>
-      </section>
-      <section className={styles["products-grid"]}>
-        <h2>Скидки</h2>
-        <div>
-          {discountList.map((el) => {
-            return (
-              <ProductCard
-                {...el}
-                url={props.url}
-                key={el["_id"]}
-                id={el["_id"]}
-              />
-            );
-          })}
-        </div>
-      </section>
+      {relevantList.length ? (
+        <section className={styles["products-grid"]}>
+          <h2>Актуальное</h2>
+          <div>
+            {relevantList.map((el) => {
+              return (
+                <ProductCard
+                  {...el}
+                  url={props.url}
+                  key={el["_id"]}
+                  id={el["_id"]}
+                />
+              );
+            })}
+          </div>
+        </section>
+      ) : (
+        <></>
+      )}
+      {discountList.length ? (
+        <section className={styles["products-grid"]}>
+          <h2>Скидки</h2>
+          <div>
+            {discountList.map((el) => {
+              return (
+                <ProductCard
+                  {...el}
+                  url={props.url}
+                  key={el["_id"]}
+                  id={el["_id"]}
+                />
+              );
+            })}
+          </div>
+        </section>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

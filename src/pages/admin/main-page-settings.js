@@ -8,6 +8,7 @@ import Head from "next/head";
 export default function MainPageSettings(props) {
   const productsList = props.productsList;
   const router = useRouter();
+  const amountOfElements = 25;
 
   function findRelevant(c) {
     const foundElement = productsList.find(
@@ -17,27 +18,14 @@ export default function MainPageSettings(props) {
     return foundElement.bookID;
   }
 
-  const [relevant1, setRelevant1] = useState("");
-  const [relevant2, setRelevant2] = useState("");
-  const [relevant3, setRelevant3] = useState("");
-  const [relevant4, setRelevant4] = useState("");
-  const [relevant5, setRelevant5] = useState("");
-  const [relevant6, setRelevant6] = useState("");
+  const [relevant, setRelevant] = useState([]);
 
   const [successfulRelevanceSave, setSuccessfulRelevanceSave] = useState(false);
 
   async function updateRelevanceCoefficients() {
-    const list = [
-      relevant1,
-      relevant2,
-      relevant3,
-      relevant4,
-      relevant5,
-      relevant6,
-    ];
-    for (let i = 6; i > 0; i--) {
+    for (let i = 0; i < relevant.length; i++) {
       let el = productsList.find(
-        (product) => findRelevant(i) === product.bookID
+        (product) => findRelevant(amountOfElements - i) === product.bookID
       );
       if (el) {
         let index = productsList.findIndex((product) => product === el);
@@ -51,17 +39,19 @@ export default function MainPageSettings(props) {
         console.log(res);
       }
     }
-    for (let i = 6; i > 0; i--) {
-      if (!list[6 - i]) continue;
-      let el = productsList.find((product) => product.bookID === list[6 - i]);
+    for (let i = 0; i < relevant.length; i++) {
+      if (!relevant[i]) continue;
+      let el = productsList.find((product) => product.bookID === relevant[i]);
       if (el) {
         let index = productsList.findIndex((product) => product === el);
-        productsList[index].relevanceCoefficient = i;
+        productsList[index].relevanceCoefficient = amountOfElements - i;
         props.setProductsList(productsList);
         const res = await fetch(`/api/products/${el._id}`, {
           method: "PUT",
           credentials: "include",
-          body: JSON.stringify({ relevanceCoefficient: i }),
+          body: JSON.stringify({
+            relevanceCoefficient: amountOfElements - i,
+          }),
         });
         console.log(res);
       }
@@ -78,27 +68,14 @@ export default function MainPageSettings(props) {
     return foundElement.bookID;
   }
 
-  const [discount1, setDiscount1] = useState("");
-  const [discount2, setDiscount2] = useState("");
-  const [discount3, setDiscount3] = useState("");
-  const [discount4, setDiscount4] = useState("");
-  const [discount5, setDiscount5] = useState("");
-  const [discount6, setDiscount6] = useState("");
+  const [discount, setDiscount] = useState([]);
 
   const [successfulDiscountSave, setSuccessfulDiscountSave] = useState(false);
 
   async function updateDiscountedCoefficients() {
-    const list = [
-      discount1,
-      discount2,
-      discount3,
-      discount4,
-      discount5,
-      discount6,
-    ];
-    for (let i = 6; i > 0; i--) {
+    for (let i = 0; i < discount.length; i++) {
       let el = productsList.find(
-        (product) => findDiscounted(i) === product.bookID
+        (product) => findDiscounted(amountOfElements - i) === product.bookID
       );
       if (el) {
         let index = productsList.findIndex((product) => product === el);
@@ -112,17 +89,19 @@ export default function MainPageSettings(props) {
         console.log(res);
       }
     }
-    for (let i = 6; i > 0; i--) {
-      if (!list[6 - i]) continue;
-      let el = productsList.find((product) => product.bookID === list[6 - i]);
+    for (let i = 0; i < discount.length; i++) {
+      if (!discount[i]) continue;
+      let el = productsList.find((product) => product.bookID === discount[i]);
       if (el) {
         let index = productsList.findIndex((product) => product === el);
-        productsList[index].discountCoefficient = i;
+        productsList[index].discountCoefficient = amountOfElements - i;
         props.setProductsList(productsList);
         const res = await fetch(`/api/products/${el._id}`, {
           method: "PUT",
           credentials: "include",
-          body: JSON.stringify({ discountCoefficient: i }),
+          body: JSON.stringify({
+            discountCoefficient: amountOfElements - i,
+          }),
         });
         console.log(res);
       }
@@ -132,27 +111,15 @@ export default function MainPageSettings(props) {
   }
 
   useEffect(() => {
-    const relevantList = [
-      setRelevant1,
-      setRelevant2,
-      setRelevant3,
-      setRelevant4,
-      setRelevant5,
-      setRelevant6,
-    ];
-    const dicountedList = [
-      setDiscount1,
-      setDiscount2,
-      setDiscount3,
-      setDiscount4,
-      setDiscount5,
-      setDiscount6,
-    ];
-
-    for (let i = 6; i > 0; i--) {
-      relevantList[6 - i](findRelevant(i));
-      dicountedList[6 - i](findDiscounted(i));
+    console.log("start");
+    const [rel, dis] = [[], []];
+    for (let i = 0; i < amountOfElements; i++) {
+      rel.push(findRelevant(amountOfElements - i));
+      dis.push(findDiscounted(amountOfElements - i));
     }
+    setRelevant(rel);
+    setDiscount(dis);
+    console.log(relevant);
   }, []);
 
   return (
@@ -168,48 +135,21 @@ export default function MainPageSettings(props) {
               В полях необходимо указать артикул требуемого продукта, например,
               00158
             </p>
-            <label>
-              1.
-              <TextInput
-                value={relevant1}
-                onChange={(event) => setRelevant1(event.target.value.trim())}
-              ></TextInput>
-            </label>
-            <label>
-              2.
-              <TextInput
-                value={relevant2}
-                onChange={(event) => setRelevant2(event.target.value.trim())}
-              ></TextInput>
-            </label>
-            <label>
-              3.
-              <TextInput
-                value={relevant3}
-                onChange={(event) => setRelevant3(event.target.value.trim())}
-              ></TextInput>
-            </label>
-            <label>
-              4.
-              <TextInput
-                value={relevant4}
-                onChange={(event) => setRelevant4(event.target.value.trim())}
-              ></TextInput>
-            </label>
-            <label>
-              5.
-              <TextInput
-                value={relevant5}
-                onChange={(event) => setRelevant5(event.target.value.trim())}
-              ></TextInput>
-            </label>
-            <label>
-              6.
-              <TextInput
-                value={relevant6}
-                onChange={(event) => setRelevant6(event.target.value.trim())}
-              ></TextInput>
-            </label>
+            {relevant.map((value, index) => {
+              return (
+                <label key={index + 1}>
+                  {index + 1}.
+                  <TextInput
+                    value={value}
+                    onChange={(event) => {
+                      const obj = [...relevant];
+                      obj[index] = event.target.value.trim();
+                      setRelevant(obj);
+                    }}
+                  ></TextInput>
+                </label>
+              );
+            })}
             <Button
               type="button"
               className={styles["save-button"]}
@@ -233,48 +173,22 @@ export default function MainPageSettings(props) {
               В полях необходимо указать артикул требуемого продукта, например,
               00158
             </p>
-            <label>
-              1.
-              <TextInput
-                value={discount1}
-                onChange={(event) => setDiscount1(event.target.value.trim())}
-              ></TextInput>
-            </label>
-            <label>
-              2.
-              <TextInput
-                value={discount2}
-                onChange={(event) => setDiscount2(event.target.value.trim())}
-              ></TextInput>
-            </label>
-            <label>
-              3.
-              <TextInput
-                value={discount3}
-                onChange={(event) => setDiscount3(event.target.value.trim())}
-              ></TextInput>
-            </label>
-            <label>
-              4.
-              <TextInput
-                value={discount4}
-                onChange={(event) => setDiscount4(event.target.value.trim())}
-              ></TextInput>
-            </label>
-            <label>
-              5.
-              <TextInput
-                value={discount5}
-                onChange={(event) => setDiscount5(event.target.value.trim())}
-              ></TextInput>
-            </label>
-            <label>
-              6.
-              <TextInput
-                value={discount6}
-                onChange={(event) => setDiscount6(event.target.value.trim())}
-              ></TextInput>
-            </label>
+
+            {discount.map((value, index) => {
+              return (
+                <label key={index + 1}>
+                  {index + 1}.
+                  <TextInput
+                    value={value}
+                    onChange={(event) => {
+                      const obj = [...discount];
+                      obj[index] = event.target.value.trim();
+                      setDiscount(obj);
+                    }}
+                  ></TextInput>
+                </label>
+              );
+            })}
 
             <Button
               type="button"

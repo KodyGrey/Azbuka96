@@ -23,6 +23,60 @@
 
 .products-grid > div {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  width: calc(200px * 7 + 16px * 6);
+}
+
+@media (max-width: 2038px) {
+  .products-grid > div {
+    width: calc(200px * 6 + 16px * 5);
+  }
+}
+
+@media (max-width: 1780px) {
+  .products-grid > div {
+    width: calc(200px * 5 + 16px * 4);
+  }
+}
+
+@media (max-width: 1523px) {
+  .products-grid > div {
+    width: calc(200px * 4 + 16px * 3);
+  }
+}
+@media (max-width: 1266px) {
+  .products-grid > div {
+    width: calc(200px * 3 + 16px * 2);
+  }
+}
+@media (max-width: 1009px) {
+  .products-grid > div {
+    width: calc(200px * 2 + 16px * 1);
+  }
+}
+
+@media (max-width: 860px) {
+  .products-grid > div {
+    width: calc(144px * 4 + 12px * 3);
+    gap: 12px;
+  }
+}
+@media (max-width: 730px) {
+  .products-grid > div {
+    width: calc(144px * 3 + 12px * 2);
+  }
+}
+@media (max-width: 532px) {
+  .products-grid > div {
+    width: calc(144px * 2 + 12px);
+  }
+}
+
+/* .products-grid > div {
+  display: flex;
   flex-wrap: wrap;
   gap: 16px;
   height: 350px;
@@ -64,4 +118,4 @@
     height: calc(290px * 3 + 12px * 2);
     gap: 12px;
   }
-}
+} */

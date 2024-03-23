@@ -129,13 +129,17 @@ export default function Catalogue(props) {
       return countB - countA;
     });
 
-    productsList = productsList.filter((product) => {
+    const tempProductsList = productsList.filter((product) => {
       return (
         String(product.bookID) === searchQuery ||
         (product.author &&
           product.author.toLowerCase() === searchQuery.toLowerCase())
       );
     });
+    if (tempProductsList.length > 0) {
+      productsList = tempProductsList;
+    }
+    console.log(productsList);
   }
 
   return (

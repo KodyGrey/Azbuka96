@@ -129,27 +129,50 @@ export default async function handler(req, res) {
                                     Object.keys(order.products).length - 1,
                                     true
                                   );
+                                  console.log(
+                                    Object.keys(order.products).length - 1
+                                  );
                                   for (let product in order.products) {
                                     const product_row =
                                       worksheet.getRow(row_index);
                                     if (
                                       row_index !== (isLegalEntity ? 28 : 18)
                                     ) {
+                                      worksheet.unMergeCells(
+                                        `B${row_index}:C${row_index}`
+                                      );
                                       worksheet.mergeCells(
                                         `B${row_index}:C${row_index}`
+                                      );
+
+                                      worksheet.unMergeCells(
+                                        `D${row_index}:T${row_index}`
                                       );
                                       worksheet.mergeCells(
                                         `D${row_index}:T${row_index}`
                                       );
+
+                                      worksheet.unMergeCells(
+                                        `U${row_index}:W${row_index}`
+                                      );
                                       worksheet.mergeCells(
                                         `U${row_index}:W${row_index}`
+                                      );
+
+                                      worksheet.unMergeCells(
+                                        `X${row_index}:Y${row_index}`
                                       );
                                       worksheet.mergeCells(
                                         `X${row_index}:Y${row_index}`
                                       );
+
+                                      worksheet.unMergeCells(
+                                        `Z${row_index}:AC${row_index}`
+                                      );
                                       worksheet.mergeCells(
                                         `Z${row_index}:AC${row_index}`
                                       );
+
                                       worksheet.unMergeCells(
                                         `AD${row_index}:AG${row_index}`
                                       );
@@ -227,6 +250,7 @@ export default async function handler(req, res) {
                                   resolve();
                                 })
                                 .catch((error) => {
+                                  console.log(error.toString());
                                   res
                                     .status(500)
                                     .json({ error: error.toString() });

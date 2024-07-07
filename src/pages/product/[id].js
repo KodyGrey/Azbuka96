@@ -58,8 +58,10 @@ export default function ProductPage(props) {
     <>
       <Head>
         <title>
-          Азбука96 - {props.productsList.find((el) => (el._id = id)).title}{" "}
-          {props.productsList.find((el) => (el._id = id)).author}
+          Азбука96 -{" "}
+          {productInfo
+            ? productInfo["title"] + " " + productInfo["author"]
+            : ""}
         </title>
       </Head>
       <div className={styles["product-page"]}>

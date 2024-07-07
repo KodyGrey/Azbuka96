@@ -5,8 +5,8 @@ import { authOptions } from "../../api/auth/[...nextauth]";
 import Head from "next/head";
 
 export default function EditProduct(props) {
-  //   const router = useRouter();
-  //   const id = router.query.id;
+  const router = useRouter();
+  const id = router.query.id;
   //   const product = props.productsList.find((el) => el.id === id);
   //   if (!product) router.push("/404");
   return (
@@ -14,7 +14,7 @@ export default function EditProduct(props) {
       <Head>
         <title>Азбука96 - Редактировать {props.product.title}</title>
       </Head>
-      <NewProduct {...props} {...props.product} />;
+      <NewProduct {...props} {...props.product} id={id} edit={true} />
     </>
   );
 }

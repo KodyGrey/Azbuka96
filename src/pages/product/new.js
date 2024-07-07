@@ -220,6 +220,33 @@ export default function NewProduct(props) {
           <Button type="submit" className={styles["add-product-button"]}>
             {props.id ? "Сохранить" : "Добавить"}
           </Button>
+          {props.edit && (
+            <Button
+              onClick={(event) => {
+                event.preventDefault();
+                fetch(`/api/products/` + String(props.id), {
+                  method: "DELETE",
+                  credentials: "include",
+                })
+                  .then((response) => {
+                    if (response.ok) {
+                      setSuccessMessage("Товар успешно удален!");
+                      setErrorMessage("");
+                    } else {
+                      setErrorMessage("Ошибка при отправке");
+                      setSuccessMessage("");
+                      console.log(response);
+                    }
+                  })
+                  .catch((error) => {
+                    setErrorMessage(String(error));
+                  });
+              }}
+              className={styles["add-product-button"]}
+            >
+              Удалить
+            </Button>
+          )}
         </form>
       </div>
     </>

@@ -16,12 +16,24 @@ export default async function handler(req, res) {
 
           switch (req.method) {
             case "GET":
-              collection.findOne({ _id: ObjectId(id) }, (err, result) => {
-                if (err || !result)
-                  res.status(400).json({ error: err.toString() });
-                else res.status(200).json(result);
+              if (!session) {
+                res.status(401).json({ error: "Unauthorized" });
+
                 resolve();
-              });
+              }
+              if (id === session.user.id || session.user.isAdmin) {
+                collection.findOne({ _id: ObjectId(id) }, (err, result) => {
+                  if (err || !result)
+                    res.status(400).json({ error: err.toString() });
+                  else res.status(200).json(result);
+                  resolve();
+                });
+              } else {
+                res.status(403).json({
+                  error: "You have not enough permissions for that",
+                });
+              }
+              resolve();
               break;
             case "PUT":
               if (!session) {
@@ -60,6 +72,11 @@ export default async function handler(req, res) {
               break;
 
             case "DELETE":
+              if (!session) {
+                res.status(401).json({ error: "Unauthorized" });
+
+                resolve();
+              }
               if (!session.user.isAdmin) {
                 res
                   .status(403)

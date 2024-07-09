@@ -2,6 +2,7 @@ import ProductHorizontalCard from "../../components/Products/ProductHorizontalCa
 import Button from "../../components/UI/Button";
 import TextInput from "../../components/UI/TextInput";
 import Fieldset from "../../components/Fieldset/Fieldset";
+import Card from "../../components/UI/Card";
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
@@ -11,6 +12,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
 
 import styles from "../../styles/cart.module.css";
+import profileStyles from "../../styles/profile/index.module.css";
 
 export default function OrderPage(props) {
   const fieldsetRef = useRef();
@@ -24,6 +26,7 @@ export default function OrderPage(props) {
 
   const id = router.query.id;
   const [orderInfo, setOrderInfo] = useState({});
+  const [clientInfo, setClientInfo] = useState({});
   const [statusChangingMessage, setStatusChangingMessage] = useState("");
   const productsList = props.productsList;
 
@@ -41,6 +44,7 @@ export default function OrderPage(props) {
         })
         .then((data) => {
           setOrderInfo(data);
+          console.log(data);
           setDeliveryAddress(data.deliveryAddress);
           setComment(data.comment);
         })
@@ -52,6 +56,31 @@ export default function OrderPage(props) {
 
     getOrderInfo();
   }, [id, router]);
+
+  useEffect(() => {
+    async function getClientInfo(userId) {
+      fetch(`/api/users/${userId}`, {
+        method: "GET",
+        credentials: "include",
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setClientInfo(data);
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+          // router.push("/404");
+        });
+    }
+
+    getClientInfo(orderInfo.userId);
+  }, [orderInfo]);
 
   async function onChangingOrderSubmit(event) {
     event.preventDefault();
@@ -114,6 +143,34 @@ export default function OrderPage(props) {
                 </div>
               </div>
             </div>
+            {props.isAdmin && (
+              <div
+                className={`${profileStyles["elements"]}`}
+                style={{
+                  display: "flex",
+                }}
+              >
+                <h2>Информация о покупателе</h2>
+                <Card className={`${profileStyles["element-card"]}`}>
+                  <h3>ФИО</h3>
+                  <p>{clientInfo.name}</p>
+                </Card>
+
+                <Card className={`${profileStyles["element-card"]}`}>
+                  <h3>Город</h3>
+                  <p>{clientInfo.city}</p>
+                </Card>
+
+                <Card className={`${profileStyles["element-card"]}`}>
+                  <h3>E-mail</h3>
+                  <p>{clientInfo.email}</p>
+                </Card>
+                <Card className={`${profileStyles["element-card"]}`}>
+                  <h3>Номер Телефона</h3>
+                  <p>{clientInfo.phoneNumber}</p>
+                </Card>
+              </div>
+            )}
             <form className={styles["delivery-form"]}>
               <Fieldset
                 key="delivery"
